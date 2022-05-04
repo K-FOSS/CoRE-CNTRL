@@ -1,0 +1,382 @@
+kubernetes:
+  controlPlaneEndpoint:
+  networking:
+    dnsDomain: cluster.local
+    serviceSubnet: 10.96.0.0/12
+    podSubnet: #10.112.0.0/12
+
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+    # storageClassName: default
+    annotations: {}
+    finalizers:
+      - kubernetes.io/pvc-protection
+
+    backup:
+      # existingClaim: your-claim
+      # subPath: backups
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      # storageClassName: default
+      annotations: {}
+      finalizers:
+        - kubernetes.io/pvc-protection
+
+  etcd:
+    enabled: false
+    image:
+      repository: k8s.gcr.io/etcd
+      tag: 3.5.1-0
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 3
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    certSANs:
+      dnsNames: []
+      ipAddresses: []
+
+    extraArgs: {}
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    ports:
+      client: 2379
+      peer: 2380
+      metrics: 2381
+    service:
+      enabled: true
+      type: ClusterIP
+      ports:
+        client: 2379
+        peer: 2380
+        metrics: 2381
+      labels: {}
+      annotations: {}
+      loadBalancerIP:
+
+    backup:
+      enabled: false
+      schedule: "0 */12 * * *"
+      successfulJobsHistoryLimit: 3
+      failedJobsHistoryLimit: 3
+      extraArgs: #{}
+        debug: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi
+        # limits:
+        #   cpu: 100m
+        #   memory: 128Mi
+
+      labels: {}
+      annotations: {}
+      podLabels: {}
+      podAnnotations: {}
+      nodeSelector: {}
+      tolerations: []
+      podAffinity: soft
+      podAffinityTopologyKey: kubernetes.io/hostname
+      affinity: {}
+      extraEnv: []
+      sidecars: []
+      extraVolumes: []
+      extraVolumeMounts: []
+
+  apiServer:
+    enabled: true
+    image:
+      repository: k8s.gcr.io/kube-apiserver
+      tag: v1.23.6
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    certSANs:
+      dnsNames: []
+      ipAddresses: []
+
+    extraArgs: {}
+      # advertise-address is required for kube-proxy
+      #advertise-address: 10.9.8.10
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+
+    port: 6443
+    service:
+      enabled: true
+      type: ClusterIP # NodePort / LoadBalancer
+      port: 6443
+      # Specify nodePort for apiserver service (30000-32767)
+      nodePort:
+      labels: {}
+      annotations: {}
+      loadBalancerIP:
+
+  controllerManager:
+    enabled: true
+    image:
+      repository: k8s.gcr.io/kube-controller-manager
+      tag: v1.23.6
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    extraArgs: {}
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    port: 10257
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 10257
+      labels: {}
+      annotations: {}
+      loadBalancerIP:
+
+  scheduler:
+    enabled: true
+    image:
+      repository: k8s.gcr.io/kube-scheduler
+      tag: v1.23.6
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    extraArgs: {}
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    port: 10259
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 10259
+      labels: {}
+      annotations: {}
+      loadBalancerIP:
+
+  admin:
+    enabled: true
+    image:
+      repository: ghcr.io/kvaps/kubernetes-tools
+      tag: v0.13.4
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    job:
+      enabled: true
+      schedule: "0 0 1 */6 *"
+      successfulJobsHistoryLimit: 3
+      failedJobsHistoryLimit: 3
+
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  kubeProxy:
+    enabled: true
+
+  coredns:
+    enabled: true
+    image:
+      repository: coredns/coredns
+      tag: 1.8.6
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    resources:
+      limits:
+        memory: 170Mi
+      requests:
+        cpu: 100m
+        memory: 70Mi
+
+  konnectivityServer:
+    enabled: false
+    # This controls the protocol between the API Server and the Konnectivity server.
+    # Supported values are "GRPC" and "HTTPConnect".
+    # "GRPC" will deploy konnectivity-server as a sidecar for apiserver
+    # "HTTPConnect" will deploy konnectivity-server as separate deployment
+    mode: GRPC
+    image:
+      repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server
+      tag: v0.0.24
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    extraArgs: {}
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    ports:
+      server: 8131
+      agent: 8132
+      admin: 8133
+      health: 8134
+    service:
+      enabled: true
+      type: ClusterIP
+      ports:
+        server: 8131
+        agent: 8132
+        admin: 8133
+      nodePorts:
+        server:
+        agent:
+        admin:
+      labels: {}
+      annotations: {}
+      loadBalancerIP:
+
+  konnectivityAgent:
+    enabled: false
+    image:
+      repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-agent
+      tag: v0.0.24
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+    replicaCount: 2
+    hostNetwork: true
+
+    extraArgs: {}
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+    ports:
+      admin: 8133
+      health: 8134
+
+  # these manifests will be applied inside the cluster
+  extraManifests: {}
+    #namespace.yaml:
+    #  apiVersion: v1
+    #  kind: Namespace
+    #  metadata:
+    #    name: example
