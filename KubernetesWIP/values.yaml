@@ -27,7 +27,7 @@ kubernetes:
         - kubernetes.io/pvc-protection
 
   etcd:
-    enabled: false
+    enabled: true
     image:
       repository: k8s.gcr.io/etcd
       tag: 3.5.1-0
