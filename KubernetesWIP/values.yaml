@@ -33,7 +33,7 @@ kubernetes:
       tag: 3.5.1-0
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 3
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
