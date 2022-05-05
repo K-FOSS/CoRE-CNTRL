@@ -122,7 +122,7 @@ kubernetes:
       #   memory: 128Mi
 
     certSANs:
-      dnsNames: []
+      dnsNames: ['k0s-kubeapi.service.dc1.kjdev', 'k0s-kubeapi.service.kjdev', 'api.k0s.dc1.resolvemy.host']
       ipAddresses: []
 
     extraArgs: {}
@@ -151,7 +151,8 @@ kubernetes:
       # Specify nodePort for apiserver service (30000-32767)
       nodePort:
       labels: {}
-      annotations: {}
+      annotations:
+        consul.hashicorp.com/service-name: 'k0s-kubeapi'
       loadBalancerIP:
 
   controllerManager:
@@ -382,6 +383,7 @@ kubernetes:
     #    name: example
 
 kubefarm:
+  enabled: false
   # ------------------------------------------------------------------------------
   # Kubernetes control-plane
   # ------------------------------------------------------------------------------

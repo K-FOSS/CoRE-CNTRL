@@ -9,4 +9,5 @@ dependencies:
 
   - name: kubefarm
     version: 0.13.4
+    condition: kubefarm.enabled
     repository: https://kvaps.github.io/charts
