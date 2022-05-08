@@ -50,4 +50,4 @@ spec:
             - '--initial-cluster-token=infra1-dc1-infra-k0s-k8s-kubernetes-etcd'
             - '--key=/pki/etcd/server/tls.key'
             - '--name=$(POD_NAME)'
-            - '--ca=/pki/etcd/ca/tls.crt'
+            - '--cacert=/pki/etcd/ca/tls.crt'
