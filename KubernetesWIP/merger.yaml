@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-  namespace: core-prod
 spec:
   template:
     spec:
