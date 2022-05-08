@@ -3,30 +3,8 @@ kind: StatefulSet
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
 spec:
-  podManagementPolicy: Parallel
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-  serviceName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
   template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-      name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-                topologyKey: kubernetes.io/hostname
-              weight: 1
-
       initContainers:
         - name: etcd
           image: k8s.gcr.io/etcd:3.5.1-0
