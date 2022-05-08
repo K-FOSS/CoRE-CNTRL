@@ -6,7 +6,8 @@ spec:
   template:
     spec:
       initContainers:
-        - image: k8s.gcr.io/etcd:3.5.1-0
+        - name: init-etcd
+          image: k8s.gcr.io/etcd:3.5.1-0
           volumeMounts:
             - mountPath: /pki/etcd/ca
               name: pki-etcd-certs-ca
