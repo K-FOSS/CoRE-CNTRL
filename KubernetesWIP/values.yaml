@@ -120,7 +120,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 0
+    replicaCount: 2
     resources:
       requests:
         cpu: 100m
@@ -170,7 +170,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 0
+    replicaCount: 2
     resources:
       requests:
         cpu: 100m
@@ -210,7 +210,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 0
+    replicaCount: 2
     resources:
       requests:
         cpu: 100m
@@ -250,7 +250,7 @@ kubernetes:
       tag: v0.13.4
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 0
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
@@ -283,7 +283,7 @@ kubernetes:
     enabled: false
 
   coredns:
-    enabled: true
+    enabled: false
     image:
       repository: coredns/coredns
       tag: 1.8.6
