@@ -131,7 +131,7 @@ kubernetes:
 
     certSANs:
       dnsNames: ['k0s-kubeapi.service.dc1.kjdev', 'k0s-kubeapi.service.kjdev', 'api.k0s.dc1.resolvemy.host']
-      ipAddresses: []
+      ipAddresses: ['172.18.213.183']
 
     extraArgs: {}
       # advertise-address is required for kube-proxy
