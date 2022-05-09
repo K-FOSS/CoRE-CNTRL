@@ -280,7 +280,7 @@ kubernetes:
     extraVolumeMounts: []
 
   kubeProxy:
-    enabled: true
+    enabled: false
 
   coredns:
     enabled: false
@@ -391,7 +391,7 @@ kubernetes:
     #    name: example
 
 kubefarm:
-  enabled: true
+  enabled: false
   # ------------------------------------------------------------------------------
   # Kubernetes control-plane
   # ------------------------------------------------------------------------------
