@@ -120,7 +120,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
@@ -131,11 +131,12 @@ kubernetes:
 
     certSANs:
       dnsNames: ['k0s-kubeapi.service.dc1.kjdev', 'k0s-kubeapi.service.kjdev', 'api.k0s.dc1.resolvemy.host']
-      ipAddresses: ['172.18.213.183']
+      ipAddresses: ['172.18.213.183', '10.1.1.40']
 
-    extraArgs: {}
+    extraArgs:
       # advertise-address is required for kube-proxy
-      #advertise-address: 10.9.8.10
+      advertise-address: 10.1.1.40
+      feature-gates: MixedProtocolLBService=true
     labels: {}
     annotations: {}
     podLabels: {}
@@ -154,14 +155,14 @@ kubernetes:
     port: 6443
     service:
       enabled: true
-      type: ClusterIP # NodePort / LoadBalancer
+      type: LoadBalancer # NodePort / LoadBalancer
       port: 6443
       # Specify nodePort for apiserver service (30000-32767)
       nodePort:
       labels: {}
       annotations:
         consul.hashicorp.com/service-name: 'k0s-kubeapi'
-      loadBalancerIP:
+      loadBalancerIP: 10.1.1.40
 
   controllerManager:
     enabled: true
@@ -306,7 +307,7 @@ kubernetes:
     mode: GRPC
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server
-      tag: v0.0.24
+      tag: v0.0.30
       pullPolicy: IfNotPresent
       pullSecrets: []
     replicaCount: 1
@@ -357,14 +358,14 @@ kubernetes:
     enabled: true
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-agent
-      tag: v0.0.24
+      tag: v0.0.30
       pullPolicy: IfNotPresent
       pullSecrets: []
     replicaCount: 1
     hostNetwork: false
 
     extraArgs:
-      proxy-server-host: 'k0s-kubeapi.service.dc1.kjdev'
+      proxy-server-host: '10.1.1.40'
       proxy-server-port: '8132'
     labels: {}
     annotations: {}
