@@ -171,7 +171,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
@@ -211,7 +211,7 @@ kubernetes:
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
