@@ -1,7 +1,7 @@
 kubernetes:
   controlPlaneEndpoint:
   networking:
-    dnsDomain: cluster.local
+    dnsDomain: k0s.resolvemy.host
     serviceSubnet: 10.0.8.0/22
     podSubnet: 10.4.0.0/16
 
