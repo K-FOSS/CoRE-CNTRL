@@ -34,7 +34,7 @@ spec:
               value: /pki/etcd/peer/tls.key
             - name: ETCDCTL_ENDPOINTS
               value: >-
-                https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-2.infra1-dc1-infra-k0s-k8s-kubernetes-etcd:2379
+                https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-2.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
 
           command:
             - etcdctl
