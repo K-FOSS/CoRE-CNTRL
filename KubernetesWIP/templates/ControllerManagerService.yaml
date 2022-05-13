@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+  namespace: core-prod
+spec:
+  clusterIP: 172.18.34.213
+  clusterIPs:
+    - 172.18.34.213
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: client
+      port: 10257
+      protocol: TCP
+      targetPort: 10257
+  selector:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+  sessionAffinity: None
+  type: ClusterIP
+

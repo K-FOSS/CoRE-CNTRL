@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+  namespace: core-prod
+spec:
+  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-kubelet-client
+  duration: 8760h0m0s
+  issuerRef:
+    kind: Issuer
+    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+  renewBefore: 4380h0m0s
+  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+  subject:
+    organizations:
+      - 'system:masters'
+  usages:
+    - signing
+    - key encipherment
+    - client auth
+
+  revision: 1

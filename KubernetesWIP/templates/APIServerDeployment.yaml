@@ -1,0 +1,242 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '23'
+  labels:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+  namespace: core-prod
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
+      creationTimestamp: null
+      labels:
+        app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+      automountServiceAccountToken: false
+      containers:
+        - command:
+            - kube-apiserver
+            - '--allow-privileged=true'
+            - '--authorization-mode=Node,RBAC'
+            - '--bind-address=0.0.0.0'
+            - '--client-ca-file=/pki/apiserver-server/ca.crt'
+            - >-
+              --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
+            - '--enable-bootstrap-token-auth=true'
+            - '--enable-aggregator-routing'
+            - '--etcd-cafile=/pki/apiserver-etcd-client/ca.crt'
+            - '--etcd-certfile=/pki/apiserver-etcd-client/tls.crt'
+            - '--etcd-keyfile=/pki/apiserver-etcd-client/tls.key'
+            - >-
+              --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-2.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
+            - '--insecure-port=0'
+            - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
+            - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
+            - '--kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname'
+            - '--proxy-client-cert-file=/pki/front-proxy-client/tls.crt'
+            - '--proxy-client-key-file=/pki/front-proxy-client/tls.key'
+            - >-
+              --requestheader-allowed-names=infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-client
+            - '--requestheader-client-ca-file=/pki/front-proxy-client/ca.crt'
+            - '--requestheader-extra-headers-prefix=X-Remote-Extra-'
+            - '--requestheader-group-headers=X-Remote-Group'
+            - '--requestheader-username-headers=X-Remote-User'
+            - '--secure-port=6443'
+            - '--service-account-key-file=/pki/sa/tls.crt'
+            - '--service-cluster-ip-range=10.0.8.0/22'
+            - '--tls-cert-file=/pki/apiserver-server/tls.crt'
+            - '--tls-private-key-file=/pki/apiserver-server/tls.key'
+            - >-
+              --egress-selector-config-file=/etc/kubernetes/egress-selector-configuration.yaml
+            - >-
+              --service-account-issuer=https://kubernetes.default.svc.k0s.resolvemy.host
+            - '--service-account-signing-key-file=/pki/sa/tls.key'
+            - '--advertise-address=10.1.1.40'
+            - '--feature-gates=MixedProtocolLBService=true'
+          image: 'k8s.gcr.io/kube-apiserver:v1.23.6'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /livez
+              port: 6443
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 15
+          name: kube-apiserver
+          ports:
+            - containerPort: 6443
+              name: client
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /etc/kubernetes
+              name: apiserver-config
+            - mountPath: /pki/front-proxy-client
+              name: pki-front-proxy-client
+            - mountPath: /pki/apiserver-server
+              name: pki-apiserver-server
+            - mountPath: /pki/apiserver-etcd-client
+              name: pki-apiserver-etcd-client
+            - mountPath: /pki/apiserver-kubelet-client
+              name: pki-apiserver-kubelet-client
+            - mountPath: /pki/sa
+              name: pki-sa
+            - mountPath: /run/konnectivity-server
+              name: konnectivity-uds
+        - command:
+            - /proxy-server
+            - '--logtostderr=true'
+            - '--v=7'
+            - '--server-count=1'
+            - '--server-id=$(POD_NAME)'
+            - '--cluster-cert=/pki/apiserver/tls.crt'
+            - '--cluster-key=/pki/apiserver/tls.key'
+            - '--mode=grpc'
+            - '--uds-name=/run/konnectivity-server/konnectivity-server.socket'
+            - '--server-port=0'
+            - '--agent-port=8132'
+            - '--admin-port=8133'
+            - '--health-port=8134'
+            - '--agent-namespace=kube-system'
+            - '--agent-service-account=konnectivity-agent'
+            - '--kubeconfig=/etc/kubernetes/konnectivity-server.conf'
+            - '--authentication-audience=system:konnectivity-server'
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30'
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /healthz
+              port: 8134
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 60
+          name: konnectivity-server
+          ports:
+            - containerPort: 8132
+              name: agent
+              protocol: TCP
+            - containerPort: 8133
+              name: admin
+              protocol: TCP
+            - containerPort: 8134
+              name: health
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /pki/apiserver
+              name: pki-apiserver
+            - mountPath: /run/konnectivity-server
+              name: konnectivity-uds
+            - mountPath: /pki/konnectivity-server-client
+              name: pki-konnectivity-server-client
+            - mountPath: /etc/kubernetes/
+              name: kubeconfig
+              readOnly: true
+      dnsConfig:
+        nameservers:
+          - 172.18.0.10
+        options:
+          - name: ndots
+            value: '5'
+        searches:
+          - k0s.resolvemy.host
+          - svc.k0s.resolvemy.host
+      dnsPolicy: None
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config
+          name: apiserver-config
+        - name: pki-front-proxy-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+        - name: pki-apiserver-server
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+        - name: pki-apiserver-etcd-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+        - name: pki-apiserver-kubelet-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+        - name: pki-sa
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+        - name: pki-konnectivity-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
+        - name: pki-apiserver
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+        - name: pki-konnectivity-server-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
+        - emptyDir: {}
+          name: konnectivity-uds
+        - configMap:
+            defaultMode: 420
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
+          name: kubeconfig
+
+  updatedReplicas: 1

@@ -3,9 +3,9 @@ apiVersion: v2
 version: 0.13.4
 name: k8s-core-wip
 dependencies:
-  - name: kubernetes
-    version: 0.13.4
-    repository: https://kvaps.github.io/charts
+  # - name: kubernetes
+  #   version: 0.13.4
+  #   repository: https://kvaps.github.io/charts
 
   - name: kubefarm
     version: 0.13.4

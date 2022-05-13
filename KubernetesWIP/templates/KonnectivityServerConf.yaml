@@ -1,0 +1,28 @@
+apiVersion: v1
+data:
+  konnectivity-server.conf: |
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority: /pki/konnectivity-server-client/ca.crt
+        server: https://infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster.local:6443
+      name: default-cluster
+    contexts:
+    - context:
+        cluster: default-cluster
+        namespace: default
+        user: default-auth
+      name: default-context
+    current-context: default-context
+    kind: Config
+    preferences: {}
+    users:
+    - name: default-auth
+      user:
+        client-certificate: /pki/konnectivity-server-client/tls.crt
+        client-key: /pki/konnectivity-server-client/tls.key
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
+  namespace: core-prod
+  uid: f0bee2f4-ed1a-41af-820a-178c2a919661

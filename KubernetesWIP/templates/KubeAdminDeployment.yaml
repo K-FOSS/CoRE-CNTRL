@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-admin
+    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-admin
+  namespace: core-prod
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: infra1-dc1-infra-k0s-k8s-kubernetes-admin
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: infra1-dc1-infra-k0s-k8s-kubernetes-admin
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: infra1-dc1-infra-k0s-k8s-kubernetes-admin
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+      automountServiceAccountToken: false
+      containers:
+        - command:
+            - sleep
+            - infinity
+          env:
+            - name: KUBECONFIG
+              value: /etc/kubernetes/admin.conf
+          image: 'ghcr.io/kvaps/kubernetes-tools:v0.13.4'
+          imagePullPolicy: IfNotPresent
+          name: admin
+          readinessProbe:
+            exec:
+              command:
+                - kubectl
+                - auth
+                - can-i
+                - '*'
+                - '*'
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /etc/kubernetes/
+              name: kubeconfig
+              readOnly: true
+            - mountPath: /pki/admin-client
+              name: pki-admin-client
+            - mountPath: /scripts
+              name: scripts
+            - mountPath: /manifests
+              name: manifests
+            - mountPath: /config
+              name: config
+      dnsConfig:
+        nameservers:
+          - 172.18.0.10
+        options:
+          - name: ndots
+            value: '5'
+        searches:
+          - cluster.local
+          - k0s.resolvemy.host
+          - svc.k0s.resolvemy.host
+          - core-prod.svc.cluster.local
+          - svc.cluster.local
+      dnsPolicy: None
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 5
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
+          name: kubeconfig
+        - name: pki-admin-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+        - configMap:
+            defaultMode: 511
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
+          name: scripts
+        - name: manifests
+          projected:
+            defaultMode: 420
+            sources:
+              - configMap:
+                  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-manifests
+        - configMap:
+            defaultMode: 420
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-config
+          name: config
+

@@ -1,0 +1,83 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+  namespace: core-prod
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata:
+      annotations:
+        checksum/config: ed81ca76edf6b6d372effdb9b0bf972f64d3fee0a4323beeae15a343b1340dd3
+        checksum/scripts: 777431c8d69813d07e8ea5240ee8090152013441735e9c3147fefce0bcb4e008
+      creationTimestamp: null
+      labels:
+        app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+        spec:
+          automountServiceAccountToken: false
+          containers:
+            - command:
+                - /scripts/configure-cluster.sh
+              env:
+                - name: KUBECONFIG
+                  value: /etc/kubernetes/admin.conf
+              image: 'ghcr.io/kvaps/kubernetes-tools:v0.13.4'
+              imagePullPolicy: IfNotPresent
+              name: kubeadm
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /etc/kubernetes/
+                  name: kubeconfig
+                  readOnly: true
+                - mountPath: /pki/admin-client
+                  name: pki-admin-client
+                - mountPath: /scripts
+                  name: scripts
+                - mountPath: /manifests
+                  name: manifests
+                - mountPath: /config
+                  name: config
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
+              name: kubeconfig
+            - name: pki-admin-client
+              secret:
+                defaultMode: 420
+                secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+            - configMap:
+                defaultMode: 511
+                name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
+              name: scripts
+            - name: manifests
+              projected:
+                defaultMode: 420
+                sources:
+                  - configMap:
+                      name: >-
+                        infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-manifests
+            - configMap:
+                defaultMode: 420
+                name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-config
+              name: config
+  schedule: 0 0 1 */6 *
+  successfulJobsHistoryLimit: 3
+  suspend: false
+status: {}

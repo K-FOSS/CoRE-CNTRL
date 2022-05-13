@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  controller-manager.conf: |
+    apiVersion: v1
+    clusters:
+    - cluster:
+        certificate-authority: /pki/controller-manager-client/ca.crt
+        server: https://infra1-dc1-infra-k0s-k8s-kubernetes-apiserver:6443
+      name: default-cluster
+    contexts:
+    - context:
+        cluster: default-cluster
+        namespace: default
+        user: default-auth
+      name: default-context
+    current-context: default-context
+    kind: Config
+    preferences: {}
+    users:
+    - name: default-auth
+      user:
+        client-certificate: /pki/controller-manager-client/tls.crt
+        client-key: /pki/controller-manager-client/tls.key
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-conf
+  namespace: core-prod
