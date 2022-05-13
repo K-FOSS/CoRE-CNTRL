@@ -16,10 +16,10 @@ spec:
   ipFamilyPolicy: SingleStack
   loadBalancerIP: 10.1.1.41
   ports:
-    - name: agent
-      port: 8132
+    - name: server
+      port: 8131
       protocol: TCP
-      targetPort: agent
+      targetPort: server
 
     - name: agent
       port: 8132
