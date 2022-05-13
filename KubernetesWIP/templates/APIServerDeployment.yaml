@@ -57,7 +57,7 @@ spec:
             - '--insecure-port=0'
             - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
             - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
-            - '--kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname'
+            - '--kubelet-preferred-address-types=Hostname'
             - '--proxy-client-cert-file=/pki/front-proxy-client/tls.crt'
             - '--proxy-client-key-file=/pki/front-proxy-client/tls.key'
             - >-
@@ -140,7 +140,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.name
-          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.24'
+          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 8

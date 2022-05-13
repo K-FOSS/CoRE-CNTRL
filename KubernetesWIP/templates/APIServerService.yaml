@@ -21,20 +21,17 @@ spec:
   loadBalancerIP: 10.1.1.40
   ports:
     - name: client
-      nodePort: 37354
       port: 6443
       protocol: TCP
       targetPort: 6443
     - name: client-https
-      nodePort: 15292
       port: 443
       protocol: TCP
       targetPort: 6443
     - name: agent
-      nodePort: 37355
       port: 8132
       protocol: TCP
-      targetPort: 8132
+      targetPort: agent
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   sessionAffinity: None
