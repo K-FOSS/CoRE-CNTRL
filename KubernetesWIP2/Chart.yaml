@@ -1,6 +1,6 @@
 apiVersion: v2
 version: 0.13.4
-name: kubernetes
+name: kubernetes-k8s
 dependencies:
   - name: kubernetes
     version: 0.13.4

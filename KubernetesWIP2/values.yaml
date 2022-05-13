@@ -319,7 +319,8 @@ kubernetes:
       #   cpu: 100m
       #   memory: 128Mi
 
-    extraArgs: {}
+    extraArgs:
+      test: 'test'
     labels: {}
     annotations: {}
     podLabels: {}
