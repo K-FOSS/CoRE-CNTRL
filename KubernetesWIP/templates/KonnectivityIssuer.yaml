@@ -1,0 +1,7 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: "infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer-konnectivity-issuer"
+spec:
+  ca:
+    secretName: "infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-ca"
