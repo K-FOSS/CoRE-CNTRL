@@ -10,13 +10,17 @@ metadata:
   namespace: core-prod
 spec:
   allocateLoadBalancerNodePorts: false
-  externalTrafficPolicy: Cluster
-  internalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
   loadBalancerIP: 10.1.1.41
   ports:
+    - name: agent
+      port: 8132
+      protocol: TCP
+      targetPort: agent
+
     - name: agent
       port: 8132
       protocol: TCP
