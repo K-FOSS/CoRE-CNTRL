@@ -18,5 +18,3 @@ spec:
     - signing
     - key encipherment
     - client auth
-
-  revision: 1
