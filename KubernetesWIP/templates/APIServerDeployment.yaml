@@ -238,5 +238,3 @@ spec:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
           name: kubeconfig
-
-  updatedReplicas: 1
