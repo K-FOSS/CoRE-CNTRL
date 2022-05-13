@@ -6,7 +6,7 @@ data:
     egressSelections:
     - name: cluster
       connection:
-        proxyProtocol: GRPC
+        proxyProtocol: HTTPConnect
         transport:
           tcp:
             url: "https://{{ $fullName }}-konnectivity-server:8131"
