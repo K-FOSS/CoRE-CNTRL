@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    consul.hashicorp.com/service-name: k0s-konnectivity
+
+  labels:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+  namespace: core-prod
+spec:
+  allocateLoadBalancerNodePorts: false
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  loadBalancerIP: 10.1.1.41
+  ports:
+    - name: agent
+      port: 8132
+      protocol: TCP
+      targetPort: agent
+  selector:
+    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+  sessionAffinity: None
+  type: LoadBalancer
+

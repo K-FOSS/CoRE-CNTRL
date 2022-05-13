@@ -49,7 +49,7 @@ data:
 
             - --admin-server-port=8133
             - --health-server-port=8134
-            - --proxy-server-host=10.1.1.40
+            - --proxy-server-host=10.1.1.41
             - --proxy-server-port=8132
             ports:
             - containerPort: 8133
