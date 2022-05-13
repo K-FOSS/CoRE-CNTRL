@@ -1,6 +1,6 @@
 apiVersion: v2
 version: 0.13.4
-name: k8s-core-wip2
+name: kubernetes
 dependencies:
   - name: kubernetes
     version: 0.13.4
