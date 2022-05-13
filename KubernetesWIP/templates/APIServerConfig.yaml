@@ -9,7 +9,7 @@ data:
         proxyProtocol: HTTPConnect
         transport:
           tcp:
-            url: "https://{{ $fullName }}-konnectivity-server:8131"
+            url: "https://10.1.1.41:8131"
             TLSConfig:
               caBundle: /pki/konnectivity-client/ca.crt
               clientKey: /pki/konnectivity-client/tls.key
