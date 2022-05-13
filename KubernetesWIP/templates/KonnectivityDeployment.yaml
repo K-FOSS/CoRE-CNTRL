@@ -45,7 +45,7 @@ spec:
             - '--cluster-cert=/pki/apiserver/tls.crt'
             - '--cluster-key=/pki/apiserver/tls.key'
             - --mode=http-connect
-            - --server-port=8132
+            - --server-port=8131
             - --server-ca-cert=/pki/konnectivity-server/ca.crt
             - --server-cert=/pki/konnectivity-server/tls.crt
             - --server-key=/pki/konnectivity-server/tls.key
