@@ -1,8 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    deployment.kubernetes.io/revision: '23'
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
     argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
