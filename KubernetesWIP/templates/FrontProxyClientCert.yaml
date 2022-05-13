@@ -1,87 +1,8 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"cert-manager.io/v1","kind":"Certificate","metadata":{"annotations":{},"labels":{"argocd.argoproj.io/instance":"infra1-dc1-infra-k0s-k8s"},"name":"infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client","namespace":"core-prod"},"spec":{"commonName":"infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-client","duration":"8760h","issuerRef":{"kind":"Issuer","name":"infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-issuer"},"renewBefore":"4380h","secretName":"infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client","subject":{"organizations":["system:masters"]},"usages":["signing","key
-      encipherment","client auth"]}}
-  creationTimestamp: '2022-05-05T00:21:44Z'
-  generation: 1
-  labels:
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
-  managedFields:
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:metadata':
-          'f:annotations':
-            .: {}
-            'f:kubectl.kubernetes.io/last-applied-configuration': {}
-          'f:labels':
-            .: {}
-            'f:argocd.argoproj.io/instance': {}
-        'f:spec':
-          .: {}
-          'f:commonName': {}
-          'f:duration': {}
-          'f:issuerRef':
-            .: {}
-            'f:kind': {}
-            'f:name': {}
-          'f:renewBefore': {}
-          'f:secretName': {}
-          'f:subject':
-            .: {}
-            'f:organizations': {}
-          'f:usages': {}
-      manager: argocd-application-controller
-      operation: Update
-      time: '2022-05-05T00:21:44Z'
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:status':
-          .: {}
-          'f:conditions':
-            .: {}
-            'k:{"type":"Ready"}':
-              .: {}
-              'f:observedGeneration': {}
-              'f:type': {}
-      manager: cert-manager-certificates-trigger
-      operation: Update
-      time: '2022-05-05T00:21:44Z'
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:status':
-          'f:revision': {}
-      manager: cert-manager-certificates-issuing
-      operation: Update
-      time: '2022-05-05T00:22:10Z'
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:status':
-          'f:conditions':
-            'k:{"type":"Ready"}':
-              .: {}
-              'f:lastTransitionTime': {}
-              'f:message': {}
-              'f:observedGeneration': {}
-              'f:reason': {}
-              'f:status': {}
-              'f:type': {}
-          'f:notAfter': {}
-          'f:notBefore': {}
-          'f:renewalTime': {}
-      manager: cert-manager-certificates-readiness
-      operation: Update
-      time: '2022-05-05T00:22:11Z'
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
   namespace: core-prod
-  resourceVersion: '1388729'
-  uid: 14c047f9-5d70-453f-93d8-3b0ea4193479
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-client
   duration: 8760h0m0s
@@ -97,15 +18,4 @@ spec:
     - signing
     - key encipherment
     - client auth
-status:
-  conditions:
-    - lastTransitionTime: '2022-05-05T00:22:11Z'
-      message: Certificate is up to date and has not expired
-      observedGeneration: 1
-      reason: Ready
-      status: 'True'
-      type: Ready
-  notAfter: '2023-05-05T00:22:09Z'
-  notBefore: '2022-05-05T00:22:09Z'
-  renewalTime: '2022-11-03T12:22:09Z'
-  revision: 1
+
