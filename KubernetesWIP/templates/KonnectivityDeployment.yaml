@@ -39,7 +39,6 @@ spec:
         - command:
             - /proxy-server
             - '--logtostderr=true'
-            - '--v=7'
             - '--server-count=1'
             - '--server-id=$(POD_NAME)'
             - '--cluster-cert=/pki/apiserver/tls.crt'
