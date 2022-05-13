@@ -163,4 +163,3 @@ spec:
       status:
         phase: Pending
 
-  updatedReplicas: 3
