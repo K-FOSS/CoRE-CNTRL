@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   egress-selector-configuration.yaml: |
-    apiVersion: apiserver.k8s.io/v1beta1
+    apiVersion: apiserver.k8s.io/v1alpha1
     kind: EgressSelectorConfiguration
     egressSelections:
     - name: cluster
@@ -10,7 +10,7 @@ data:
         transport:
           uds:
             udsName: /run/konnectivity-server/konnectivity-server.socket
-    - name: master
+    - name: controlplane
       connection:
         proxyProtocol: Direct
     - name: etcd
