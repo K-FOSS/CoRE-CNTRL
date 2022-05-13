@@ -6,7 +6,7 @@ kubernetes:
     podSubnet: 10.4.0.0/16
 
   persistence:
-    enabled: false
+    enabled: true
     accessModes:
       - ReadWriteOnce
     size: 1Gi
