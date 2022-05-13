@@ -8,8 +8,12 @@ data:
       connection:
         proxyProtocol: GRPC
         transport:
-          uds:
-            udsName: /run/konnectivity-server/konnectivity-server.socket
+          tcp:
+            url: "https://{{ $fullName }}-konnectivity-server:8131"
+            TLSConfig:
+              caBundle: /pki/konnectivity-client/ca.crt
+              clientKey: /pki/konnectivity-client/tls.key
+              clientCert: /pki/konnectivity-client/tls.crt
     - name: controlplane
       connection:
         proxyProtocol: Direct

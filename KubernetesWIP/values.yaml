@@ -6,7 +6,7 @@ kubernetes:
     podSubnet: 10.4.0.0/16
 
   persistence:
-    enabled: true
+    enabled: false
     accessModes:
       - ReadWriteOnce
     size: 1Gi
@@ -27,7 +27,7 @@ kubernetes:
         - kubernetes.io/pvc-protection
 
   etcd:
-    enabled: true
+    enabled: false
     image:
       repository: k8s.gcr.io/etcd
       tag: 3.5.1-0
@@ -85,7 +85,7 @@ kubernetes:
       loadBalancerIP:
 
     backup:
-      enabled: true
+      enabled: false
       schedule: "0 */12 * * *"
       successfulJobsHistoryLimit: 3
       failedJobsHistoryLimit: 3
@@ -114,7 +114,7 @@ kubernetes:
       extraVolumeMounts: []
 
   apiServer:
-    enabled: true
+    enabled: false
     image:
       repository: k8s.gcr.io/kube-apiserver
       tag: v1.23.6
@@ -154,7 +154,7 @@ kubernetes:
 
     port: 6443
     service:
-      enabled: true
+      enabled: false
       type: LoadBalancer # NodePort / LoadBalancer
       port: 6443
       # Specify nodePort for apiserver service (30000-32767)
@@ -165,7 +165,7 @@ kubernetes:
       loadBalancerIP: 10.1.1.40
 
   controllerManager:
-    enabled: true
+    enabled: false
     image:
       repository: k8s.gcr.io/kube-controller-manager
       tag: v1.23.6
@@ -197,7 +197,7 @@ kubernetes:
 
     port: 10257
     service:
-      enabled: true
+      enabled: false
       type: ClusterIP
       port: 10257
       labels: {}
@@ -205,7 +205,7 @@ kubernetes:
       loadBalancerIP:
 
   scheduler:
-    enabled: true
+    enabled: false
     image:
       repository: k8s.gcr.io/kube-scheduler
       tag: v1.23.6
@@ -237,7 +237,7 @@ kubernetes:
 
     port: 10259
     service:
-      enabled: true
+      enabled: false
       type: ClusterIP
       port: 10259
       labels: {}
@@ -245,7 +245,7 @@ kubernetes:
       loadBalancerIP:
 
   admin:
-    enabled: true
+    enabled: false
     image:
       repository: ghcr.io/kvaps/kubernetes-tools
       tag: v0.13.4
@@ -304,7 +304,7 @@ kubernetes:
     # Supported values are "GRPC" and "HTTPConnect".
     # "GRPC" will deploy konnectivity-server as a sidecar for apiserver
     # "HTTPConnect" will deploy konnectivity-server as separate deployment
-    mode: GRPC
+    mode: HTTPConnect
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server
       tag: v0.0.30
@@ -355,7 +355,7 @@ kubernetes:
       loadBalancerIP:
 
   konnectivityAgent:
-    enabled: true
+    enabled: false
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-agent
       tag: v0.0.30
