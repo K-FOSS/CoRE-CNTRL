@@ -45,7 +45,7 @@ spec:
             - '--cluster-cert=/pki/apiserver/tls.crt'
             - '--cluster-key=/pki/apiserver/tls.key'
             - --mode=http-connect
-            - --server-port=
+            - --server-port=8132
             - --server-ca-cert=/pki/konnectivity-server/ca.crt
             - --server-cert=/pki/konnectivity-server/tls.crt
             - --server-key=/pki/konnectivity-server/tls.key
@@ -97,10 +97,13 @@ spec:
           volumeMounts:
             - mountPath: /pki/apiserver
               name: pki-apiserver
-            - mountPath: /run/konnectivity-server
-              name: konnectivity-uds
+
+            - mountPath: /pki/konnectivity-server
+              name: pki-konnectivity-server
+
             - mountPath: /pki/konnectivity-server-client
               name: pki-konnectivity-server-client
+
             - mountPath: /etc/kubernetes/
               name: kubeconfig
               readOnly: true
@@ -125,41 +128,55 @@ spec:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config
           name: apiserver-config
+
         - name: pki-front-proxy-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+
         - name: pki-apiserver-server
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+
         - name: pki-apiserver-etcd-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+
         - name: pki-apiserver-kubelet-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+
         - name: pki-sa
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+
         - name: pki-konnectivity-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
+
         - name: pki-apiserver
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+
         - name: pki-konnectivity-server-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
+
         - emptyDir: {}
           name: konnectivity-uds
+
         - configMap:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
           name: kubeconfig
+
+        - secret:
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
+          name: pki-konnectivity-server

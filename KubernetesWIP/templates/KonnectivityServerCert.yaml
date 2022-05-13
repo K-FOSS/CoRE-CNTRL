@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
+spec:
+  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server
+  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
+  duration: 8760h # 365d
+  renewBefore: 4380h # 178d
+  subject:
+    organizations:
+      - infra1-dc1-infra-k0s-k8s-kubernetes
+  usages:
+  - 'signing'
+  - 'key encipherment'
+  - 'server auth'
+  dnsNames:
+    # Consul DNS Names
+    - k0s-konnectivity
+    - k0s-konnectivity.service
+    - k0s-konnectivity.service.dc1
+    - k0s-konnectivity.service.dc1.kjdev
+
+    # Default Localhost
+    - localhost
+  ipAddresses:
+    - 127.0.0.1
+
+    # AnyCast
+    - 10.1.1.41
+  issuerRef:
+    name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer
+    kind: Issuer
