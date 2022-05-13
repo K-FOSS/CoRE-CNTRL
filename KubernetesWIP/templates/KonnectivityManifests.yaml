@@ -42,6 +42,7 @@ data:
             imagePullPolicy: IfNotPresent
             command:
             - /proxy-agent
+            - --v=7
             - --logtostderr=true
             - --ca-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
             - --service-account-token-path=/var/run/secrets/tokens/konnectivity-agent-token

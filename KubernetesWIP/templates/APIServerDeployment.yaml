@@ -140,7 +140,7 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.name
-          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30'
+          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.24'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 8
