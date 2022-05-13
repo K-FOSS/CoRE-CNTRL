@@ -304,7 +304,7 @@ kubernetes:
     # Supported values are "GRPC" and "HTTPConnect".
     # "GRPC" will deploy konnectivity-server as a sidecar for apiserver
     # "HTTPConnect" will deploy konnectivity-server as separate deployment
-    mode: HTTPConnect
+    mode: GRPC
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server
       tag: v0.0.30
