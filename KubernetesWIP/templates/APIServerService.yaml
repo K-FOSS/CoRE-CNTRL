@@ -13,12 +13,13 @@ spec:
   clusterIP: 172.18.213.183
   clusterIPs:
     - 172.18.213.183
-  externalTrafficPolicy: Cluster
-  internalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
   loadBalancerIP: 10.1.1.40
+  externalIPs:
+    - 10.0.8.1
   ports:
     - name: client
       port: 6443
