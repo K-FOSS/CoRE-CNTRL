@@ -55,7 +55,7 @@ spec:
             - '--insecure-port=0'
             - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
             - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
-            - '--kubelet-preferred-address-types=Hostname'
+            - '--kubelet-preferred-address-types=InternalIP'
             - '--proxy-client-cert-file=/pki/front-proxy-client/tls.crt'
             - '--proxy-client-key-file=/pki/front-proxy-client/tls.key'
             - >-
