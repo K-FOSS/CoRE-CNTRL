@@ -5,7 +5,7 @@ data:
     clusters:
     - cluster:
         certificate-authority: /pki/admin-client/ca.crt
-        server: https://infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster.local:6443
+        server: https://10.1.1.40:6443
       name: default-cluster
     contexts:
     - context:
