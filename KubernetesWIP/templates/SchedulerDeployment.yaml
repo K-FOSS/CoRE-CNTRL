@@ -4,12 +4,11 @@ metadata:
 
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
   name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
   namespace: core-prod
 spec:
   progressDeadlineSeconds: 600
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
