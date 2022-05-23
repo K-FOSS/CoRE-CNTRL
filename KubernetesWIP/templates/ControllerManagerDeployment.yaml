@@ -91,7 +91,16 @@ spec:
               name: pki-front-proxy-client
             - mountPath: /pki/sa
               name: pki-sa
-      dnsPolicy: ClusterFirst
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 172.18.0.10
+        options:
+          - name: ndots
+            value: '5'
+        searches:
+          - k0s.resolvemy.host
+          - svc.k0s.resolvemy.host
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext:
