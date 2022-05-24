@@ -82,11 +82,8 @@ spec:
           - name: ndots
             value: '5'
         searches:
-          - cluster.local
           - k0s.resolvemy.host
           - svc.k0s.resolvemy.host
-          - core-prod.svc.cluster.local
-          - svc.cluster.local
       dnsPolicy: None
       restartPolicy: Always
       schedulerName: default-scheduler
