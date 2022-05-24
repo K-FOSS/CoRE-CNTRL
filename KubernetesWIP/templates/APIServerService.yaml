@@ -29,10 +29,6 @@ spec:
       port: 443
       protocol: TCP
       targetPort: 6443
-    - name: agent
-      port: 8132
-      protocol: TCP
-      targetPort: agent
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   sessionAffinity: None
