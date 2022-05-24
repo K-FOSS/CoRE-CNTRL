@@ -28,6 +28,7 @@ spec:
 
     # AnyCast
     - 10.1.1.41
+    - 10.1.1.40
   issuerRef:
     name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer
     kind: Issuer
