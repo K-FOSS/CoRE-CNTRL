@@ -114,6 +114,8 @@ spec:
               name: pki-sa
             - mountPath: /run/konnectivity-server
               name: konnectivity-uds
+            - mountPath: /pki/konnectivity-client
+              name: pki-konnectivity-client
       dnsConfig:
         nameservers:
           - 172.18.0.10
