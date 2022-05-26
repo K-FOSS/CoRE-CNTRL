@@ -8,7 +8,7 @@ metadata:
   namespace: core-prod
 spec:
   progressDeadlineSeconds: 600
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -39,6 +39,9 @@ spec:
       containers:
         - command:
             - kube-apiserver
+
+            - '--apiserver-count=2'
+            - '--logging-format=json'
             - '--allow-privileged=true'
             - '--authorization-mode=Node,RBAC'
             - '--bind-address=0.0.0.0'
@@ -53,6 +56,8 @@ spec:
             - >-
               --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-2.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
             - '--insecure-port=0'
+
+            - '--kubelet-timeout=30s'
             - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
             - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
             - '--kubelet-preferred-address-types=InternalIP'
