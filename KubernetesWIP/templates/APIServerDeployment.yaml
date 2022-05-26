@@ -40,7 +40,6 @@ spec:
         - command:
             - kube-apiserver
 
-            - '--apiserver-count=2'
             - '--logging-format=json'
             - '--allow-privileged=true'
             - '--authorization-mode=Node,RBAC'
