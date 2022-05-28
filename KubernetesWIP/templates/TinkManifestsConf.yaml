@@ -42,4 +42,14 @@ data:
           netboot:
             allowPXE: true
             allowWorkflow: true
+  {{ printf "%d-tinkworkflow.yaml" $index }}: |
+    apiVersion: "tinkerbell.org/v1alpha1"
+    kind: Workflow
+    metadata:
+      name: '{{ $machine.Name }}-wf'
+    spec:
+      templateRef: kubernetes
+      hardwareMap:
+        machine1: {{ $machine.MAC }}
+        config: {{- tpl (.Files.Get "Assets/Ignitiontemplate") . | b64enc | quote }}
 {{- end }}
