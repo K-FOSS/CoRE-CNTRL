@@ -28,10 +28,8 @@ spec:
                 - name: SVC
                   value: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
 
-
                 - name: SECRET
                   value: core0-ignition-config
-
               resources:
                 requests:
                   cpu: 100m
