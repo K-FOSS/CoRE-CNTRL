@@ -5,4 +5,4 @@ metadata:
   namespace: core-prod
 data:
   gentoken.sh: |+
-    {{- tpl (.Files.Get "Scripts/genToken.sh") . | nindent 4 }}
+    {{- .Files.Get "genToken.sh" | nindent 4 }}
