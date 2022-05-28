@@ -30,7 +30,7 @@ spec:
 
 
                 - name: SECRET
-                  value: infra1-dc1-infra-k0s-join-config
+                  value: core0-ignition-config
 
               resources:
                 requests:
