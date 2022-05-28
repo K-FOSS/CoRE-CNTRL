@@ -2,24 +2,27 @@ apiVersion: v1
 data:
   egress-selector-configuration.yaml: |
     apiVersion: apiserver.k8s.io/v1alpha1
+
     kind: EgressSelectorConfiguration
+
     egressSelections:
-    - name: cluster
-      connection:
-        proxyProtocol: HTTPConnect
-        transport:
-          tcp:
-            url: "https://10.1.1.41:8131"
-            TLSConfig:
-              caBundle: /pki/konnectivity-client/ca.crt
-              clientKey: /pki/konnectivity-client/tls.key
-              clientCert: /pki/konnectivity-client/tls.crt
-    - name: controlplane
-      connection:
-        proxyProtocol: Direct
-    - name: etcd
-      connection:
-        proxyProtocol: Direct
+      - name: cluster
+        connection:
+          proxyProtocol: HTTPConnect
+          transport:
+            tcp:
+              url: https://10.1.1.40:8131
+              TLSConfig:
+                caBundle: /pki/konnectivity-client/ca.crt
+                clientKey: /pki/konnectivity-client/tls.key
+                clientCert: /pki/konnectivity-client/tls.crt
+
+      - name: controlplane
+        connection:
+          proxyProtocol: Direct
+      - name: etcd
+        connection:
+          proxyProtocol: Direct
 kind: ConfigMap
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config

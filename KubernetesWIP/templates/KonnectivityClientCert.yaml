@@ -5,15 +5,18 @@ metadata:
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-client
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
+
   duration: 8760h # 365d
-  renewBefore: 4380h # 178d
+
+  renewBefore: 4380h
+
   subject:
     organizations:
-    - "system:masters"
+      - "system:masters"
   usages:
-  - "signing"
-  - "key encipherment"
-  - "client auth"
+    - signing
+    - key encipherment
+    - client auth
   issuerRef:
     name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer
     kind: Issuer

@@ -92,21 +92,27 @@ spec:
             - containerPort: 8131
               name: server
               protocol: TCP
+
             - containerPort: 8132
               name: agent
               protocol: TCP
+
             - containerPort: 8133
               name: admin
               protocol: TCP
+
             - containerPort: 8134
               name: health
               protocol: TCP
+
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
+
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
           volumeMounts:
             - mountPath: /pki/apiserver
               name: pki-apiserver
