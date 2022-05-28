@@ -231,7 +231,7 @@ storage:
           {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config") | default dict }}
           {{- $secretData := (get $secretObj "data") | default dict }}
           {{- $jwtSecret := (get $secretData "kubeadm-join.conf") }}
-          {{- $jwtSecret2 := (index (lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config").data "kubeadm-join.conf" }}
+          {{- $jwtSecret2 := (index (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config").data "kubeadm-join.conf") }}
           test="{{ $jwtSecret }}"
           test1="{{ $jwtSecret2 }}"
           test2="{{ $secretData| toJson }}"
