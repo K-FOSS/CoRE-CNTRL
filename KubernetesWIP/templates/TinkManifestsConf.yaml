@@ -51,6 +51,6 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        ignition: {{ .Files.Get "Scripts/Ignition" | b64enc }}
+        ignition: {{ .Files.Get "Scripts/Ignition.yaml" | b64enc }}
 
 {{- end }}
