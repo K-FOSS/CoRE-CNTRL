@@ -33,3 +33,6 @@ rules:
     verbs:
       - get
       - patch
+      - create
+      - update
+      - delete
