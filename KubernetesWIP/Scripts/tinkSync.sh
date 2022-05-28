@@ -7,7 +7,10 @@ for FILE in /manifests/*-tinkhardware.yaml; do
 done
 
 for WorkflowFile in /manifests/*-tinkworkflow.yaml; do
-  echo "Processing worklow file ${WorkflowFile}"
+  IGNITION_CONFIG="$(cat /etc/ignition.yaml)"
+  IGNITION_B64=$(echo "${IGNITION_CONFIG}" | base64)
+
+  echo "Processing worklow file ${WorkflowFile} with aditional ${IGNITION_B64}"
 done
 
 echo "Done?"
