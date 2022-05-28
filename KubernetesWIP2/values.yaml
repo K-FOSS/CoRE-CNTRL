@@ -33,7 +33,7 @@ kubefarm:
   # (tokens are needed to join nodes to the cluster)
   # ------------------------------------------------------------------------------
   tokenGenerator:
-    enabled: false
+    enabled: true
     tokenTtl: 24h0m0s
     schedule: "0 */12 * * *"
 
