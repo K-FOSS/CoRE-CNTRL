@@ -52,5 +52,5 @@ data:
       hardwareMap:
         machine1: {{ $machine.MAC }}
         ignition: |
-          {{- tpl (.Files.Get "Assets/Ignitiontemplate") . | b64enc | nindent 10 }}
+          {{- tpl (.Files.Get "files/Ignition") . | nindent 10 }}
 {{- end }}
