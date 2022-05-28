@@ -5,7 +5,7 @@ metadata:
   namespace: core-prod
 
 data:
-  configure-cluster.sh: >
+  configure-cluster.sh: |
     #!/bin/sh
 
     set -e
