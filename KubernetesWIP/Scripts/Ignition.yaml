@@ -231,6 +231,6 @@ storage:
           {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config") | default dict }}
           {{- $secretData := (get $secretObj "data") | default dict }}
           {{- $jwtSecret := (get $secretData "kubeadm-join.conf") }}
-          test="{{ secretData | b64enc }}"
+          test="{{ $secretData | b64enc }}"
       mode: 0777
 
