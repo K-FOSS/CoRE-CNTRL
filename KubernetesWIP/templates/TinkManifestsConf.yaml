@@ -29,7 +29,7 @@ data:
       interfaces:
         - dhcp:
             arch: amd64
-            hostname: node1
+            hostname: {{ $machine.Name }}
             ip:
               address: {{ $machine.IPAddress }}
               gateway: 172.16.20.254
