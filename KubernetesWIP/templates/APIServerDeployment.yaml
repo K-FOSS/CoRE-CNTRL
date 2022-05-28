@@ -53,8 +53,6 @@ spec:
           image: 'k8s.gcr.io/kube-apiserver:v1.23.6'
           imagePullPolicy: IfNotPresent
 
-          restartPolicy: Always
-
           command:
             - kube-apiserver
 

@@ -28,7 +28,6 @@ spec:
       protocol: TCP
       appProtocol: https
 
-
     - name: client-https
 
       targetPort: client
