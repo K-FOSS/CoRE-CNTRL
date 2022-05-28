@@ -53,5 +53,4 @@ data:
         machine1: {{ $machine.MAC }}
         {{- $file := (.Files.Get "Scripts/Ignition.yaml") }}
         version: {{ tpl $file . | b64enc }}
-        {{- end }}
 {{- end }}
