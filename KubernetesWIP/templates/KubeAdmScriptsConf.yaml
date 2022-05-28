@@ -58,7 +58,6 @@ data:
     # correct apiserver address for the external clients
 
     kubectl apply -n kube-public -f - <<EOT
-
     apiVersion: v1
     kind: ConfigMap
     metadata:
@@ -77,6 +76,7 @@ data:
         preferences: {}
         users: null
     EOT
+
 
 
 
