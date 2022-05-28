@@ -51,6 +51,10 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        ignition: 'testing'
+        {{- $configmap := (lookup "v1" "ConfigMap" "core-prod" "infra1-dc1-infra-k0s-k8s-tink-ignition-manifests") }}
+        {{- if $configmap }}
+        {{- $models := get $configmap.data "ignition.yaml" }}
+        ignition: {{ $models | quote }}
+        {{- end }}
 
 {{- end }}
