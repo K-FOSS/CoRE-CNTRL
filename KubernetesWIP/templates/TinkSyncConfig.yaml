@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-tink-sync-scripts
+  namespace: core-prod
+data:
+  tinkSync.sh: |+
+    {{- tpl (.Files.Get "Scripts/tinkSync.sh") . | nindent 4 }}
