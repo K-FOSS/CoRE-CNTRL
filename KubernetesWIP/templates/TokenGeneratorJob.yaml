@@ -1,1 +1,67 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app: infra1-dc1-infra-k0s-token-generator
 
+  name: infra1-dc1-infra-k0s-token-update
+  namespace: core-prod
+
+spec:
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: infra1-dc1-infra-k0s-token-generator
+        spec:
+          containers:
+            - name: kubeadm
+
+              image: registry.writemy.codes/tinkerbell/kubetools
+              imagePullPolicy: IfNotPresent
+
+              command:
+                - /scripts/genToken.sh
+              env:
+
+                - name: SVC
+                  value: infra1-dc1-infra-k0s-k2s-kubernetes-apiserver
+
+                - name: SECRET
+                  value: infra1-dc1-infra-k0s-k2s-ltsp-join-config
+
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 128Mi
+
+              volumeMounts:
+                - mountPath: /etc/kubernetes/
+                  name: kubeconfig
+                  readOnly: true
+
+                - mountPath: /scripts
+                  name: scripts
+
+                - mountPath: /pki/admin-client
+                  name: pki-admin-client
+
+          restartPolicy: OnFailure
+          serviceAccountName: infra1-dc1-infra-k0s-token-generator
+
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
+              name: kubeconfig
+
+            - configMap:
+                defaultMode: 511
+                name: infra1-dc1-infra-k0s-token-generator-scripts
+              name: scripts
+
+            - name: pki-admin-client
+              secret:
+                secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+  schedule: 0 */12 * * *

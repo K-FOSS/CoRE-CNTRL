@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-token-generator-scripts
+  namespace: core-prod
+data:
+  gentoken.sh: |+
+    {{- tpl (.Files.Get "Scripts/genToken.sh") . | nindent 4 }}

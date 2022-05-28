@@ -1,0 +1,35 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations: {}
+  labels:
+    app: infra1-dc1-infra-k0s-token-generator
+
+  name: infra1-dc1-infra-k0s-token-generator
+  namespace: core-prod
+rules:
+  - apiGroups:
+      - ''
+
+    resourceNames:
+      - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+
+    resources:
+      - services
+
+    verbs:
+      - get
+      - watch
+
+  - apiGroups:
+      - ''
+
+    resourceNames:
+      - infra1-dc1-infra-k0s-join-config
+
+    resources:
+      - secrets
+
+    verbs:
+      - get
+      - patch
