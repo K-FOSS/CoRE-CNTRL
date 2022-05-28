@@ -3,22 +3,26 @@ kind: Service
 metadata:
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+  
   name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
   namespace: core-prod
-  resourceVersion: '1387792'
-  uid: 8e108da9-176c-4b55-b77e-e74dc32befb0
 spec:
-  internalTrafficPolicy: Cluster
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
+  
   ports:
     - name: client
-      port: 10259
-      protocol: TCP
+
       targetPort: 10259
+      port: 10259
+
+      protocol: TCP
+
+
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
+
   sessionAffinity: None
+
   type: ClusterIP
