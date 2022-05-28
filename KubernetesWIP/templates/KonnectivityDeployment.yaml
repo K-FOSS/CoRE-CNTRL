@@ -36,33 +36,47 @@ spec:
               weight: 1
       automountServiceAccountToken: false
       containers:
-        - command:
+        - name: konnectivity-server
+
+          image: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30
+          imagePullPolicy: IfNotPresent
+
+          command:
             - /proxy-server
-            - '--logtostderr=true'
-            - '--server-count=1'
+
+            - --logtostderr=true
+
+            - --server-count=1
+
             - '--server-id=$(POD_NAME)'
-            - '--cluster-cert=/pki/apiserver/tls.crt'
-            - '--cluster-key=/pki/apiserver/tls.key'
+
+            - --cluster-cert=/pki/apiserver/tls.crt
+            - --cluster-key=/pki/apiserver/tls.key
+
             - --mode=http-connect
             - --server-port=8131
+
             - --server-ca-cert=/pki/konnectivity-server/ca.crt
             - --server-cert=/pki/konnectivity-server/tls.crt
             - --server-key=/pki/konnectivity-server/tls.key
-            - '--agent-port=8132'
-            - '--admin-port=8133'
-            - '--health-port=8134'
-            - '--agent-namespace=kube-system'
-            - '--agent-service-account=konnectivity-agent'
-            - '--kubeconfig=/etc/kubernetes/konnectivity-server.conf'
-            - '--authentication-audience=system:konnectivity-server'
+
+            - --agent-port=8132
+            - --admin-port=8133
+            - --health-port=8134
+
+            - --agent-namespace=kube-system
+            - --agent-service-account=konnectivity-agent
+            - --kubeconfig=/etc/kubernetes/konnectivity-server.conf
+            - --authentication-audience=system:konnectivity-server
+
           env:
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.name
-          image: 'us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30'
-          imagePullPolicy: IfNotPresent
+
+          
           livenessProbe:
             failureThreshold: 8
             httpGet:
@@ -73,7 +87,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 60
-          name: konnectivity-server
+          
           ports:
             - containerPort: 8131
               name: server
@@ -106,6 +120,7 @@ spec:
             - mountPath: /etc/kubernetes/
               name: kubeconfig
               readOnly: true
+
       dnsConfig:
         nameservers:
           - 172.18.0.10
@@ -115,13 +130,19 @@ spec:
         searches:
           - k0s.resolvemy.host
           - svc.k0s.resolvemy.host
+
       dnsPolicy: None
+
       restartPolicy: Always
+
       schedulerName: default-scheduler
+
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
       terminationGracePeriodSeconds: 30
+
       volumes:
         - configMap:
             defaultMode: 420
