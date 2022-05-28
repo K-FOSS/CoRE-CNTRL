@@ -228,6 +228,6 @@ storage:
       filesystem: root
       contents:
         inline: |
-          {{ lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config" }}
+          {{ (lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config").data }}
       mode: 0777
 
