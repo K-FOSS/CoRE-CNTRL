@@ -67,7 +67,6 @@ spec:
               name: scripts
 
             - configMap:
-                defaultMode: 777
                 name: infra1-dc1-infra-k0s-k8s-tink-ignition-manifests
               name: ignition
 
