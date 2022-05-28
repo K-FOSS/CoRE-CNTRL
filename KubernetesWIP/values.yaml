@@ -1,4 +1,5 @@
 tink:
+  
   machines:
     - Name: node2
       MAC: 00:50:56:81:85:42

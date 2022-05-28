@@ -12,7 +12,7 @@ rules:
       - ''
 
     resourceNames:
-      - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+      - infra1-dc1-infra-k0s-k2s-kubernetes-apiserver
 
     resources:
       - services

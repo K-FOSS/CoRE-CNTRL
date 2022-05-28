@@ -4,5 +4,5 @@ metadata:
   name: infra1-dc1-infra-k0s-token-generator-scripts
   namespace: core-prod
 data:
-  gentoken.sh: |+
+  genToken.sh: |+
     {{- .Files.Get "Scripts/genToken.sh" | nindent 4 }}
