@@ -51,12 +51,7 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        {{- $configmap := (lookup "v1" "ConfigMap" "core-prod" "infra1-dc1-infra-k0s-k8s-tink-ignition-manifests") }}
-        {{- if $configmap }}
-        {{- $models := get $configmap.data "ignition.yaml" }}
-        version: {{ $models | quote }}
-        {{- else }}
-        version: 'fucker {{ $configmap | toString }}'
+        {{- $file := (.Files.Get "Scripts/Ignition.yaml") }}
+        version: {{ tpl $file . | b64enc }}
         {{- end }}
-
 {{- end }}
