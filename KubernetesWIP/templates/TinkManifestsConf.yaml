@@ -6,7 +6,7 @@ metadata:
 apiVersion: v1
 
 data:
-{{- $root := . }}
+{{- $ignitionFile := (.Files.Get "Scripts/Ignition.yaml") }}
 {{- range $index, $machine :=  .Values.tink.machines }}
   {{ printf "%d-tinkhardware.yaml" $index }}: |
     apiVersion: "tinkerbell.org/v1alpha1"
@@ -52,6 +52,6 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        {{- $file := (.Files.Get "Scripts/Ignition.yaml") }}
-        version: {{ tpl $file $root | b64enc }}
+        
+        version: '{{ $ignitionFile | b64enc  }}'
 {{- end }}
