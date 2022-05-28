@@ -53,6 +53,10 @@ spec:
                 - mountPath: /config
                   name: config
 
+                - name: ignition-config
+                  mountPath: /etc/ignition.yaml
+                  subPath: ignition.yaml
+
           dnsPolicy: ClusterFirst
 
           restartPolicy: OnFailure
@@ -70,6 +74,11 @@ spec:
               secret:
                 defaultMode: 420
                 secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+
+            - name: ignition-config
+              secret:
+                defaultMode: 420
+                secretName: core0-ignition-config
 
             - configMap:
                 defaultMode: 511
