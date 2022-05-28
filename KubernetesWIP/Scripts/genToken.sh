@@ -1,3 +1,9 @@
+#!/bin/sh
+# This script is waiting until LoadBalancer service be ready
+# then generates token and records it into Kubernetes secret
+#
+# Usage: gentoken.sh <serviceName> <secretName>
+
 set -e
 
 SVC=${1:-$SVC}
