@@ -1,0 +1,211 @@
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-tink-ignition-manifests
+  namespace: core-prod
+
+apiVersion: v1
+
+data:
+  ignition.yaml: |
+    passwd:
+      users:
+        - name: kjones
+          ssh_authorized_keys:
+            - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfBgbghC6DS1eQ9iJY4EvKiAtslvEkowPV4RdqOPXMplggU70HuicTMweCS9EsU6dL+DVq6MFUjoyAnBLn5TDf/n9MD3HVMdelV5OH2fWhn93EjmVjTBP/hEgqhF+LiwgyMF0REsXmpUmO7c6y9WQkqAcrgTE/dn3AT5F7egFsp68/ArplHMT3zMULlO5MtrrzZO1NQ7Ibjb/e5Cn++0X6CEgAN62hH2G6Slw16sbZTTX6vOdfDFPX8r2YycdVQ0+iIb2tcVlcdlBzrxsw/Ri/Pq1fWFpVBlAgrjXNhI9IUYkW2K/V5vkZOpLURAp4HDDKoLuT0rXdXOis8EZyUG9jL202jm1De5EhsBgzZiZf/lgQ0RDrQy9VzRH16iaaZo9Dll3O8bS303FbE6pIGcYrUu6tbrCigjPkbD/8DzfsuVySWmLUROHh48HtA4v3Eymgn18pUFuZLPOZyEMffJ7xXUIJZ5LTAiZ3Ti5lftcwEdisJbAvtRNndKOOkfISsss= kristianfjones@KJDev-Laptop1'
+
+        - name: root
+          ssh_authorized_keys:
+            - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDfBgbghC6DS1eQ9iJY4EvKiAtslvEkowPV4RdqOPXMplggU70HuicTMweCS9EsU6dL+DVq6MFUjoyAnBLn5TDf/n9MD3HVMdelV5OH2fWhn93EjmVjTBP/hEgqhF+LiwgyMF0REsXmpUmO7c6y9WQkqAcrgTE/dn3AT5F7egFsp68/ArplHMT3zMULlO5MtrrzZO1NQ7Ibjb/e5Cn++0X6CEgAN62hH2G6Slw16sbZTTX6vOdfDFPX8r2YycdVQ0+iIb2tcVlcdlBzrxsw/Ri/Pq1fWFpVBlAgrjXNhI9IUYkW2K/V5vkZOpLURAp4HDDKoLuT0rXdXOis8EZyUG9jL202jm1De5EhsBgzZiZf/lgQ0RDrQy9VzRH16iaaZo9Dll3O8bS303FbE6pIGcYrUu6tbrCigjPkbD/8DzfsuVySWmLUROHh48HtA4v3Eymgn18pUFuZLPOZyEMffJ7xXUIJZ5LTAiZ3Ti5lftcwEdisJbAvtRNndKOOkfISsss= kristianfjones@KJDev-Laptop1'
+
+    systemd:
+      units:
+        #
+        # Container Runtime (Hopefully they'll remove docker starting by default)
+        # TODO: Determine if this can be refactored into a sysext
+        #
+        - name: docker.service
+          enabled: false
+      
+        - name: docker.socket
+          enabled: false
+
+        - name: containerd.service
+          enabled: true
+
+        #
+        # Networking - Misc
+        #
+        - name: systemd-resolved.service
+          enabled: false
+
+        
+        #
+        # Storage
+        #
+        - name: iscsid.service
+          enable: true
+
+        - name: multipathd.service
+          enable: true
+
+        #
+        # Kubernetes
+        #
+
+        #
+        # Preparation
+        #
+        # Source: https://github.com/flatcar-linux/mantle/blob/flatcar-master/kola/tests/kubeadm/templates.go
+        # TODO: Move this to helm/scripts/K8s CRON/Argo-Workflows/Backstage/OAM/Crossplane
+        # 
+        - name: prepare-cni-plugins.service
+          enabled: true
+          contents: |
+            [Unit]
+            Description=Unpack CNI plugins to /opt/cni/bin
+            ConditionPathExists=!/opt/cni/bin
+
+            [Service]
+            Type=oneshot
+            RemainAfterExit=true
+            Restart=on-failure
+            Environment=CNI_VERSION=v1.1.1
+            ExecStartPre=/usr/bin/mkdir --parents /opt/cni/bin
+            ExecStartPre=/usr/bin/tar -v --extract --file "/opt/cni-plugins-linux-amd64-${CNI_VERSION}.tgz" --directory /opt/cni/bin --no-same-owner
+            ExecStartPre=/usr/bin/chcon -R /opt/cni -t svirt_lxc_file_t
+            ExecStart=/usr/bin/rm "/opt/cni-plugins-linux-amd64-${CNI_VERSION}.tgz"
+
+            [Install]
+            WantedBy=multi-user.target
+
+        - name: prepare-critools.service
+          enabled: true
+          contents: |
+            [Unit]
+            Description=Unpack CRI tools to /opt/bin
+            ConditionPathExists=!/opt/bin/crictl
+            [Service]
+            Type=oneshot
+            RemainAfterExit=true
+            Restart=on-failure
+            Environment=CRICTL_VERSION=v1.24.0
+            Environment=DOWNLOAD_DIR=/opt/bin
+            ExecStartPre=/usr/bin/mkdir --parents "${DOWNLOAD_DIR}"
+            ExecStartPre=/usr/bin/tar -v --extract --file "/opt/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" --directory "${DOWNLOAD_DIR}" --no-same-owner
+            ExecStart=/usr/bin/rm "/opt/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz"
+            [Install]
+            WantedBy=multi-user.target
+
+        - name: kubelet.service
+          enabled: true
+          dropins:
+            - name: 10-kubeadm.conf
+              contents: |
+                # Note: This dropin only works with kubeadm and kubelet v1.11+
+                [Service]
+                Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
+                Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
+                # This is a file that "kubeadm init" and "kubeadm join" generates at runtime, populating the KUBELET_KUBEADM_ARGS variable dynamically
+                EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
+                # This is a file that the user can use for overrides of the kubelet args as a last resort. Preferably, the user should use
+                # the .NodeRegistration.KubeletExtraArgs object in the configuration files instead. KUBELET_EXTRA_ARGS should be sourced from this file.
+                EnvironmentFile=-/etc/default/kubelet
+                ExecStart=
+                ExecStart=/opt/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
+
+          contents: |
+            [Unit]
+            Description=kubelet: The Kubernetes Node Agent
+            Documentation=https://kubernetes.io/docs/home/
+            Wants=network-online.target
+            After=network-online.target
+
+            [Service]
+            ExecStart=/opt/bin/kubelet
+            Restart=always
+            StartLimitInterval=0
+            RestartSec=10
+
+            [Install]
+            WantedBy=multi-user.target
+
+    storage:
+      files:
+        #
+        # Source: https://github.com/flatcar-linux/mantle/blob/flatcar-master/kola/tests/kubeadm/templates.go#L67-L76
+        # 
+        - path: /opt/cni-plugins-linux-amd64-v1.1.1.tgz
+          filesystem: root
+          mode: 0644
+          contents:
+            remote:
+              url: https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+
+        #
+        # Source: https://github.com/flatcar-linux/mantle/blob/flatcar-master/kola/tests/kubeadm/templates.go#L77-L86
+        #
+        - path: /opt/crictl-v1.24.0-linux-amd64.tar.gz
+          filesystem: root
+          mode: 0644
+          contents:
+            remote:
+              url: https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.24.0/crictl-v1.24.0-linux-amd64.tar.gz
+
+
+        #
+        # Kubernetes Tools
+        #
+        # TODO: Automate this with ArgoCD Workflows/Crossplane/Scripts/Helm/OAM/Backstage/CRON
+        #
+        - path: /opt/bin/kubelet
+          filesystem: root
+          contents:
+            remote:
+              url: https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubelet
+          mode: 0777
+
+        - path: /opt/bin/kubeadm
+          filesystem: root
+          contents:
+            remote:
+              url: https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubeadm
+          mode: 0777
+
+        - path: /opt/bin/kubectl
+          filesystem: root
+          contents:
+            remote:
+              url: https://storage.googleapis.com/kubernetes-release/release/v1.23.6/bin/linux/amd64/kubectl
+          mode: 0777
+
+        #
+        # Kubelet Params
+        #
+        - path: /var/lib/kubelet/kubeadm-flags.env
+          filesystem: root
+          contents:
+            inline: 'KUBELET_KUBEADM_ARGS="--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --pod-infra-container-image=k8s.gcr.io/pause:3.6"'
+          mode: 0777
+
+        - path: /etc/resolv.conf
+          filesystem: root
+          contents:
+            inline: |
+              nameserver 172.18.0.10
+              search core-prod.svc.cluster.local
+          mode: 0777
+
+        - path: /etc/sysctl.d/k8s.conf
+          filesystem: root
+          contents:
+            inline: |
+              net.bridge.bridge-nf-call-ip6tables = 1
+              net.bridge.bridge-nf-call-iptables = 1
+          mode: 0777
+
+        - path: /etc/modules-load.d/k8s.conf
+          filesystem: root
+          contents:
+            inline: |
+              br_netfilter
+          mode: 0777
