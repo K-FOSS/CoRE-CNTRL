@@ -3,9 +3,11 @@ kind: Service
 metadata:
   annotations:
     consul.hashicorp.com/service-name: k0s-konnectivity
+    metallb.universe.tf/allow-shared-ip: k0s-api
 
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+
   name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
   namespace: core-prod
 spec:
