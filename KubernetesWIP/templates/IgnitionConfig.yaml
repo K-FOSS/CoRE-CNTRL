@@ -96,6 +96,22 @@ data:
             [Install]
             WantedBy=multi-user.target
 
+        - name: kubeadm-join.service
+          enabled: true
+          contents: |
+            [Unit]
+            Description=Join Kubernetes
+            After=network-online.target
+            Wants=network-online.target
+            [Service]
+            Type=oneshot
+            Environment=HOME=/root
+            EnvironmentFile=/etc/kubeadm-join.conf
+            ExecStart=/bin/sh -c "exec ${JOIN_COMMAND}"
+            Restart=on-failure
+            [Install]
+            WantedBy=multi-user.target
+
         - name: kubelet.service
           enabled: true
           dropins:
