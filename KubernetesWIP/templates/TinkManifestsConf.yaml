@@ -53,8 +53,10 @@ data:
         machine1: {{ $machine.MAC }}
         {{- $configmap := (lookup "v1" "ConfigMap" "core-prod" "infra1-dc1-infra-k0s-k8s-tink-ignition-manifests") }}
         {{- if $configmap }}
-        {{- $models := get $configmap.data "ignition.yaml" }}
-        ignition: {{ $models | quote }}
+        {{- $models := get $configmap.data "test.yml" }}
+        version: {{ $models | quote }}
+        {{- else }}
+        version: 'fucker {{ $configmap }}'
         {{- end }}
 
 {{- end }}
