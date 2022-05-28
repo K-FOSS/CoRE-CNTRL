@@ -51,5 +51,6 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        ignition: {{ tpl (.Files.Get "Assets/Ignitiontemplate") . | b64enc | quote }}
+        ignition: |
+          {{- tpl (.Files.Get "Assets/Ignitiontemplate") . | b64enc | nindent 10 }}
 {{- end }}
