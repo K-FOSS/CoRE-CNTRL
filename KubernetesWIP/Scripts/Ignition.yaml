@@ -221,19 +221,5 @@ storage:
           br_netfilter
       mode: 0777
 
-    #
-    # Kubernetes Join Config
-    #
-    - path: /etc/kubeadm-join.conf
-      filesystem: root
-      contents:
-        inline: |
-          {{- $secretObj := (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config") | default dict }}
-          {{- $secretData := (get $secretObj "data") | default dict }}
-          {{- $jwtSecret := (get $secretData "kubeadm-join.conf") }}
-          {{- $jwtSecret2 := (lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config") }}
-          test="{{ $jwtSecret }}"
-          test1="{{ lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config" | toJson | quote }}"
-          test2="{{ $secretData| toJson }}"
-      mode: 0777
+
 

@@ -48,6 +48,10 @@ spec:
                 - mountPath: /pki/admin-client
                   name: pki-admin-client
 
+                - name: ignition
+                  mountPath: /etc/ignition.yaml
+                  subPath: ignition.yaml
+
           restartPolicy: OnFailure
           serviceAccountName: infra1-dc1-infra-k0s-token-generator
 
@@ -61,6 +65,11 @@ spec:
                 defaultMode: 511
                 name: infra1-dc1-infra-k0s-token-generator-scripts
               name: scripts
+
+            - configMap:
+                defaultMode: 777
+                name: infra1-dc1-infra-k0s-k8s-tink-ignition-manifests
+              name: ignition
 
             - name: pki-admin-client
               secret:

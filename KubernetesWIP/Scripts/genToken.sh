@@ -22,11 +22,31 @@ fi
 
 echo "Acquiring token"
 kubeadm --kubeconfig /etc/kubernetes/admin.conf token create --description kubefarm --print-join-command > /tmp/token
-CONFIG=$(cat <<EOT
-HOSTS_KUBERNETES="${IP} $(awk -F'[ :]' '{print $3}' /tmp/token)"
-JOIN_COMMAND="$(cat /tmp/token)"
-EOT
-)
-CONFIG_BASE64=$(echo "$CONFIG" | base64 | tr -d '\n')
 
-kubectl patch secret "$SECRET" --type merge -p="{\"data\":{\"kubeadm-join.conf\":\"$CONFIG_BASE64\"}}"
+SOURCE_FILE="/etc/ignition.yaml"
+WORKFILE="/tmp/ignition.yaml"
+
+cp ${SOURCE_FILE} ${WORKFILE}
+
+cat <<EOT >> ${WORKFILE}
+    #
+    # Kubernetes Join Config
+    #
+    - path: /etc/kubeadm-join.conf
+      filesystem: root
+      contents:
+        inline: |
+          HOSTS_KUBERNETES="${IP} $(awk -F'[ :]' '{print $3}' /tmp/token)"
+          JOIN_COMMAND="$(cat /tmp/token)"
+      mode: 0777
+EOT
+
+
+
+MAIN_FILE="$(cat ${WORKFILE})"
+SECRET_BASE64=$(echo "$CONFIG" | base64 | tr -d '\n')
+
+echo "MainFile ${MAIN_FILE}"
+
+
+
