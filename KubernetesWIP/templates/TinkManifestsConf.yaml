@@ -56,7 +56,7 @@ data:
         {{- $models := get $configmap.data "ignition.yaml" }}
         version: {{ $models | quote }}
         {{- else }}
-        version: 'fucker {{ $configmap }}'
+        version: 'fucker {{ $configmap | b64enc }}'
         {{- end }}
 
 {{- end }}
