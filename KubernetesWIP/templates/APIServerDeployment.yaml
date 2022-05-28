@@ -111,7 +111,6 @@ spec:
             timeoutSeconds: 15
           
           ports:
-
             - containerPort: 6443
               name: client
               protocol: TCP

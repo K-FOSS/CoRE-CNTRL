@@ -5,15 +5,20 @@ metadata:
   namespace: core-prod
 spec:
   commonName: 'system:kube-controller-manager'
-  duration: 8760h0m0s
+  
   issuerRef:
     kind: Issuer
     name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+  
+  duration: 8760h0m0s
   renewBefore: 4380h0m0s
+  
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-client
+  
   subject:
     organizations:
       - 'system:kube-controller-manager'
+  
   usages:
     - signing
     - key encipherment

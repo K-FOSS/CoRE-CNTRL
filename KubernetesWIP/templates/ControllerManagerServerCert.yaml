@@ -4,7 +4,9 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
   namespace: core-prod
 spec:
+
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-server
+
   dnsNames:
     - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
     - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager.core-prod
@@ -19,21 +21,28 @@ spec:
     - kubernetes.default.svc
     - kubernetes.default.svc.cluster.local
     - kubernetes.default.svc.cluster
+
   duration: 8760h0m0s
+
   ipAddresses:
     - 127.0.0.1
     - 10.0.8.1
     - 172.18.213.183
     - 10.1.1.40
     - 10.1.1.41
+
   issuerRef:
     kind: Issuer
     name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+
   renewBefore: 4380h0m0s
+
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
+
   subject:
     organizations:
       - infra1-dc1-infra-k0s-k8s-kubernetes
+
   usages:
     - signing
     - key encipherment

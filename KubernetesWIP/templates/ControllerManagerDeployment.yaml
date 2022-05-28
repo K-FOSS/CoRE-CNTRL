@@ -3,26 +3,32 @@ kind: Deployment
 metadata:
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+
   name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
   namespace: core-prod
+
 spec:
   progressDeadlineSeconds: 600
+
   replicas: 2
+
   revisionHistoryLimit: 10
+
   selector:
     matchLabels:
       app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
+
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+    
     spec:
       affinity:
         podAntiAffinity:
@@ -33,33 +39,43 @@ spec:
                     app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
                 topologyKey: kubernetes.io/hostname
               weight: 1
+
       automountServiceAccountToken: false
+
       containers:
-        - command:
-            - kube-controller-manager
-            - >-
-              --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
-            - '--authorization-kubeconfig=/etc/kubernetes/controller-manager.conf'
-            - '--bind-address=0.0.0.0'
-            - '--client-ca-file=/pki/ca/tls.crt'
-            - '--cluster-name=kubernetes'
-            - '--cluster-signing-cert-file=/pki/ca/tls.crt'
-            - '--cluster-signing-key-file=/pki/ca/tls.key'
-            - '--controllers=*,bootstrapsigner,tokencleaner'
-            - '--kubeconfig=/etc/kubernetes/controller-manager.conf'
-            - '--leader-elect=true'
-            - '--requestheader-client-ca-file=/pki/front-proxy-client/tls.crt'
-            - '--root-ca-file=/pki/ca/tls.crt'
-            - '--secure-port=10257'
-            - '--service-account-private-key-file=/pki/sa/tls.key'
-            - '--use-service-account-credentials=true'
-            - '--tls-cert-file=/pki/controller-manager-server/tls.crt'
-            - '--tls-private-key-file=/pki/controller-manager-server/tls.key'
-            - '--service-cluster-ip-range=10.0.8.0/22'
-            - '--allocate-node-cidrs=true'
-            - '--cluster-cidr=10.4.0.0/16'
-          image: 'k8s.gcr.io/kube-controller-manager:v1.23.6'
+        - name: kube-controller-manager
+
+          image: k8s.gcr.io/kube-controller-manager:v1.23.6
           imagePullPolicy: IfNotPresent
+
+          command:
+            - kube-controller-manager
+            - --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
+            - --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf
+            - --bind-address=0.0.0.0
+            - --client-ca-file=/pki/ca/tls.crt
+            - --cluster-name=kubernetes
+            - --cluster-signing-cert-file=/pki/ca/tls.crt
+            - --cluster-signing-key-file=/pki/ca/tls.key
+            - --controllers=*,bootstrapsigner,tokencleaner
+            - --kubeconfig=/etc/kubernetes/controller-manager.conf
+            - --leader-elect=true
+            - --requestheader-client-ca-file=/pki/front-proxy-client/tls.crt
+            - --root-ca-file=/pki/ca/tls.crt
+            - --secure-port=10257
+            - --service-account-private-key-file=/pki/sa/tls.key
+            - --use-service-account-credentials=true
+            - --tls-cert-file=/pki/controller-manager-server/tls.crt
+            - --tls-private-key-file=/pki/controller-manager-server/tls.key
+            - --service-cluster-ip-range=10.0.8.0/22
+            - --allocate-node-cidrs=true
+            - --cluster-cidr=10.4.0.0/16
+
+          ports:
+            - containerPort: 10257
+              name: client
+              protocol: TCP
+
           livenessProbe:
             failureThreshold: 8
             httpGet:
@@ -70,66 +86,87 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 15
-          name: kube-controller-manager
+
+
+
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
+
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
             - mountPath: /etc/kubernetes/
               name: kubeconfig
               readOnly: true
+
             - mountPath: /pki/controller-manager-server
               name: pki-controller-manager-server
+
             - mountPath: /pki/controller-manager-client
               name: pki-controller-manager-client
+
             - mountPath: /pki/ca
               name: pki-ca
+
             - mountPath: /pki/front-proxy-client
               name: pki-front-proxy-client
+
             - mountPath: /pki/sa
               name: pki-sa
+
       dnsPolicy: None
+
       dnsConfig:
         nameservers:
           - 172.18.0.10
+
         options:
           - name: ndots
             value: '5'
+
         searches:
           - k0s.resolvemy.host
           - svc.k0s.resolvemy.host
+
       restartPolicy: Always
+
       schedulerName: default-scheduler
+
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
       terminationGracePeriodSeconds: 30
+
       volumes:
         - configMap:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-conf
           name: kubeconfig
+
         - name: pki-controller-manager-server
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
+
         - name: pki-controller-manager-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-client
+
         - name: pki-ca
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-ca
+
         - name: pki-front-proxy-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+
         - name: pki-sa
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
-
