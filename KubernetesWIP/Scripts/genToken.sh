@@ -44,7 +44,7 @@ EOT
 
 
 MAIN_FILE="$(cat ${WORKFILE})"
-SECRET_BASE64=$(echo "$MAIN_FILE" | base64 | tr -d '\n')
+SECRET_BASE64=$(echo "${MAIN_FILE}" | base64 | tr -d '\n')
 
 echo "MainFile ${MAIN_FILE}"
 
