@@ -1,4 +1,9 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
+  namespace: core-prod
+
 data:
   configure-cluster.sh: >
     #!/bin/sh
@@ -7,17 +12,7 @@ data:
 
     set -x
 
-    ENDPOINT=$(awk -F'[ "]+' '$1 == "controlPlaneEndpoint:" {print $2}'
-    /config/kubeadmcfg.yaml)
-
-
-    #
-    ------------------------------------------------------------------------------
-
-    # Update secrets and component configs
-
-    #
-    ------------------------------------------------------------------------------
+    ENDPOINT=$(awk -F'[ "]+' '$1 == "controlPlaneEndpoint:" {print $2}' /config/kubeadmcfg.yaml)
 
 
     # wait for cluster
@@ -27,15 +22,6 @@ data:
     until kubectl cluster-info >/dev/null 2>/dev/null; do
       sleep 1
     done
-
-
-    #
-    ------------------------------------------------------------------------------
-
-    # Cluster configuration
-
-    #
-    ------------------------------------------------------------------------------
 
     export KUBECONFIG=/etc/kubernetes/admin.conf
 
@@ -51,8 +37,7 @@ data:
 
     # TODO: https://github.com/kvaps/kubernetes-in-kubernetes/issues/5
 
-    kubeadm init phase upload-config kubelet --config /config/kubeadmcfg.yaml
-    -v1 2>&1 |
+    kubeadm init phase upload-config kubelet --config /config/kubeadmcfg.yaml -v1 2>&1 |
       while read line; do echo "$line" | grep 'Preserving the CRISocket information for the control-plane node' && killall kubeadm || echo "$line"; done
 
     # setup bootstrap-tokens
@@ -65,8 +50,7 @@ data:
 
     kubectl config view --flatten > "$flatconfig"
 
-    kubeadm init phase bootstrap-token --config /config/kubeadmcfg.yaml
-    --skip-token-print --kubeconfig="$flatconfig"
+    kubeadm init phase bootstrap-token --config /config/kubeadmcfg.yaml --skip-token-print --kubeconfig="$flatconfig"
 
     rm -f "$flatconfig"
 
@@ -76,9 +60,7 @@ data:
     kubectl apply -n kube-public -f - <<EOT
 
     apiVersion: v1
-
     kind: ConfigMap
-
     metadata:
       name: cluster-info
     data:
@@ -97,27 +79,6 @@ data:
     EOT
 
 
-    # install konnectivity server
-
-    kubectl apply -f /manifests/konnectivity-server-rbac.yaml
-
-
-    # install konnectivity agent
-
-    kubectl apply -f /manifests/konnectivity-agent-deployment.yaml -f
-    /manifests/konnectivity-agent-rbac.yaml
-
-
-    # uninstall coredns addon
-
-    kubectl delete -f /manifests/coredns.yaml 2>/dev/null || true
-
 
     # uninstall kube-proxy addon
-
-    kubectl -n kube-system delete configmap/kube-proxy daemonset/kube-proxy
-    2>/dev/null || true
-kind: ConfigMap
-metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
-  namespace: core-prod
+    kubectl -n kube-system delete configmap/kube-proxy daemonset/kube-proxy 2>/dev/null || true
