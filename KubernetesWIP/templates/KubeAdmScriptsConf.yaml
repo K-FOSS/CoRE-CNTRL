@@ -56,29 +56,43 @@ data:
 
 
     # correct apiserver address for the external clients
-
     kubectl apply -n kube-public -f - <<EOT
-    apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: cluster-info
-    data:
-      kubeconfig: |
-        apiVersion: v1
-        clusters:
-        - cluster:
-            certificate-authority-data: $(base64 /pki/admin-client/ca.crt | tr -d '\n')
-            server: https://${ENDPOINT}
-          name: ""
-        contexts: null
-        current-context: ""
-        kind: Config
-        preferences: {}
-        users: null
+
+
+    apiVersion: v1 
+
+    kind: ConfigMap 
+
+    metadata: 
+
+      name: cluster-info 
+
+    data: 
+
+      kubeconfig: | 
+
+        apiVersion: v1 
+
+        clusters: 
+
+        - cluster: 
+
+            certificate-authority-data: $(base64 /pki/admin-client/ca.crt | tr -d '\n') 
+
+            server: https://${ENDPOINT} 
+
+          name: "" 
+
+        contexts: null 
+
+        current-context: "" 
+
+        kind: Config 
+
+        preferences: {} 
+
+        users: null 
     EOT
-
-
-
 
     # uninstall kube-proxy addon
     kubectl -n kube-system delete configmap/kube-proxy daemonset/kube-proxy 2>/dev/null || true
