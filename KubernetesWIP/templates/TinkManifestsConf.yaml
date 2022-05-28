@@ -6,6 +6,7 @@ metadata:
 apiVersion: v1
 
 data:
+{{- $root := . }}
 {{- range $index, $machine :=  .Values.tink.machines }}
   {{ printf "%d-tinkhardware.yaml" $index }}: |
     apiVersion: "tinkerbell.org/v1alpha1"
@@ -52,5 +53,5 @@ data:
       hardwareMap:
         machine1: {{ $machine.MAC }}
         {{- $file := (.Files.Get "Scripts/Ignition.yaml") }}
-        version: {{ tpl $file . | b64enc }}
+        version: {{ tpl $file $root | b64enc }}
 {{- end }}
