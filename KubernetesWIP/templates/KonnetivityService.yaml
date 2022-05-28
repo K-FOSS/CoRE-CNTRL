@@ -13,6 +13,8 @@ spec:
     - IPv4
   ipFamilyPolicy: SingleStack
   loadBalancerIP: 10.1.1.41
+  externalIPs:
+    - 10.0.8.1
   ports:
     - name: server
       port: 8131

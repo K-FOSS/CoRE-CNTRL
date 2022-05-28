@@ -9,11 +9,9 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   namespace: core-prod
 spec:
-  allocateLoadBalancerNodePorts: true
   clusterIP: 172.18.213.183
   clusterIPs:
     - 172.18.213.183
-  externalTrafficPolicy: Local
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
