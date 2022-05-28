@@ -228,6 +228,6 @@ storage:
       filesystem: root
       contents:
         inline: |
-          {{ index (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config").data "kubeadm-join.conf" }}
+          {{ lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config" }}
       mode: 0777
 
