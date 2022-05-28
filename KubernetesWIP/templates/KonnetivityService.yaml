@@ -9,8 +9,6 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
   namespace: core-prod
 spec:
-  allocateLoadBalancerNodePorts: false
-  externalTrafficPolicy: Local
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
