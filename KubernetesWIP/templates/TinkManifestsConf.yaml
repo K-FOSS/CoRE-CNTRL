@@ -6,14 +6,40 @@ metadata:
 apiVersion: v1
 
 data:
-{{- range untilStep (.Values.relay.min|int) (.Values.relay.max|int) 1 }}
-    - port: {{ . }}
-      targetPort: {{ . }}
-      protocol: UDP
-      name: 'udp-{{ . }}'
-
-    - port: {{ . }}
-      targetPort: {{ . }}
-      protocol: TCP
-      name: 'tcp-{{ . }}'
-{{ end }}
+{{- range $index, $machine :=  .Values.tink.machines }}
+  {{ printf "%d-tinkhardware.yaml" $index }}: |
+    apiVersion: "tinkerbell.org/v1alpha1"
+    kind: Hardware
+    metadata:
+      name: '{{ $machine.Name }}-core'
+    spec:
+      metadata:
+        facility:
+          facility_code: onprem
+        manufacturer:
+          slug: supermicro
+        instance:
+          userdata: ""
+          hostname: {{ $machine.Name }}
+          id: {{ $machine.MAC }}
+          operating_system:
+            distro: "ubuntu"
+            os_slug: "ubuntu_20_04"
+            version: "20.04"
+      interfaces:
+        - dhcp:
+            arch: amd64
+            hostname: node1
+            ip:
+              address: {{ $machine.IPAddress }}
+              gateway: 172.16.20.254
+              netmask: 255.255.255.0
+            lease_time: 86400
+            mac: {{ $machine.MAC }}
+            name_servers:
+              - 10.0.8.10
+            uefi: true
+          netboot:
+            allowPXE: true
+            allowWorkflow: true
+{{- end }}

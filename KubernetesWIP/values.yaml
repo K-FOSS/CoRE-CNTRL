@@ -1,6 +1,7 @@
 tink:
   machines:
-    - MAC: 00:50:56:81:85:42
+    - Name: node2
+      MAC: 00:50:56:81:85:42
       IPAddress: 172.16.20.234
 
 kubernetes:
