@@ -87,6 +87,24 @@ systemd:
         [Install]
         WantedBy=multi-user.target
 
+    - name: kubeadm-join.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Join Kubernetes
+        After=network-online.target
+        Wants=network-online.target
+        Wants=docker.service docker.socket
+        After=docker.service docker.socket
+        [Service]
+        Type=oneshot
+        Environment=HOME=/root
+        EnvironmentFile=/etc/kubeadm-join.conf
+        ExecStart=/bin/sh -c "exec ${JOIN_COMMAND}"
+        Restart=on-failure
+        [Install]
+        WantedBy=multi-user.target
+
     - name: kubelet.service
       enabled: true
       dropins:
@@ -119,6 +137,8 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
+
+  
 
 storage:
   files:
@@ -200,3 +220,14 @@ storage:
         inline: |
           br_netfilter
       mode: 0777
+
+    #
+    # Kubernetes Join Config
+    #
+    - path: /etc/kubeadm-join.conf
+      filesystem: root
+      contents:
+        inline: |
+          {{ index (lookup "v1" "Secret" .Release.Namespace "infra1-dc1-infra-k0s-join-config").data "kubeadm-join.conf" }}
+      mode: 0777
+

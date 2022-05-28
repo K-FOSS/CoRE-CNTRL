@@ -26,10 +26,11 @@ spec:
               env:
 
                 - name: SVC
-                  value: infra1-dc1-infra-k0s-k2s-kubernetes-apiserver
+                  value: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+
 
                 - name: SECRET
-                  value: infra1-dc1-infra-k0s-k2s-ltsp-join-config
+                  value: infra1-dc1-infra-k0s-join-config
 
               resources:
                 requests:
