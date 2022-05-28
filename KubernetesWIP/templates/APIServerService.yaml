@@ -9,15 +9,16 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   namespace: core-prod
 spec:
-  clusterIP: 172.18.213.183
-  clusterIPs:
-    - 172.18.213.183
   ipFamilies:
     - IPv4
+
   ipFamilyPolicy: SingleStack
+
   loadBalancerIP: 10.1.1.40
+
   externalIPs:
     - 10.0.8.1
+
   ports:
     - name: client
 

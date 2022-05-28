@@ -12,9 +12,12 @@ spec:
   ipFamilies:
     - IPv4
   ipFamilyPolicy: SingleStack
-  loadBalancerIP: 10.1.1.41
+
+  loadBalancerIP: 10.1.1.40
+
   externalIPs:
-    - 10.0.8.1
+    - 10.1.1.41
+
   ports:
     - name: server
       port: 8131
@@ -25,8 +28,10 @@ spec:
       port: 8132
       protocol: TCP
       targetPort: agent
+
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+
   sessionAffinity: None
   type: LoadBalancer
 
