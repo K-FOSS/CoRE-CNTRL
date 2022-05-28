@@ -25,7 +25,7 @@ rules:
       - ''
 
     resourceNames:
-      - infra1-dc1-infra-k0s-join-config
+      - core0-ignition-config
 
     resources:
       - secrets
