@@ -48,5 +48,12 @@ SECRET_BASE64=$(echo "${MAIN_FILE}" | base64 | tr -d '\n')
 
 echo "MainFile ${MAIN_FILE}"
 
-
-
+# correct apiserver address for the external clients
+kubectl apply -n core-prod -f - <<EOT
+apiVersion: v1
+kind: secret
+metadata:
+  name: core0-ignition-config
+data:
+  ignition.yaml: ${SECRET_BASE64}
+EOT
