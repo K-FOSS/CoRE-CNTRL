@@ -51,6 +51,6 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
-        ignition: |
+        ignition: |+
           {{- .Files.Get "files/Ignition" | nindent 10 }}
 {{- end }}
