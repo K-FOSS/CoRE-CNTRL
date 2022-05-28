@@ -5,4 +5,4 @@ metadata:
   namespace: core-prod
 data:
   configure-cluster.sh: |+
-    {{- tpl (.Files.Get "scripts/configureCluster.sh") . | nindent 4 }}
+    {{- tpl (.Files.Get "Scripts/configureCluster.sh") . | nindent 4 }}
