@@ -8,24 +8,33 @@ metadata:
   namespace: core-prod
 spec:
   progressDeadlineSeconds: 600
+
   replicas: 2
+
   revisionHistoryLimit: 10
+
   selector:
     matchLabels:
       app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
+
   template:
     metadata:
       annotations:
         checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
+
       creationTimestamp: null
+
       labels:
         app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+
     spec:
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -35,9 +44,18 @@ spec:
                     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
                 topologyKey: kubernetes.io/hostname
               weight: 1
+
       automountServiceAccountToken: false
+
       containers:
-        - command:
+        - name: kube-apiserver
+
+          image: 'k8s.gcr.io/kube-apiserver:v1.23.6'
+          imagePullPolicy: IfNotPresent
+
+          restartPolicy: Always
+
+          command:
             - kube-apiserver
 
             - '--logging-format=json'
@@ -80,8 +98,7 @@ spec:
             - '--service-account-signing-key-file=/pki/sa/tls.key'
             - '--advertise-address=10.1.1.40'
             - '--feature-gates=MixedProtocolLBService=true'
-          image: 'k8s.gcr.io/kube-apiserver:v1.23.6'
-          imagePullPolicy: IfNotPresent
+
           livenessProbe:
             failureThreshold: 8
             httpGet:
@@ -92,89 +109,119 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 15
-          name: kube-apiserver
+          
           ports:
+
             - containerPort: 6443
               name: client
               protocol: TCP
+
           resources:
             requests:
               cpu: 100m
               memory: 128Mi
+
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
           volumeMounts:
             - mountPath: /etc/kubernetes
               name: apiserver-config
+
             - mountPath: /pki/front-proxy-client
               name: pki-front-proxy-client
+
             - mountPath: /pki/apiserver-server
               name: pki-apiserver-server
+
             - mountPath: /pki/apiserver-etcd-client
               name: pki-apiserver-etcd-client
+
             - mountPath: /pki/apiserver-kubelet-client
               name: pki-apiserver-kubelet-client
+
             - mountPath: /pki/sa
               name: pki-sa
+
             - mountPath: /run/konnectivity-server
               name: konnectivity-uds
+
             - mountPath: /pki/konnectivity-client
               name: pki-konnectivity-client
+
       dnsConfig:
         nameservers:
           - 172.18.0.10
+
         options:
           - name: ndots
             value: '5'
+
         searches:
           - k0s.resolvemy.host
           - svc.k0s.resolvemy.host
+
       dnsPolicy: None
-      restartPolicy: Always
+
+
+
       schedulerName: default-scheduler
+
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
       terminationGracePeriodSeconds: 30
+
       volumes:
         - configMap:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config
           name: apiserver-config
+
         - name: pki-front-proxy-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+
         - name: pki-apiserver-server
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+
         - name: pki-apiserver-etcd-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+
         - name: pki-apiserver-kubelet-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+
         - name: pki-sa
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+
         - name: pki-konnectivity-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
+
         - name: pki-apiserver
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+
         - name: pki-konnectivity-server-client
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
+
         - emptyDir: {}
           name: konnectivity-uds
+
         - configMap:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf

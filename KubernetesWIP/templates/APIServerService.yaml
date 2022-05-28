@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     consul.hashicorp.com/service-name: k0s-kubeapi
-
+    metallb.universe.tf/allow-shared-ip: k0s-api
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
@@ -20,14 +20,22 @@ spec:
     - 10.0.8.1
   ports:
     - name: client
+
+      targetPort: client
       port: 6443
+
       protocol: TCP
-      targetPort: 6443
+      appProtocol: https
+
 
     - name: client-https
+
+      targetPort: client
       port: 443
+
       protocol: TCP
-      targetPort: 6443
+      appProtocol: https
+
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   sessionAffinity: None
