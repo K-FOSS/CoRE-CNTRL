@@ -233,7 +233,7 @@ storage:
           {{- $jwtSecret := (get $secretData "kubeadm-join.conf") }}
           {{- $jwtSecret2 := (lookup "v1" "Secret" "core-prod" "infra1-dc1-infra-k0s-join-config") }}
           test="{{ $jwtSecret }}"
-          test1="{{ $jwtSecret2 | toJson }}"
+          test1="{{ $jwtSecret2 | toJson | quote }}"
           test2="{{ $secretData| toJson }}"
       mode: 0777
 
