@@ -1,29 +1,32 @@
 apiVersion: v1
-data:
-  scheduler.conf: |
-    apiVersion: v1
-    clusters:
-    - cluster:
-        certificate-authority: /pki/scheduler-client/ca.crt
-        server: https://10.1.1.40:6443
-      name: default-cluster
-    contexts:
-    - context:
-        cluster: default-cluster
-        namespace: default
-        user: default-auth
-      name: default-context
-    current-context: default-context
-    kind: Config
-    preferences: {}
-    users:
-    - name: default-auth
-      user:
-        client-certificate: /pki/scheduler-client/tls.crt
-        client-key: /pki/scheduler-client/tls.key
 kind: ConfigMap
+
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-conf
   namespace: core-prod
-  resourceVersion: '1387776'
-  uid: 80650ae2-cedf-4bb4-95ca-ddca7007e5d4
+
+data:
+  scheduler.conf: |
+    apiVersion: v1
+    kind: Config
+    clusters:
+      - cluster:
+          certificate-authority: /pki/scheduler-client/ca.crt
+          server: https://10.1.1.40:6443
+        name: default-cluster
+
+    contexts:
+      - context:
+          cluster: default-cluster
+          namespace: default
+          user: default-auth
+        name: default-context
+
+    current-context: default-context
+    preferences: {}
+
+    users:
+      - name: default-auth
+        user:
+          client-certificate: /pki/scheduler-client/tls.crt
+          client-key: /pki/scheduler-client/tls.key
