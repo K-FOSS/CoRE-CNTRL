@@ -8,7 +8,7 @@ done
 
 for WorkflowFile in /manifests/*-tinkworkflow.yaml; do
   IGNITION_CONFIG="$(cat /etc/ignition.yaml)"
-  IGNITION_B64=$(echo "${IGNITION_CONFIG}" | base64)
+  IGNITION_B64=$(echo "${IGNITION_CONFIG}" | base64 | tr -d '\n')
 
   echo "Processing worklow file ${WorkflowFile} with aditional ${IGNITION_B64}"
 done
