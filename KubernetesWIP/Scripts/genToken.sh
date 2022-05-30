@@ -36,8 +36,9 @@ cat <<EOT >> ${WORKFILE}
       filesystem: root
       contents:
         inline: |
+          PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/opt/bin"
           HOSTS_KUBERNETES="${IP} $(awk -F'[ :]' '{print $3}' /tmp/token)"
-          JOIN_COMMAND="$(cat /tmp/token)"
+          JOIN_COMMAND="$(cat /tmp/token) --cri-socket unix:///run/containerd/containerd.sock"
       mode: 0777
 EOT
 
