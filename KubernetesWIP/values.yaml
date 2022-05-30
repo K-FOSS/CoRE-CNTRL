@@ -5,6 +5,14 @@ tink:
       MAC: 00:50:56:81:85:42
       IPAddress: 172.16.20.234
 
+    - Name: node3
+      MAC: 00:50:56:81:85:42
+      IPAddress: 172.16.20.235
+
+    - Name: node4
+      MAC: 00:50:56:81:85:42
+      IPAddress: 172.16.20.236
+
 kubernetes:
   controlPlaneEndpoint:
   networking:
