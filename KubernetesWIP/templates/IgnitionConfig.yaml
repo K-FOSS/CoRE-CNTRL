@@ -220,6 +220,14 @@ data:
               net.bridge.bridge-nf-call-iptables = 1
           mode: 0777
 
+        - path: /etc/sysctl.d/files.conf
+          filesystem: root
+          contents:
+            inline: |
+              fs.inotify.max_user_instances = 20000000
+              fs.inotify.max_user_watches = 20000000
+          mode: 0777
+
         - path: /etc/modules-load.d/k8s.conf
           filesystem: root
           contents:
