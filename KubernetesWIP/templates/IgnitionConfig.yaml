@@ -107,6 +107,7 @@ data:
             Type=oneshot
             Environment=HOME=/root
             EnvironmentFile=/etc/kubeadm-join.conf
+            ExecStartPre=/bin/sleep 120
             ExecStart=/bin/sh -c "exec ${JOIN_COMMAND}"
             Restart=on-failure
             [Install]
