@@ -138,6 +138,7 @@ data:
             After=network-online.target
 
             [Service]
+            ExecStartPre=/bin/sleep 35
             ExecStart=/opt/bin/kubelet
             Restart=always
             StartLimitInterval=0
