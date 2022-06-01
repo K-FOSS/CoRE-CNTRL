@@ -39,7 +39,7 @@ spec:
             - '--client-cert-auth=true'
             - '--data-dir=/var/lib/etcd'
             - >-
-              --initial-advertise-peer-urls=https://$(POD_NAME).infra1-dc1-infra-k0s-k8s-kubernetes-etcd:2380
+              --initial-advertise-peer-urls=https://$(POD_NAME).infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380
             - >-
               --initial-cluster=infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380,infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380
             - '--initial-cluster-state=new'
