@@ -48,6 +48,9 @@ spec:
 
           command:
             - kube-scheduler
+
+            - --logging-format=json
+
             - --authentication-kubeconfig=/etc/kubernetes/scheduler.conf
             - --authorization-kubeconfig=/etc/kubernetes/scheduler.conf
             - --bind-address=0.0.0.0
