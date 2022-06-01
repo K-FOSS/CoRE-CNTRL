@@ -38,6 +38,7 @@ spec:
 
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+  
   sessionAffinity: None
   type: LoadBalancer
 

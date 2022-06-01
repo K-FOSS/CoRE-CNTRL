@@ -70,6 +70,7 @@ spec:
             - --service-cluster-ip-range=10.0.8.0/22
             - --allocate-node-cidrs=true
             - --cluster-cidr=10.4.0.0/16
+            - '--feature-gates=MixedProtocolLBService=true'
 
           ports:
             - containerPort: 10257
@@ -91,7 +92,7 @@ spec:
 
           resources:
             requests:
-              cpu: 100m
+              cpu: 256m
               memory: 128Mi
 
           terminationMessagePath: /dev/termination-log
