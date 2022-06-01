@@ -50,6 +50,10 @@ spec:
 
           command:
             - kube-controller-manager
+
+            - --logging-format=json
+            - --v=0
+
             - --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
             - --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf
             - --bind-address=0.0.0.0
@@ -59,17 +63,29 @@ spec:
             - --cluster-signing-key-file=/pki/ca/tls.key
             - --controllers=*,bootstrapsigner,tokencleaner
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
+            
             - --leader-elect=true
+            
             - --requestheader-client-ca-file=/pki/front-proxy-client/tls.crt
+            
             - --root-ca-file=/pki/ca/tls.crt
+            
             - --secure-port=10257
+            
             - --service-account-private-key-file=/pki/sa/tls.key
+            
             - --use-service-account-credentials=true
+            
             - --tls-cert-file=/pki/controller-manager-server/tls.crt
+            
             - --tls-private-key-file=/pki/controller-manager-server/tls.key
+            
             - --service-cluster-ip-range=10.0.8.0/22
+            
             - --allocate-node-cidrs=true
+            
             - --cluster-cidr=10.4.0.0/16
+            
             - '--feature-gates=MixedProtocolLBService=true'
 
           ports:

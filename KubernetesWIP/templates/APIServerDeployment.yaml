@@ -56,7 +56,9 @@ spec:
           command:
             - kube-apiserver
 
-            - '--logging-format=json'
+            - --logging-format=json
+            - --v=0
+
             - '--allow-privileged=true'
             - '--authorization-mode=Node,RBAC'
             - '--bind-address=0.0.0.0'
