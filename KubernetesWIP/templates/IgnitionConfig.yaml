@@ -209,7 +209,6 @@ data:
           contents:
             inline: |
               nameserver 172.18.0.10
-              search core-prod.svc.cluster.local
           mode: 0777
 
         - path: /etc/sysctl.d/k8s.conf
@@ -233,4 +232,12 @@ data:
           contents:
             inline: |
               br_netfilter
+          mode: 0777
+
+        - path: /etc/systemd/timesyncd.conf
+          filesystem: root
+          contents:
+            inline: |
+              [Time]
+              NTP=time.cloudflare.com 66.165.220.4 206.108.0.132 206.108.0.131
           mode: 0777
