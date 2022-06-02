@@ -38,7 +38,7 @@ spec:
 
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
-  
+  publishNotReadyAddresses: true
   sessionAffinity: ClientIP
   type: LoadBalancer
 
