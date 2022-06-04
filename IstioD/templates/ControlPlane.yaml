@@ -58,3 +58,5 @@ spec:
       operatorManageWebhooks: true
       configValidation: false
       meshID: mesh1
+      proxy:
+        clusterDomain: k0s.resolvemy.host
