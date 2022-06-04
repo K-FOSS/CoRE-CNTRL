@@ -3,9 +3,11 @@ kind: Gateway
 metadata:
   name: external-istiod-gw
   namespace: external-istiod
+
 spec:
   selector:
     istio: ingressgateway
+
   servers:
     - port:
         number: 15012
@@ -15,7 +17,8 @@ spec:
         mode: SIMPLE
         credentialName: myloginspace-default-certificates
       hosts:
-      - istio.mylogin.space
+        - istio.mylogin.space
+
     - port:
         number: 15017
         protocol: https
@@ -24,4 +27,4 @@ spec:
         mode: SIMPLE
         credentialName: myloginspace-default-certificates
       hosts:
-      - istio.mylogin.space
+        - istio.mylogin.space

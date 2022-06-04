@@ -1,25 +1,23 @@
-apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
 metadata:
-   name: external-istiod-vs
-   namespace: external-istiod
+  name: external-istiod-dr
+  namespace: external-istiod
+
 spec:
-    hosts:
-    - istio.mylogin.space
-    gateways:
-    - external-istiod-gw
-    http:
-    - match:
-      - port: 15012
-      route:
-      - destination:
-          host: istiod.external-istiod.svc.cluster.local
-          port:
-            number: 15012
-    - match:
-      - port: 15017
-      route:
-      - destination:
-          host: istiod.external-istiod.svc.cluster.local
-          port:
-            number: 443
+  host: istiod.external-istiod.svc.cluster.local
+
+  trafficPolicy:
+    portLevelSettings:
+      - port:
+          number: 15012
+        tls:
+          mode: SIMPLE
+        connectionPool:
+          http:
+            h2UpgradePolicy: UPGRADE
+
+      - port:
+          number: 443
+        tls:
+          mode: SIMPLE

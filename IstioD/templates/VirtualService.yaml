@@ -3,23 +3,27 @@ kind: VirtualService
 metadata:
    name: external-istiod-vs
    namespace: external-istiod
+
 spec:
-    hosts:
+  hosts:
     - istio.mylogin.space
-    gateways:
+
+  gateways:
     - external-istiod-gw
-    http:
+  
+  http:
     - match:
-      - port: 15012
+        - port: 15012
       route:
-      - destination:
-          host: istiod.external-istiod.svc.cluster.local
-          port:
-            number: 15012
+        - destination:
+            host: istiod.external-istiod.svc.cluster.local
+            port:
+              number: 15012
+
     - match:
-      - port: 15017
+        - port: 15017
       route:
-      - destination:
-          host: istiod.external-istiod.svc.cluster.local
-          port:
-            number: 443
+        - destination:
+            host: istiod.external-istiod.svc.cluster.local
+            port:
+              number: 443
