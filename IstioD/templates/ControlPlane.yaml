@@ -42,9 +42,9 @@ spec:
               mountPath: /var/lib/istio/inject
         env:
         - name: INJECTION_WEBHOOK_CONFIG_NAME
-          value: ""
+          value: ''
         - name: VALIDATION_WEBHOOK_CONFIG_NAME
-          value: ""
+          value: ''
         - name: EXTERNAL_ISTIOD
           value: "true"
         - name: CLUSTER_ID
