@@ -14,9 +14,11 @@ spec:
               - port: 15021
                 targetPort: 15021
                 name: status-port
+
               - port: 15012
                 targetPort: 15012
                 name: tls-xds
+
               - port: 15017
                 targetPort: 15017
                 name: tls-webhook

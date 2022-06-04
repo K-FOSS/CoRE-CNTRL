@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: external-istiod-gw
+  namespace: external-istiod
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 15012
+        protocol: https
+        name: https-XDS
+      tls:
+        mode: SIMPLE
+        credentialName: myloginspace-default-certificates
+      hosts:
+      - istio.mylogin.space
+    - port:
+        number: 15017
+        protocol: https
+        name: https-WEBHOOK
+      tls:
+        mode: SIMPLE
+        credentialName: myloginspace-default-certificates
+      hosts:
+      - istio.mylogin.space

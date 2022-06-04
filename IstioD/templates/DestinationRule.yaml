@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+   name: external-istiod-vs
+   namespace: external-istiod
+spec:
+    hosts:
+    - istio.mylogin.space
+    gateways:
+    - external-istiod-gw
+    http:
+    - match:
+      - port: 15012
+      route:
+      - destination:
+          host: istiod.external-istiod.svc.cluster.local
+          port:
+            number: 15012
+    - match:
+      - port: 15017
+      route:
+      - destination:
+          host: istiod.external-istiod.svc.cluster.local
+          port:
+            number: 443
