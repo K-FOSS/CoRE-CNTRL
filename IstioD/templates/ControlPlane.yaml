@@ -7,11 +7,13 @@ spec:
   profile: empty
   meshConfig:
     rootNamespace: external-istiod
+    trustDomain: k0s.resolvemy.host
     defaultConfig:
       discoveryAddress: istio.mylogin.space:15012
       proxyMetadata:
         XDS_ROOT_CA: /etc/ssl/certs/ca-certificates.crt
         CA_ROOT_CA: /etc/ssl/certs/ca-certificates.crt
+
   components:
     pilot:
       enabled: true
