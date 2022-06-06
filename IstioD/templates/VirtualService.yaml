@@ -27,3 +27,11 @@ spec:
             host: istiod.external-istiod.svc.cluster.local
             port:
               number: 443
+
+    - match:
+        - port: 15014
+      route:
+        - destination:
+            host: istiod.external-istiod.svc.cluster.local
+            port:
+              number: 15014

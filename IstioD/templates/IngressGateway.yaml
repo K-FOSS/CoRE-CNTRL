@@ -28,3 +28,13 @@ spec:
         credentialName: myloginspace-default-certificates
       hosts:
         - istio.mylogin.space
+
+    - port:
+        number: 15014
+        protocol: https
+        name: https-MONITOR
+      tls:
+        mode: SIMPLE
+        credentialName: myloginspace-default-certificates
+      hosts:
+        - istio.mylogin.space

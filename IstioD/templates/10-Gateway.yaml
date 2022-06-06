@@ -19,6 +19,10 @@ spec:
                 targetPort: 15012
                 name: tls-xds
 
+              - port: 15014
+                targetPort: 15014
+                name: http-monitor
+
               - port: 15017
                 targetPort: 15017
                 name: tls-webhook
