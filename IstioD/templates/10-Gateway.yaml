@@ -4,6 +4,7 @@ metadata:
   namespace: istio-system
   name: istio-config
 spec:
+  defaultRevision: false
   components:
     ingressGateways:
       - name: istio-ingressgateway
