@@ -117,7 +117,7 @@ spec:
 
           resources:
             requests:
-              memory: 6G
+              memory: 8G
             limits:
               memory: 8G
 
