@@ -98,17 +98,6 @@ spec:
             - '--service-account-signing-key-file=/pki/sa/tls.key'
             - '--advertise-address=10.1.1.40'
             - '--feature-gates=MixedProtocolLBService=true'
-
-          livenessProbe:
-            failureThreshold: 8
-            httpGet:
-              path: /livez
-              port: 6443
-              scheme: HTTPS
-            initialDelaySeconds: 15
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 15
           
           ports:
             - containerPort: 6443
