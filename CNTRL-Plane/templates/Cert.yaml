@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: liqo-controller-manager
+  namespace: core-prod
+spec:
+
+  commonName: liqo-controller-manager
+
+  dnsNames:
+    - liqo-controller-manager
+  duration: 8760h0m0s
+
+  issuerRef:
+    kind: Issuer
+    name: pomerium-ca
+
+  renewBefore: 4380h0m0s
+
+  secretName: liqo-webhook-certs
+
+  usages:
+    - signing
+    - key encipherment
+    - server auth
