@@ -273,7 +273,7 @@ liqo:
   # -- liqo name override
   nameOverride: ""
   # -- full liqo name override
-  fullnameOverride: ""
+  fullnameOverride: "liqo"
 
   # aws configuration for the local cluster and the Liqo user,
   # this user should be able to create new IAM user, to create new programmatic access
