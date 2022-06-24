@@ -870,6 +870,7 @@ liqo:
       # -- Automatically join discovered clusters
       autojoin: true
 
+
       # -- Allow (by default) the remote clusters to establish a peering with our cluster
       incomingPeeringEnabled: true
 
