@@ -283,7 +283,7 @@ apiServer:
   ## @param apiServer.hostNetwork
   ## "true" means using hostNetwork
   ## "false" means normal network
-  hostNetwork: true
+  hostNetwork: false
   ## @param apiServer.nodeSelector node selector of the karmada-apiserver
   nodeSelector: {}
   ## @param apiServer.affinity affinity of the karmada-apiserver
