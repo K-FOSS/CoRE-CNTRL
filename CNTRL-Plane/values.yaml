@@ -744,6 +744,8 @@ liqo:
   # -- The pullPolicy for liqo pods
   pullPolicy: "IfNotPresent"
 
+  enabled: false
+
   apiServer:
     # -- The address that must be used to contact your API server, it needs to be reachable from the clusters that you will peer with (defaults to your master IP)
     address: 10.1.1.40:6443
