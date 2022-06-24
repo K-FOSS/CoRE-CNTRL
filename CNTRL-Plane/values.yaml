@@ -28,7 +28,7 @@ liqo:
     imageName: "liqo/liqo-controller-manager"
     config:
       # -- It defines the percentage of available cluster resources that you are willing to share with foreign clusters.
-      resourceSharingPercentage: 30
+      resourceSharingPercentage: 80
 
   route:
     pod:
