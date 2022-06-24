@@ -6,9 +6,9 @@ kind: ConfigMap
 metadata:
   name: {{ $name }}-config
   namespace: {{ $namespace }}
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "2"
+  # annotations:
+  #   "helm.sh/hook": pre-install
+  #   "helm.sh/hook-weight": "2"
 data:
   cert.yaml: |-
     apiVersion: v1
