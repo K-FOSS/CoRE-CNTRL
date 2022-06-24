@@ -26,9 +26,10 @@ liqo:
       extraArgs: []
     # -- controller-manager image repository
     imageName: "liqo/liqo-controller-manager"
+
     config:
       # -- It defines the percentage of available cluster resources that you are willing to share with foreign clusters.
-      resourceSharingPercentage: 80
+      resourceSharingPercentage: 70
 
   route:
     pod:
@@ -119,14 +120,14 @@ liqo:
     imageName: "liqo/discovery"
 
     config:
-      # -- Set a mnemonic name for your cluster
-      clusterName: cntrl-plane
+      # # -- Set a mnemonic name for your cluster
+      # clusterName: cntrl-plane
 
-      # -- A set of labels which characterizes the local cluster when exposed remotely as a virtual node.
-      # It is suggested to specify the distinguishing characteristics that may be used to decide whether to offload pods on this cluster.
-      clusterLabels: {}
-      # topology.kubernetes.io/zone: us-east-1
-      # liqo.io/provider: your-provider
+      # # -- A set of labels which characterizes the local cluster when exposed remotely as a virtual node.
+      # # It is suggested to specify the distinguishing characteristics that may be used to decide whether to offload pods on this cluster.
+      # clusterLabels: {}
+      # # topology.kubernetes.io/zone: us-east-1
+      # # liqo.io/provider: your-provider
 
       # -- Automatically join discovered clusters
       autojoin: true
@@ -141,7 +142,7 @@ liqo:
       enableDiscovery: false
 
       # -- Time-to-live before an automatically discovered clusters is deleted from the list of available ones if no longer announced (in seconds)
-      ttl: 90
+      ttl: 300
 
   auth:
     pod:
@@ -300,7 +301,7 @@ liqo:
     # Indeed, "anyuid" is the SCC automatically associated with pods created by cluster administrators.
     # Any pod granted a more privileged SCC and not linked to an adequately privileged service account will fail to be offloaded.
     virtualKubeletSCCs:
-    - anyuid
+      - anyuid
 
   # configuration for liqo networking
   networkConfig:
