@@ -470,12 +470,12 @@ etcd:
     ## @param etcd.internal.storageType storage type for etcd data
     ## "pvc" means using volumeClaimTemplates
     ## "hostPath" means using hostPath
-    storageType: "hostPath"
+    storageType: "pvc"
     pvc:
       ## @param etcd.internal.pvc.storageClass storageClass name of PVC
       storageClass: ""
       ## @param etcd.internal.pvc.size size of PVC
-      size: ""
+      size: 50G
     ## @param etcd.internal.resources
     resources: {}
       # If you do want to specify resources, uncomment the following
