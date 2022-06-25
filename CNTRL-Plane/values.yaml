@@ -17,12 +17,11 @@ installMode: "host"
 clusterDomain: k0s.resolvemy.host
 
 ## @param components component list
-components: []
-  # components: [
-  #   "schedulerEstimator"
-  #   "descheduler"
-  #   "search"
-  # ]
+components: [
+    "schedulerEstimator",
+    "descheduler",
+    "search"
+  ]
 
 ## pre-install job config
 preInstallJob:
@@ -265,7 +264,7 @@ apiServer:
   image:
     registry: k8s.gcr.io
     repository: kube-apiserver
-    tag: "v1.22.10"
+    tag: v1.23.6
     ## Specify a imagePullPolicy
     ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
     ##
