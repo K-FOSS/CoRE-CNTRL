@@ -58,6 +58,7 @@ spec:
           command:
             - /bin/karmada-controller-manager
             - --kubeconfig=/etc/kubeconfig
+            - --feature-gates=PropagateDeps=true
             - --bind-address=0.0.0.0
             - --cluster-status-update-frequency=10s
             - --secure-port=10357
