@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cntrlplane-certmanager-webhook
+  namespace: core-prod
+spec:
+  template:
+    spec:
+      containers:
+        - name: cert-manager
+          volumeMounts:
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+      volumes:
+        - name: kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-kubeconfig
