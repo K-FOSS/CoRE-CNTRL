@@ -143,6 +143,8 @@ scheduler:
 
 ## webhook config
 webhook:
+  podLabels:
+    app: karmada-webhook
   ## @param webhook.labels labels of the webhook deployment
   labels:
     app: karmada-webhook
@@ -151,7 +153,6 @@ webhook:
   ## @param webhook.podAnnotations annotaions of the webhook pods
   podAnnotations: {}
   ## @param webhook.podLabels labels of the webhook pods
-  podLabels: {}
   ## @param webhook.imagePullSecrets image pull secret of the webhook
   imagePullSecrets: []
   ## @param image.registry karmada webhook image registry

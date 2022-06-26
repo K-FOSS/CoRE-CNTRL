@@ -87,7 +87,6 @@ metadata:
 spec:
   selector:
     {{- include "karmada.webhook.podLabels" . | nindent 8 }}
-    app: {{ $name }}-webhook
   ports:
     - port: 443
       targetPort: 8443
