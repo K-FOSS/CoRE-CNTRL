@@ -1220,12 +1220,6 @@ cert-manager:
   # NOTE: This requires Kubernetes 1.10 or `CustomPodDNS` feature gate enabled for
   # the cluster to work.
   # podDnsPolicy: "None"
-  podDnsConfig:
-    nameservers:
-      - 10.1.1.50
-      - 1.1.1.1
-      - 8.8.8.8
-  podDnsPolicy: None
 
   nodeSelector:
     kubernetes.io/os: linux
