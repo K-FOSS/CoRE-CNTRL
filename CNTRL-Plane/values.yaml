@@ -1051,6 +1051,8 @@ liqo:
     mtu: 1340
 
 cert-manager:
+
+  fullnameOverride: 'cntrlplane-certmanager'
   # Default values for cert-manager.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
