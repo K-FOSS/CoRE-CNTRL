@@ -1107,7 +1107,7 @@ cert-manager:
 
   # Comma separated list of feature gates that should be enabled on the
   # controller pod.
-  featureGates: 'ExperimentalGatewayAPISupport=true,ServerSideApply=true,AdditionalCertificateOutputFormats=true'
+  featureGates: 'AdditionalCertificateOutputFormats=true'
 
   image:
     repository: quay.io/jetstack/cert-manager-controller
