@@ -143,10 +143,9 @@ scheduler:
 
 ## webhook config
 webhook:
-  podLabels:
-    app: karmada-webhook
   ## @param webhook.labels labels of the webhook deployment
-  labels: {}
+  labels:
+    app: karmada-webhook
   ## @param webhook.replicaCount target replicas
   replicaCount: 1
   ## @param webhook.podAnnotations annotaions of the webhook pods
