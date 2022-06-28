@@ -9,3 +9,4 @@ kind: Kustomization
 patchesStrategicMerge:
   - CertManagerWebhook.yaml
   - CrossplaneDeployment.yaml
+  - CrossplaneRBAC.yaml

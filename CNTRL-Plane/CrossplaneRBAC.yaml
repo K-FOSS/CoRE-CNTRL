@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cntrlplane-crossplane-rbac-manager
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - args:
+            - rbac
+            - start
+            - '--manage=All'
+            - >-
+              --provider-clusterrole=cntrlplane-crossplane:allowed-provider-permissions
+          env:
+            - name: LEADER_ELECTION
+              value: 'true'
+            - name: KUBERNETES_SERVICE_HOST
+              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+            - name: KUBERNETES_SERVICE_PORT
+              value: '5443'
+            - name: KUBECONFIG
+              value: /var/run/kubeconfig
+          image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
+          imagePullPolicy: IfNotPresent
+          name: crossplane
+          volumeMounts:
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+
+      initContainers:
+        - args:
+            - rbac
+            - init
+          image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
+          imagePullPolicy: IfNotPresent
+          name: crossplane-init
+          env:
+            - name: KUBERNETES_SERVICE_HOST
+              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+            - name: KUBERNETES_SERVICE_PORT
+              value: '5443'
+            - name: KUBECONFIG
+              value: /var/run/kubeconfig
+          volumeMounts:
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+
+      volumes:
+        - name: kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-kubeconfig
