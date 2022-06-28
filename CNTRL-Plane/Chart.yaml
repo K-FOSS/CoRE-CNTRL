@@ -13,6 +13,10 @@ dependencies:
     repository: https://charts.external-secrets.io
     version: 0.5.x
 
+  - name: crossplane
+    repository: https://charts.crossplane.io/master/
+    version: 1.9.0-rc.0.9.g243f1f47
+
   - name: liqo
     version: 0.5.0-beta.2
     condition: liqo.enabled
