@@ -7,6 +7,6 @@ kind: Kustomization
 #     count: 5
 
 patchesStrategicMerge:
-#  - CertManagerWebhook.yaml
+  - CertManagerWebhook.yaml
   - CrossplaneDeployment.yaml
   - CrossplaneRBAC.yaml
