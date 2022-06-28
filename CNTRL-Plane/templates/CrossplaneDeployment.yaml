@@ -12,7 +12,7 @@ metadata:
     argocd.argoproj.io/instance: infra1-dc1-cntrlplane
     helm.sh/chart: crossplane-1.9.0-rc.0.9.g243f1f47
     release: infra1-dc1-cntrlplane
-  name: cntrlplane-crossplane
+  name: cntrlplane-crossplane-main
   namespace: core-prod
 spec:
   replicas: 1
