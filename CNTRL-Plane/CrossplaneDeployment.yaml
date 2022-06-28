@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cntrlplane-crossplane
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - args:
+            - core
+            - start
+          name: crossplane
+          volumeMounts:
+            - mountPath: /cache
+              name: package-cache
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+      volumes:
+        - emptyDir:
+            medium: null
+            sizeLimit: 5Mi
+          name: package-cache
+        - name: kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-kubeconfig
