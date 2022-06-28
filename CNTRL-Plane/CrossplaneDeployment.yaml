@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cntrlplane-crossplane
+    app.kubernetes.io/component: cloud-infrastructure-controller
+    app.kubernetes.io/instance: infra1-dc1-cntrlplane
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: cntrlplane-crossplane
+    app.kubernetes.io/part-of: cntrlplane-crossplane
+    app.kubernetes.io/version: 1.9.0-rc.0.9.g243f1f47
+    argocd.argoproj.io/instance: infra1-dc1-cntrlplane
+    helm.sh/chart: crossplane-1.9.0-rc.0.9.g243f1f47
+    release: infra1-dc1-cntrlplane
+  name: cntrlplane-crossplane
+  namespace: core-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cntrlplane-crossplane
+      release: infra1-dc1-cntrlplane
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cntrlplane-crossplane
+        app.kubernetes.io/component: cloud-infrastructure-controller
+        app.kubernetes.io/instance: infra1-dc1-cntrlplane
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: cntrlplane-crossplane
+        app.kubernetes.io/part-of: cntrlplane-crossplane
+        app.kubernetes.io/version: 1.9.0-rc.0.9.g243f1f47
+        helm.sh/chart: crossplane-1.9.0-rc.0.9.g243f1f47
+        release: infra1-dc1-cntrlplane
+    spec:
+      containers:
+        - args:
+            - core
+            - start
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: olala
+              value: olala
+            - name: LEADER_ELECTION
+              value: 'true'
+            - name: KUBECONFIG
+              value: /var/run/kubeconfig
+            - name: KUBERNETES_SERVICE_HOST
+              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+            - name: KUBERNETES_SERVICE_PORT
+              value: '5443'
+          image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
+          imagePullPolicy: IfNotPresent
+          name: crossplane
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65532
+            runAsUser: 65532
+          volumeMounts:
+            - mountPath: /cache
+              name: package-cache
+  
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+      initContainers:
+        - args:
+            - core
+            - init
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+
+            - name: KUBERNETES_SERVICE_HOST
+              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+
+            - name: KUBERNETES_SERVICE_PORT
+              value: '5443'
+
+            - name: KUBECONFIG
+              value: /var/run/kubeconfig
+
+          image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
+          imagePullPolicy: IfNotPresent
+          name: crossplane-init
+          volumeMounts:
+            - mountPath: /var/run/kubeconfig
+              name: kubeconfig
+              subPath: kubeconfig
+          resources:
+            limits:
+              cpu: 100m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 65532
+            runAsUser: 65532
+      securityContext: {}
+      serviceAccountName: cntrlplane-crossplane
+      volumes:
+        - emptyDir:
+            medium: null
+            sizeLimit: 5Mi
+          name: package-cache
+
+        - name: kubeconfig
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-kubeconfig
