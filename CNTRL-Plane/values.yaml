@@ -1956,6 +1956,8 @@ external-secrets:
 crossplane:
   replicas: 1
 
+  nameOverride: 'cntrlplane-crossplane'
+
   deploymentStrategy: RollingUpdate
 
   image:
