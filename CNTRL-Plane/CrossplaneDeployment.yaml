@@ -36,27 +36,37 @@ spec:
         release: infra1-dc1-cntrlplane
     spec:
       containers:
+
         - args:
             - core
             - start
+
           env:
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+
             - name: olala
               value: olala
+
             - name: LEADER_ELECTION
               value: 'true'
+
             - name: KUBECONFIG
               value: /var/run/kubeconfig
+
             - name: KUBERNETES_SERVICE_HOST
               value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+
             - name: KUBERNETES_SERVICE_PORT
               value: '5443'
+
           image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
           imagePullPolicy: IfNotPresent
+
           name: crossplane
+
           resources:
             limits:
               cpu: 100m
@@ -64,11 +74,13 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsGroup: 65532
             runAsUser: 65532
+
           volumeMounts:
             - mountPath: /cache
               name: package-cache
@@ -76,10 +88,12 @@ spec:
             - mountPath: /var/run/kubeconfig
               name: kubeconfig
               subPath: kubeconfig
+
       initContainers:
         - args:
             - core
             - init
+
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -97,11 +111,14 @@ spec:
 
           image: 'crossplane/crossplane:v1.9.0-rc.0.9.g243f1f47'
           imagePullPolicy: IfNotPresent
+
           name: crossplane-init
+
           volumeMounts:
             - mountPath: /var/run/kubeconfig
               name: kubeconfig
               subPath: kubeconfig
+
           resources:
             limits:
               cpu: 100m
@@ -109,13 +126,16 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             runAsGroup: 65532
             runAsUser: 65532
+
       securityContext: {}
       serviceAccountName: cntrlplane-crossplane
+
       volumes:
         - emptyDir:
             medium: null
