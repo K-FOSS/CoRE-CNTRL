@@ -88,4 +88,33 @@ spec:
       targetPort: 443
   selector:
     {{- include "karmada.search.labels" . | nindent 4 }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: karmada-cert
+  namespace: core-prod
+spec:
 
+  commonName: {{ $name }}-search
+
+  dnsNames:
+    - {{ $name }}-search
+    - {{ $name }}-search.core-prod
+    - {{ $name }}-search.core-prod.svc
+    - {{ $name }}-search.core-prod.svc.cluster
+    - {{ $name }}-search.core-prod.svc.cluster.local
+  duration: 8760h0m0s
+
+  issuerRef:
+    kind: Issuer
+    name: pomerium-ca
+
+  renewBefore: 4380h0m0s
+
+  secretName: liqo-webhook-certs
+
+  usages:
+    - signing
+    - key encipherment
+    - server auth
