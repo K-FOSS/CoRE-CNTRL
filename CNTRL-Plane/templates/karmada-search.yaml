@@ -49,17 +49,20 @@ spec:
             - name: kubeconfig
               subPath: kubeconfig
               mountPath: /etc/kubeconfig
+            - name: etcd-cert
+              mountPath: /etc/etcd/pki
+              readOnly: true
           command:
             - /bin/karmada-search
             - --kubeconfig=/etc/kubeconfig
             - --authentication-kubeconfig=/etc/kubeconfig
             - --authorization-kubeconfig=/etc/kubeconfig
             - --etcd-servers=https://etcd-client.{{ include "karmada.namespace" . }}.svc.{{ .Values.clusterDomain }}:2379
-            - --etcd-cafile=/etc/kubernetes/pki/server-ca.crt
-            - --etcd-certfile=/etc/kubernetes/pki/karmada.crt
-            - --etcd-keyfile=/etc/kubernetes/pki/karmada.key
-            - --tls-cert-file=/etc/kubernetes/pki/karmada.crt
-            - --tls-private-key-file=/etc/kubernetes/pki/karmada.key
+            - --etcd-cafile=/etc/etcd/pki/server-ca.crt
+            - --etcd-certfile=/etc/etcd/pki/karmada.crt
+            - --etcd-keyfile=/etc/etcd/pki/karmada.key
+            - --tls-cert-file=/etc/kubernetes/pki/tls.crt
+            - --tls-private-key-file=/etc/kubernetes/pki/tls.key
             - --audit-log-path=-
             - --feature-gates=APIPriorityAndFairness=false
             - --audit-log-maxage=0
@@ -73,6 +76,14 @@ spec:
         - name: kubeconfig
           secret:
             secretName: {{ $name }}-kubeconfig
+        - name: apiserver-cert
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-cert
+        - name: etcd-cert
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-cntrlplane-cert
 ---
 apiVersion: v1
 kind: Service
