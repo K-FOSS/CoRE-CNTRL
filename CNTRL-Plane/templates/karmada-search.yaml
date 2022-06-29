@@ -1,6 +1,4 @@
 {{- $name := include "karmada.name" . -}}
-
-{{- if and (eq .Values.installMode "component") (has "search" .Values.components) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -91,4 +89,3 @@ spec:
   selector:
     {{- include "karmada.search.labels" . | nindent 4 }}
 
-{{- end }}
