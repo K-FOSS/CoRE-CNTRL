@@ -53,7 +53,7 @@ spec:
             timeoutSeconds: 5
           volumeMounts:
             - name: kubeconfig
-              subPath: scheduler.conf
+              subPath: kubeconfig
               mountPath: /etc/kubeconfig
               readOnly: true
 
@@ -65,7 +65,7 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-conf
+            name: kubeconfig-main-k0s-thing
           name: kubeconfig
 
         - name: pki-scheduler-server
