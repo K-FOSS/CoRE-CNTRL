@@ -684,7 +684,7 @@ search:
   ## @param search.labels labels of the search deployment
   labels:
     app: karmada-search
-    apiserver: "true"
+    apiserver: '"true"'
   ## @param search.replicaCount target replicas
   replicaCount: 2
   ## @param search.podAnnotations annotaions of the search pods
