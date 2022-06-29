@@ -112,7 +112,7 @@ spec:
 
   renewBefore: 4380h0m0s
 
-  secretName: liqo-webhook-certs
+  secretName: karmada-cert
 
   usages:
     - signing
