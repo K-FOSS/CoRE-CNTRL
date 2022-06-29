@@ -55,7 +55,7 @@ spec:
             - name: kubeconfig
               subPath: scheduler.conf
               mountPath: /etc/kubeconfig
-              readonly: true
+              readOnly: true
 
             - mountPath: /pki/scheduler-server
               name: pki-scheduler-server
