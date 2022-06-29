@@ -560,7 +560,7 @@ agent:
 ## karmada scheduler estimator
 schedulerEstimator:
   ## schedulerEstimator.clusterName the name of the member cluster
-  clusterName: ""
+  clusterName: k0s-dc1
   ## kubeconfig of the member cluster
   kubeconfig:
     ## @param schedulerEstimator.kubeconfig.caCrt ca of the certificate

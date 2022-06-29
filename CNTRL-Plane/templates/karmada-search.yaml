@@ -43,7 +43,7 @@ spec:
           image: {{ template "karmada.search.image" . }}
           imagePullPolicy: {{ .Values.search.image.pullPolicy }}
           volumeMounts:
-            - name: k8s-certs
+            - name: apiserver-cert
               mountPath: /etc/kubernetes/pki
               readOnly: true
             - name: kubeconfig
@@ -61,8 +61,8 @@ spec:
             - --etcd-cafile=/etc/etcd/pki/server-ca.crt
             - --etcd-certfile=/etc/etcd/pki/karmada.crt
             - --etcd-keyfile=/etc/etcd/pki/karmada.key
-            - --tls-cert-file=/etc/kubernetes/pki/tls.crt
-            - --tls-private-key-file=/etc/kubernetes/pki/tls.key
+            - --tls-cert-file=/etc/kubernetes/pki/karmada.crt
+            - --tls-private-key-file=/etc/kubernetes/pki/karmada.key
             - --audit-log-path=-
             - --feature-gates=APIPriorityAndFairness=false
             - --audit-log-maxage=0

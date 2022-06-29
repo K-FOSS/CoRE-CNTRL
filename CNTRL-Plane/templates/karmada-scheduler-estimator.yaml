@@ -1,4 +1,3 @@
-{{- if and (eq .Values.installMode "component") (has "schedulerEstimator" .Values.components) }}
 {{ $namespace := include "karmada.namespace" .}}
 {{ $clusterName := .Values.schedulerEstimator.clusterName }}
 ---
@@ -41,7 +40,7 @@ spec:
           imagePullPolicy: {{ .Values.schedulerEstimator.image.pullPolicy }}
           command:
             - /bin/karmada-scheduler-estimator
-            - --kubeconfig=/etc/{{ $clusterName }}-kubeconfig
+            - --kubeconfig=/etc/kubeconfig
             - --cluster-name={{ $clusterName }}
           livenessProbe:
             httpGet:
@@ -53,13 +52,31 @@ spec:
             periodSeconds: 15
             timeoutSeconds: 5
           volumeMounts:
-            - name: member-kubeconfig
-              subPath: {{ $clusterName }}-kubeconfig
-              mountPath: /etc/{{ $clusterName }}-kubeconfig
+            - name: kubeconfig
+              subPath: scheduler.conf
+              mountPath: /etc/kubeconfig
+              readonly: true
+
+            - mountPath: /pki/scheduler-server
+              name: pki-scheduler-server
+
+            - mountPath: /pki/scheduler-client
+              name: pki-scheduler-client
       volumes:
-        - name: member-kubeconfig
+        - configMap:
+            defaultMode: 420
+            name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-conf
+          name: kubeconfig
+
+        - name: pki-scheduler-server
           secret:
-            secretName: {{ $clusterName }}-kubeconfig
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-server
+
+        - name: pki-scheduler-client
+          secret:
+            defaultMode: 420
+            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-client
 ---
 apiVersion: v1
 kind: Service
@@ -103,4 +120,3 @@ stringData:
           user: {{ $clusterName }}-apiserver
         name: {{ $clusterName }}-apiserver
     current-context: {{ $clusterName }}-apiserver
-{{- end }}
