@@ -9,7 +9,18 @@ data:
     apiVersion: kubeadm.k8s.io/v1beta3
     kind: ClusterConfiguration
     controlPlaneEndpoint: 10.1.1.40:6443
+    dns:
+      imageRepository: 'kristianfjones/coredns-docker'
+      imageTag: 'core0'
+
+    featureGates:
+      MixedProtocolLBService: true
+
+    {{- with .Values.kubernetes.networking }}
     networking:
-      dnsDomain: k0s.resolvemy.host
-      podSubnet: 10.4.0.0/16
-      serviceSubnet: 10.0.8.0/22
+      dnsDomain: {{ .dnsDomain }}
+      {{- with .podSubnet }}
+      podSubnet: {{ . }}
+      {{- end }}
+      serviceSubnet: {{ .serviceSubnet }}
+    {{- end }}
