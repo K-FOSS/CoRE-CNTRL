@@ -1,5 +1,6 @@
 {{- if and .Values.kubernetes.apiServer.enabled .Values.kubernetes.apiServer.service.enabled }}
-
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:

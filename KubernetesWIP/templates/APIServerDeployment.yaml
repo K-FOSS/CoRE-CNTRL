@@ -1,9 +1,14 @@
+{{- if .Values.kubernetes.apiServer.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
     argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+    test-name: '{{ $fullName }}-apiserver'
+
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   namespace: core-prod
 spec:
@@ -216,3 +221,4 @@ spec:
             defaultMode: 420
             name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
           name: kubeconfig
+{{- end }}
