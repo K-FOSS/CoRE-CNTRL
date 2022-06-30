@@ -173,6 +173,7 @@ kubernetes:
 
 
     port: 6443
+
     service:
       enabled: true
       type: LoadBalancer # NodePort / LoadBalancer

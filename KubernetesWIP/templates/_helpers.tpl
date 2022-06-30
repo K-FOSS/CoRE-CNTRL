@@ -45,7 +45,17 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
   {{- printf "%d.%d.%d.%d" (index $octetsList 0 | int) (index $octetsList 1 | int) (index $octetsList 2 | int) 10 -}}
 {{- end -}}
 
-{{- define "kubernetes.getAPIAddress" -}}
+{{- define "kubernetes.getServiceAPIAddress" -}}
   {{- $octetsList := splitList "." .Values.kubernetes.networking.serviceSubnet -}}
   {{- printf "%d.%d.%d.%d" (index $octetsList 0 | int) (index $octetsList 1 | int) (index $octetsList 2 | int) 1 -}}
 {{- end -}}
+
+{{- define "kubernetes.getAPIHostnamePort" -}}
+  {{- if .Values.kubernetes.apiServer.service.loadBalancerIP -}}
+  {{- $apiHostname := .Values.kubernetes.apiServer.service.loadBalancerIP -}}
+  {{- else -}}
+  {{- $apiHostname := printf "%s-apiserver" (template "kubernetes.fullname" .) -}}
+  {{- end -}}
+  {{- printf "%s:%d" $apiHostname .Values.kubernetes.apiServer.port  -}}
+{{- end -}}
+
