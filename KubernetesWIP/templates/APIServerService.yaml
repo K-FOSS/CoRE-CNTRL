@@ -7,10 +7,11 @@ metadata:
   annotations:
     consul.hashicorp.com/service-name: k0s-kubeapi
     metallb.universe.tf/allow-shared-ip: k0s-api
+
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
-  namespace: core-prod
+    app: '{{ $fullName }}-apiserver'
+  name: '{{ $fullName }}-apiserver'
+
 spec:
   type: {{ .Values.kubernetes.apiServer.service.type }}
   {{- with .Values.kubernetes.apiServer.service.loadBalancerIP }}
@@ -52,7 +53,7 @@ spec:
 
 
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+    app: '{{ $fullName }}-apiserver'
 
   publishNotReadyAddresses: true
   sessionAffinity: ClientIP
