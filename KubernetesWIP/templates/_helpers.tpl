@@ -57,6 +57,6 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
   {{- else -}}
   {{- $apiHostname := printf "%s-apiserver" include "kubernetes.fullname" . -}}
   {{- end -}}
-  {{- printf "%s:%d" $apiHostname .Values.kubernetes.apiServer.port  -}}
+  {{- printf "%s:%d" $apiHostname (.Values.kubernetes.apiServer.port | int)  -}}
 {{- end -}}
 
