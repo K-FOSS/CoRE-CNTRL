@@ -180,18 +180,24 @@ kubernetes:
       # Specify nodePort for apiserver service (30000-32767)
       nodePort:
       labels: {}
+
+      externalIPs:
+        - 10.0.8.1
       annotations:
         consul.hashicorp.com/service-name: 'k0s-kubeapi'
       loadBalancerIP: 10.1.1.40
 
   controllerManager:
-    enabled: false
+    enabled: true
+
     image:
       repository: k8s.gcr.io/kube-controller-manager
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
+
     replicaCount: 2
+
     resources:
       requests:
         cpu: 100m
@@ -216,8 +222,9 @@ kubernetes:
     extraVolumeMounts: []
 
     port: 10257
+
     service:
-      enabled: false
+      enabled: true
       type: ClusterIP
       port: 10257
       labels: {}
@@ -225,13 +232,16 @@ kubernetes:
       loadBalancerIP:
 
   scheduler:
-    enabled: false
+    enabled: true
+
     image:
       repository: k8s.gcr.io/kube-scheduler
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
+
     replicaCount: 2
+
     resources:
       requests:
         cpu: 100m
@@ -257,7 +267,7 @@ kubernetes:
 
     port: 10259
     service:
-      enabled: false
+      enabled: true
       type: ClusterIP
       port: 10259
       labels: {}
@@ -265,7 +275,8 @@ kubernetes:
       loadBalancerIP:
 
   admin:
-    enabled: false
+    enabled: true
+
     image:
       repository: ghcr.io/kvaps/kubernetes-tools
       tag: v0.13.4

@@ -11,6 +11,11 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
   namespace: core-prod
 spec:
+  type: {{ .Values.kubernetes.apiServer.service.type }}
+  {{- with .Values.kubernetes.apiServer.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
+
   allocateLoadBalancerNodePorts: true
 
   ipFamilies:
@@ -18,10 +23,13 @@ spec:
 
   ipFamilyPolicy: SingleStack
 
-  loadBalancerIP: 10.1.1.40
 
+  {{- with .Values.kubernetes.apiServer.service.externalIPs }}
   externalIPs:
-    - 10.0.8.1
+  {{- range . }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
 
   ports:
     - name: client
@@ -32,6 +40,7 @@ spec:
       protocol: TCP
       appProtocol: https
 
+
     - name: client-https
 
       targetPort: client
@@ -40,10 +49,12 @@ spec:
       protocol: TCP
       appProtocol: https
 
+
   selector:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+
   publishNotReadyAddresses: true
   sessionAffinity: ClientIP
-  type: LoadBalancer
+
 
 {{- end }}
