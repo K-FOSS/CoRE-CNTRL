@@ -51,7 +51,7 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
 {{- end -}}
 
 {{- define "kubernetes.getAPIHostnamePort" -}}
-  {{- $apiHostname := "" }}
+  {{- $apiHostname := "" -}}
   {{- if .Values.kubernetes.apiServer.service.loadBalancerIP -}}
   {{- $apiHostname := .Values.kubernetes.apiServer.service.loadBalancerIP -}}
   {{- else -}}
