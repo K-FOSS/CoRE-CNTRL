@@ -1,15 +1,16 @@
 {{- if .Values.kubernetes.apiServer.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
+{{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+    app: '{{ $fullName }}-apiserver'
     test-name: '{{ $fullName }}-apiserver'
+    api-address: '{{ $apiAddress }}'
 
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+  name: '{{ $fullName }}-apiserver'
   namespace: core-prod
 spec:
   progressDeadlineSeconds: 600
@@ -20,7 +21,7 @@ spec:
 
   selector:
     matchLabels:
-      app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+      app: '{{ $fullName }}-apiserver'
 
   strategy:
     rollingUpdate:
@@ -36,7 +37,7 @@ spec:
       creationTimestamp: null
 
       labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+        app: '{{ $fullName }}-apiserver'
 
     spec:
 
@@ -46,7 +47,7 @@ spec:
             - podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+                    app: '{{ $fullName }}-apiserver'
                 topologyKey: kubernetes.io/hostname
               weight: 1
 
