@@ -8,14 +8,13 @@ metadata:
   labels:
     app: '{{ $fullName }}-apiserver'
     test-name: '{{ $fullName }}-apiserver'
-    api-address: '{{ $apiAddress }}'
 
   name: '{{ $fullName }}-apiserver'
   namespace: core-prod
 spec:
   progressDeadlineSeconds: 600
 
-  replicas: 2
+  replicas: {{ .Values.kubernetes.apiServer.replicaCount }}
 
   revisionHistoryLimit: 10
 
@@ -40,7 +39,6 @@ spec:
         app: '{{ $fullName }}-apiserver'
 
     spec:
-
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
