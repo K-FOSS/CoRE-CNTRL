@@ -1,3 +1,5 @@
+{{- if and .Values.kubernetes.apiServer.enabled .Values.kubernetes.apiServer.service.enabled }}
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -44,3 +46,4 @@ spec:
   sessionAffinity: ClientIP
   type: LoadBalancer
 
+{{- end }}

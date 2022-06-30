@@ -14,6 +14,8 @@ tink:
       IPAddress: 172.16.20.236
 
 kubernetes:
+  clusterName: k0s.resolvemy.host
+
   controlPlaneEndpoint:
   networking:
     dnsDomain: k0s.resolvemy.host
@@ -129,13 +131,15 @@ kubernetes:
       extraVolumeMounts: []
 
   apiServer:
-    enabled: false
+    enabled: true
+
     image:
       repository: k8s.gcr.io/kube-apiserver
       tag: v1.23.6
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 1
+
+    replicaCount: 2
     resources:
       requests:
         cpu: 100m
@@ -152,6 +156,7 @@ kubernetes:
       # advertise-address is required for kube-proxy
       advertise-address: 10.1.1.40
       feature-gates: MixedProtocolLBService=true
+
     labels: {}
     annotations: {}
     podLabels: {}
@@ -169,7 +174,7 @@ kubernetes:
 
     port: 6443
     service:
-      enabled: false
+      enabled: true
       type: LoadBalancer # NodePort / LoadBalancer
       port: 6443
       # Specify nodePort for apiserver service (30000-32767)
