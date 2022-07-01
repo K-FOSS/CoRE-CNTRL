@@ -1,5 +1,4 @@
 tink:
-  
   machines:
     - Name: node2
       MAC: 00:50:56:81:85:42
@@ -44,17 +43,21 @@ kubernetes:
         - kubernetes.io/pvc-protection
 
   etcd:
-    enabled: false
+    enabled: true
+
     image:
       repository: k8s.gcr.io/etcd
       tag: 3.5.1-0
       pullPolicy: IfNotPresent
       pullSecrets: []
-    replicaCount: 3
+
+    replicaCount: 2
+
     resources:
       requests:
         cpu: 100m
         memory: 128Mi
+
       # limits:
       #   cpu: 100m
       #   memory: 128Mi
@@ -65,16 +68,26 @@ kubernetes:
 
     extraArgs: {}
     labels: {}
+
     annotations: {}
     podLabels: {}
+
     podAnnotations: {}
+
     nodeSelector: {}
+
     tolerations: []
+
     podAntiAffinity: soft
+
     podAntiAffinityTopologyKey: kubernetes.io/hostname
+
     affinity: {}
+
     extraEnv: []
+
     sidecars: []
+
     extraVolumes:
       - name: etcd-snapshot
         hostPath:
@@ -82,6 +95,7 @@ kubernetes:
           path: /mnt/Site1.NAS1.Pool1/Backups/etcd-snapshot.db
           # this field is optional
           type: File
+
     extraVolumeMounts:
       - mountPath: /backup/snapshot.db
         name: etcd-snapshot
@@ -90,6 +104,7 @@ kubernetes:
       client: 2379
       peer: 2380
       metrics: 2381
+
     service:
       enabled: true
       type: ClusterIP
