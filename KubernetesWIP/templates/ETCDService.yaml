@@ -1,34 +1,59 @@
+{{- if .Values.kubernetes.etcd.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-  namespace: core-prod
+    app: {{ $fullName }}-etcd
+    helloworld: {{ $fullName }}-etcd
+
+  name: {{ $fullName }}-etcd
+
 spec:
   clusterIP: None
+
   clusterIPs:
     - None
+
   internalTrafficPolicy: Cluster
+
   ipFamilies:
     - IPv4
+
   ipFamilyPolicy: SingleStack
+
   ports:
     - name: client
+
       port: 2379
-      protocol: TCP
       targetPort: 2379
+
+      protocol: TCP
+
+
     - name: peer
+
       port: 2380
-      protocol: TCP
       targetPort: 2380
-    - name: metrics
-      port: 2381
+
       protocol: TCP
+
+
+    - name: metrics
+
+      port: 2381
       targetPort: 2381
+
+      protocol: TCP
+
+
   publishNotReadyAddresses: true
+
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
+    app: {{ $fullName }}-etcd
+
   sessionAffinity: None
+
   type: ClusterIP
+{{- end }}

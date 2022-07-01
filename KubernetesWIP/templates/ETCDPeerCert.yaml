@@ -2,9 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-peer
-  namespace: core-prod
-  resourceVersion: '3811474'
-  uid: f2d3204f-00fd-40c6-8c71-00295c965a60
+
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-peer
   dnsNames:
@@ -19,20 +17,26 @@ spec:
     - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster'
     - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local'
     - localhost
+
   duration: 8760h0m0s
+
   ipAddresses:
     - 127.0.0.1
+
   issuerRef:
     kind: Issuer
     name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-issuer
+
   renewBefore: 4380h0m0s
+
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-peer
+
   subject:
     organizations:
       - infra1-dc1-infra-k0s-k8s-kubernetes
+
   usages:
     - signing
     - key encipherment
     - server auth
     - client auth
-

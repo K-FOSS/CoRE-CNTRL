@@ -2,9 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
-  namespace: core-prod
-  resourceVersion: '3811778'
-  uid: eabba349-a4da-4ae7-85f2-1cbf0b703a45
+
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-server
   dnsNames:

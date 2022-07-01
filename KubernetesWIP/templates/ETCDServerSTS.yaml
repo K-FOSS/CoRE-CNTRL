@@ -1,24 +1,32 @@
+{{- if .Values.kubernetes.etcd.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-  namespace: core-prod
+    app: {{ $fullName }}-etcd
+    hellonew: {{ $fullName }}-etcd
+
+  name: {{ $fullName }}-etcd
+
 spec:
   podManagementPolicy: Parallel
   replicas: 2
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-  serviceName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
+      app: {{ $fullName }}-etcd
+
+  serviceName: {{ $fullName }}-etcd
+
   template:
     metadata:
       labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-      name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
+        app: {{ $fullName }}-etcd
+
+      name: {{ $fullName }}-etcd
+
     spec:
       affinity:
         podAntiAffinity:
@@ -26,9 +34,10 @@ spec:
             - podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
+                    app: {{ $fullName }}-etcd
                 topologyKey: kubernetes.io/hostname
               weight: 1
+
       automountServiceAccountToken: false
       containers:
         - command:
@@ -61,19 +70,26 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.name
+
             - name: ETCDCTL_API
               value: '3'
+
             - name: ETCDCTL_CACERT
               value: /pki/etcd/peer/ca.crt
+
             - name: ETCDCTL_CERT
               value: /pki/etcd/peer/tls.crt
+
             - name: ETCDCTL_KEY
               value: /pki/etcd/peer/tls.key
+
             - name: ETCDCTL_ENDPOINTS
               value: >-
                 https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
+
           image: 'k8s.gcr.io/etcd:3.5.3-0'
           imagePullPolicy: IfNotPresent
+
           livenessProbe:
             failureThreshold: 8
             httpGet:
@@ -84,79 +100,102 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 15
+
           name: etcd
+
           ports:
             - containerPort: 2379
               name: client
               protocol: TCP
+
             - containerPort: 2380
               name: peer
               protocol: TCP
+
             - containerPort: 2381
               name: metrics
               protocol: TCP
+
           resources:
             requests:
               cpu: 512m
               memory: 1024Mi
+
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
           volumeMounts:
             - mountPath: /pki/etcd/ca
               name: pki-etcd-certs-ca
+
             - mountPath: /pki/etcd/peer
               name: pki-etcd-certs-peer
+
             - mountPath: /pki/etcd/server
               name: pki-etcd-certs-server
+
             - mountPath: /var/lib/etcd
               name: etcd-data
+
             - mountPath: /backup/snapshot.db
               name: etcd-snapshot
+
       dnsPolicy: ClusterFirst
+
       restartPolicy: Always
+
       schedulerName: default-scheduler
+
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+
       terminationGracePeriodSeconds: 30
+
       volumes:
         - name: pki-etcd-certs-ca
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-ca
+
         - name: pki-etcd-certs-peer
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-peer
+
         - name: pki-etcd-certs-server
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
+
         - hostPath:
             path: /mnt/Site1.NAS1.Pool1/Backups/etcd-snapshot.db
             type: File
           name: etcd-snapshot
+
   updateStrategy:
     rollingUpdate:
       partition: 0
     type: RollingUpdate
+
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        creationTimestamp: null
         finalizers:
           - kubernetes.io/pvc-protection
+
         labels:
           app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
         name: etcd-data
+
       spec:
         accessModes:
           - ReadWriteOnce
+
         resources:
           requests:
             storage: 1Gi
-        volumeMode: Filesystem
-      status:
-        phase: Pending
 
+        volumeMode: Filesystem
+{{- end }}
