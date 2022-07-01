@@ -52,7 +52,7 @@ spec:
       containers:
         - name: kube-apiserver
 
-          {{- with .Values.apiServer.image }}
+          {{- with .Values.kubernetes.apiServer.image }}
           image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
