@@ -33,8 +33,6 @@ spec:
       annotations:
         checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
 
-      creationTimestamp: null
-
       labels:
         app: '{{ $fullName }}-apiserver'
 
@@ -54,8 +52,10 @@ spec:
       containers:
         - name: kube-apiserver
 
-          image: 'k8s.gcr.io/kube-apiserver:v1.23.6'
-          imagePullPolicy: IfNotPresent
+          {{- with .Values.apiServer.image }}
+          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
 
           command:
             - kube-apiserver
