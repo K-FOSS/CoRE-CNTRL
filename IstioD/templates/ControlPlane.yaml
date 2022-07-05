@@ -60,3 +60,9 @@ spec:
       meshID: mesh1
       proxy:
         clusterDomain: k0s.resolvemy.host
+
+        resources:
+          requests:
+            cpu: 64m
+            memory: 32Mi
+          limits: null
