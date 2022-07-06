@@ -4,10 +4,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+  name: {{ $fullName }}-pki-apiserver-server
 
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-server
+  commonName: '{{ $certName }}-apiserver-server'
 
   dnsNames:
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
@@ -36,15 +36,15 @@ spec:
   
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: '{{ $fullName }}-issuer'
   
   renewBefore: 4380h0m0s
   
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+  secretName: '{{ $fullName }}-pki-apiserver-server'
   
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - '{{ $fullName }}'
   
   usages:
     - signing
