@@ -1,11 +1,13 @@
+{{- if and .Values.kubernetes.scheduler.enabled .Values.kubernetes.scheduler.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
+    app: {{ $fullName }}-scheduler
   
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
-  namespace: core-prod
+  name: {{ $fullName }}-scheduler
 spec:
   ipFamilies:
     - IPv4
@@ -21,8 +23,9 @@ spec:
 
 
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
+    app: {{ $fullName }}-scheduler
 
   sessionAffinity: None
 
   type: ClusterIP
+{{- end }}
