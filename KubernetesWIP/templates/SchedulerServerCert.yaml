@@ -1,10 +1,13 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-server
-  namespace: core-prod
+  name: {{ $fullName }}-pki-scheduler-server
+
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-server
+  commonName: {{ $certName }}-scheduler-server
   dnsNames:
     - infra1-dc1-infra-k0s-k8s-kubernetes-scheduler
     - infra1-dc1-infra-k0s-k8s-kubernetes-scheduler.core-prod
@@ -28,15 +31,15 @@ spec:
 
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: {{ $fullName }}-issuer
 
   renewBefore: 4380h0m0s
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-server
+  secretName: {{ $fullName }}-pki-scheduler-server
 
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
 
   usages:
     - signing
