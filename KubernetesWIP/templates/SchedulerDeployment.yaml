@@ -45,8 +45,10 @@ spec:
       containers:
         - name: kube-scheduler
 
-          image: 'k8s.gcr.io/kube-scheduler:v1.23.6'
-          imagePullPolicy: IfNotPresent
+          {{- with .Values.kubernetes.scheduler.image }}
+          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
 
           command:
             - kube-scheduler
@@ -127,4 +129,8 @@ spec:
           secret:
             defaultMode: 420
             secretName: '{{ $fullName }}-pki-scheduler-client'
+
+        {{- with .Values.kubernetes.scheduler.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
 {{- end }}
