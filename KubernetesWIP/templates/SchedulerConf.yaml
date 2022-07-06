@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.scheduler.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
 ---
@@ -5,8 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-conf
-  namespace: core-prod
+  name: {{ $fullName }}-scheduler-conf
 
 data:
   scheduler.conf: |
@@ -33,3 +33,4 @@ data:
         user:
           client-certificate: /pki/scheduler-client/tls.crt
           client-key: /pki/scheduler-client/tls.key
+{{- end }}

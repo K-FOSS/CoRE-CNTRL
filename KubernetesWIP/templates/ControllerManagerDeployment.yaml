@@ -57,37 +57,58 @@ spec:
             - --logging-format=json
             - --v=0
 
+
             - --authentication-kubeconfig=/etc/kubernetes/controller-manager.conf
             - --authorization-kubeconfig=/etc/kubernetes/controller-manager.conf
+
+
             - --bind-address=0.0.0.0
+
             - --client-ca-file=/pki/ca/tls.crt
+
+
             - --cluster-name=kubernetes
+
+
             - --cluster-signing-cert-file=/pki/ca/tls.crt
             - --cluster-signing-key-file=/pki/ca/tls.key
+
+
             - --controllers=*,bootstrapsigner,tokencleaner
+
+
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
-            
+
+
             - --leader-elect=true
-            
+
+
             - --requestheader-client-ca-file=/pki/front-proxy-client/tls.crt
-            
+
+
             - --root-ca-file=/pki/ca/tls.crt
-            
+
+
             - --secure-port=10257
-            
+
+
             - --service-account-private-key-file=/pki/sa/tls.key
-            
+
+
             - --use-service-account-credentials=true
-            
-            - --tls-cert-file=/pki/controller-manager-server/tls.crt
-            
+
+
+            - --tls-cert-file=/pki/controller-manager-server/tls.crt            
             - --tls-private-key-file=/pki/controller-manager-server/tls.key
+
+
+            - --service-cluster-ip-range={{ .Values.kubernetes.networking.serviceSubnet }}
             
-            - --service-cluster-ip-range=10.0.8.0/22
-            
+
+            {{ with .Values.kubernetes.networking.podSubnet }}
             - --allocate-node-cidrs=true
-            
-            - --cluster-cidr=10.4.0.0/16
+            - --cluster-cidr={{ . }}
+            {{- end }}
             
             - '--feature-gates=MixedProtocolLBService=true'
 
@@ -148,33 +169,33 @@ spec:
       terminationGracePeriodSeconds: 30
 
       volumes:
-        - configMap:
+        - name: kubeconfig
+          configMap:
             defaultMode: 420
-            name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-conf
-          name: kubeconfig
+            name: '{{ $fullName }}-controller-manager-conf'
 
         - name: pki-controller-manager-server
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
+            secretName: '{{ $fullName }}-pki-controller-manager-server'
 
         - name: pki-controller-manager-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-client
+            secretName: '{{ $fullName }}-pki-controller-manager-client'
 
         - name: pki-ca
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-ca
+            secretName: '{{ $fullName }}-pki-ca'
 
         - name: pki-front-proxy-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+            secretName: '{{ $fullName }}-pki-front-proxy-client'
 
         - name: pki-sa
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+            secretName: '{{ $fullName }}-pki-sa'
 {{- end }}

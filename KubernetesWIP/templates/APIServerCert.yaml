@@ -5,9 +5,10 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
-  namespace: core-prod
+
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-server
+
   dnsNames:
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod
