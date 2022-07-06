@@ -53,6 +53,8 @@ spec:
           value: istio
         - name: PILOT_ENABLE_QUIC_LISTENERS
           value: 'true'
+        - name: BOOTSTRAP_XDS_AGENT
+          value: 'true'
   values:
     global:
       caAddress: istio.mylogin.space:15012
