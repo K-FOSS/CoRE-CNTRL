@@ -115,16 +115,16 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: infra1-dc1-infra-k0s-k8s-kubernetes-scheduler-conf
+            name: '{{ $fullName }}-scheduler-conf'
           name: kubeconfig
 
         - name: pki-scheduler-server
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-server
+            secretName: '{{ $fullName }}-scheduler-conf'
 
         - name: pki-scheduler-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-client
+            secretName: '{{ $fullName }}-pki-scheduler-client'
 {{- end }}
