@@ -1,19 +1,28 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
-  namespace: core-prod
+  name: {{ $fullName }}-pki-front-proxy-client
+
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-client
+  commonName: {{ $certName }}-front-proxy-client
+
   duration: 8760h0m0s
+
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-issuer
+    name: {{ $fullName }}-front-proxy-issuer
+
   renewBefore: 4380h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+
+  secretName: {{ $fullName }}-pki-front-proxy-client
+
   subject:
     organizations:
       - 'system:masters'
+
   usages:
     - signing
     - key encipherment

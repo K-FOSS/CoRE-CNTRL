@@ -22,11 +22,15 @@ spec:
 
   ports:
     - name: server
+
       port: 8131
+
       protocol: TCP
       targetPort: server
 
+
     - name: agent
+
       port: 8132
       protocol: TCP
       targetPort: agent
@@ -36,4 +40,3 @@ spec:
 
   sessionAffinity: None
   type: LoadBalancer
-

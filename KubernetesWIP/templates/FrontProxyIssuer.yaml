@@ -1,9 +1,9 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-issuer
-  namespace: core-prod
+  name: {{ $fullName }}-front-proxy-issuer
+
 spec:
   ca:
-    secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-ca
+    secretName: {{ $fullName }}-pki-front-proxy-ca
 

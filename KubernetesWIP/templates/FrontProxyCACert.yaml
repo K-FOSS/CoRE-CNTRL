@@ -4,20 +4,27 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-ca
-  namespace: core-prod
+  name: {{ $fullName }}-pki-front-proxy-ca
+
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-ca
+  commonName: {{ $certName }}-front-proxy-ca
+
   duration: 87600h0m0s
+
   isCA: true
+
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer
+    name: {{ $fullName }}-selfsigning-issuer
+
   renewBefore: 8760h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-ca
+
+  secretName: {{ $fullName }}-pki-front-proxy-ca
+
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
+
   usages:
     - signing
     - key encipherment

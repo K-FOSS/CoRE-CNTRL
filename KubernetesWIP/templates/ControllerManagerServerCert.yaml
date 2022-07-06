@@ -4,11 +4,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
-  namespace: core-prod
+  name: {{ $fullName }}-pki-controller-manager-server
+
 spec:
 
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-server
+  commonName: {{ $certName }}-controller-manager-server
 
   dnsNames:
     - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
@@ -35,15 +35,15 @@ spec:
 
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: {{ $fullName }}-issuer
 
   renewBefore: 4380h0m0s
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-server
+  secretName: {{ $fullName }}-pki-controller-manager-server
 
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
 
   usages:
     - signing
