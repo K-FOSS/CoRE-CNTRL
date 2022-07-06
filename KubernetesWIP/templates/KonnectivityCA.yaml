@@ -5,8 +5,9 @@ metadata:
 spec:
   commonName: "infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-ca"
   secretName: "infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-ca"
-  duration: 87600h # 3650d
-  renewBefore: 8760h # 365d
+  duration: 87600h0m0s
+  renewBefore: 87600h0m0s
+
   subject:
     organizations:
     - "infra1-dc1-infra-k0s-k8s-kubernetes"
