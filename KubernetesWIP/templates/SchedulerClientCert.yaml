@@ -1,21 +1,29 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  labels:
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-client
-  namespace: core-prod
+  name: {{ $fullName }}-pki-scheduler-client
+
 spec:
+
   commonName: 'system:kube-scheduler'
+
   duration: 8760h0m0s
+
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: {{ $fullName }}-issuer
+
   renewBefore: 4380h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-scheduler-client
+
+  secretName: {{ $fullName }}-pki-scheduler-client
+
   subject:
     organizations:
       - 'system:kube-scheduler'
+
   usages:
     - signing
     - key encipherment
