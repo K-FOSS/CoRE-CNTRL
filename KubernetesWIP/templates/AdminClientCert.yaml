@@ -1,8 +1,10 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
-  namespace: core-prod
+  name: '{{ $fullName }}-pki-admin-client'
 
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-admin-client
@@ -15,7 +17,7 @@ spec:
 
   renewBefore: 4380h0m0s
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+  secretName: '{{ $fullName }}-pki-admin-client'
 
   subject:
     organizations:
