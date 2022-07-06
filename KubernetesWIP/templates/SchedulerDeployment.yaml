@@ -10,8 +10,9 @@ metadata:
   name: '{{ $fullName }}-scheduler'
 
 spec:
+  replicas: {{ .Values.kubernetes.scheduler.replicaCount }}
+
   progressDeadlineSeconds: 600
-  replicas: 2
   revisionHistoryLimit: 10
 
   selector:
@@ -84,9 +85,7 @@ spec:
             timeoutSeconds: 15
           
           resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
+            {{- toYaml .Values.kubernetes.scheduler.resources | nindent 12 }}
 
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
@@ -101,6 +100,10 @@ spec:
 
             - mountPath: /pki/scheduler-client
               name: pki-scheduler-client
+
+            {{- with .Values.kubernetes.scheduler.extraVolumeMounts }}
+            {{- toYaml . | nindent 8 }}
+            {{- end }}
 
       dnsPolicy: ClusterFirst
 
