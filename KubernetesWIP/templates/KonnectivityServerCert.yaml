@@ -7,9 +7,12 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
 spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server
+
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
-  duration: 8760h # 365d
-  renewBefore: 4380h # 178d
+
+  duration: 8760h0m0s
+  renewBefore: 4380h0m0s
+
   subject:
     organizations:
       - infra1-dc1-infra-k0s-k8s-kubernetes
@@ -26,6 +29,7 @@ spec:
 
     # Default Localhost
     - localhost
+
   ipAddresses:
     - 127.0.0.1
 

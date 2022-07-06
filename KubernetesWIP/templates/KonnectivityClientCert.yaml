@@ -9,9 +9,9 @@ spec:
   commonName: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-client
   secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
 
-  duration: 8760h # 365d
+  duration: 8760h0m0s
 
-  renewBefore: 4380h
+  renewBefore: 4380h0m0s
 
   subject:
     organizations:
