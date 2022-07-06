@@ -282,6 +282,7 @@ kubernetes:
     extraVolumeMounts: []
 
     port: 10259
+
     service:
       enabled: true
       type: ClusterIP
