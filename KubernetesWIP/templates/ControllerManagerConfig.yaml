@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.controllerManager.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
 ---
@@ -5,8 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager-conf
-  namespace: core-prod
+  name: {{ $fullName }}-controller-manager-conf
 
 data:
   controller-manager.conf: |
@@ -34,3 +34,4 @@ data:
         user:
           client-certificate: /pki/controller-manager-client/tls.crt
           client-key: /pki/controller-manager-client/tls.key
+{{- end }}
