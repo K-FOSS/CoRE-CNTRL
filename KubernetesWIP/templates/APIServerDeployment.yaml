@@ -63,25 +63,34 @@ spec:
             - --logging-format=json
             - --v=0
 
+
             - '--allow-privileged=true'
+
+
             - '--authorization-mode=Node,RBAC'
+
             - '--bind-address=0.0.0.0'
+
             - '--client-ca-file=/pki/apiserver-server/ca.crt'
             - >-
               --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
             - '--enable-bootstrap-token-auth=true'
+
             - '--enable-aggregator-routing'
+
             - '--etcd-cafile=/pki/apiserver-etcd-client/ca.crt'
             - '--etcd-certfile=/pki/apiserver-etcd-client/tls.crt'
             - '--etcd-keyfile=/pki/apiserver-etcd-client/tls.key'
             - >-
               --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
+
             - '--insecure-port=0'
 
             - '--kubelet-timeout=30s'
             - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
             - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
             - '--kubelet-preferred-address-types=InternalIP'
+
             - '--proxy-client-cert-file=/pki/front-proxy-client/tls.crt'
             - '--proxy-client-key-file=/pki/front-proxy-client/tls.key'
             - >-
@@ -92,7 +101,8 @@ spec:
             - '--requestheader-username-headers=X-Remote-User'
             - '--secure-port=6443'
             - '--service-account-key-file=/pki/sa/tls.crt'
-            - '--service-cluster-ip-range=10.0.8.0/22'
+
+            - --service-cluster-ip-range={{ .Values.kubernetes.networking.serviceSubnet }}
             - '--tls-cert-file=/pki/apiserver-server/tls.crt'
             - '--tls-private-key-file=/pki/apiserver-server/tls.key'
             - >-
@@ -100,7 +110,9 @@ spec:
             - >-
               --service-account-issuer=https://kubernetes.default.svc.k0s.resolvemy.host
             - '--service-account-signing-key-file=/pki/sa/tls.key'
+
             - '--advertise-address=10.1.1.40'
+
             - '--feature-gates=MixedProtocolLBService=true'
           
           ports:
