@@ -7,7 +7,7 @@ metadata:
   name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-config
   namespace: core-prod
   labels:
-    api-address: '{{ $apiAddress }}'
+    test-nag: '{{ $fullName }}-kubeadm-config'
 
 data:
   kubeadmcfg.yaml: |
