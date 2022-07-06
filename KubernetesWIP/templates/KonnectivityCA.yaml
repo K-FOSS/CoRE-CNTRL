@@ -12,7 +12,7 @@ spec:
   secretName: {{ $fullName }}-pki-konnectivity-ca
 
   duration: 87600h0m0s
-  renewBefore: 87600h0m0s
+  renewBefore: 8760h0m0s
 
   subject:
     organizations:
