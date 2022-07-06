@@ -4,19 +4,17 @@ metadata:
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-backup
   name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-backup
-  namespace: core-prod
+
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 3
   jobTemplate:
     metadata:
-      creationTimestamp: null
       labels:
         app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-backup
     spec:
       template:
         metadata:
-          creationTimestamp: null
           labels:
             app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-backup
         spec:
@@ -31,7 +29,13 @@ spec:
                   weight: 1
           automountServiceAccountToken: false
           containers:
-            - command:
+            - name: etcd-backup
+
+
+              image: 'k8s.gcr.io/etcd:3.5.1-0'
+              imagePullPolicy: IfNotPresent
+
+              command:
                 - /bin/sh
                 - '-xc'
                 - >
@@ -51,44 +55,58 @@ spec:
                   value: /pki/etcd/peer/tls.key
                 - name: ETCDCTL_ENDPOINTS
                   value: 'infra1-dc1-infra-k0s-k8s-kubernetes-etcd:2379'
-              image: 'k8s.gcr.io/etcd:3.5.1-0'
-              imagePullPolicy: IfNotPresent
-              name: etcd-backup
+
+              
+
               resources:
                 requests:
                   cpu: 100m
                   memory: 128Mi
+
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
+
               volumeMounts:
+
                 - mountPath: /pki/etcd/ca
                   name: pki-etcd-certs-ca
+
                 - mountPath: /pki/etcd/peer
                   name: pki-etcd-certs-peer
+
                 - mountPath: /pki/etcd/server
                   name: pki-etcd-certs-server
+
                 - mountPath: /data
                   name: data
+
           dnsPolicy: ClusterFirst
           restartPolicy: OnFailure
+
           schedulerName: default-scheduler
+
           securityContext:
             seccompProfile:
               type: RuntimeDefault
+
           terminationGracePeriodSeconds: 30
+
           volumes:
             - name: pki-etcd-certs-ca
               secret:
                 defaultMode: 420
                 secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-ca
+            
             - name: pki-etcd-certs-peer
               secret:
                 defaultMode: 420
                 secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-peer
+            
             - name: pki-etcd-certs-server
               secret:
                 defaultMode: 420
                 secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
+            
             - name: data
               persistentVolumeClaim:
                 claimName: etcd-backup-infra1-dc1-infra-k0s-k8s-kubernetes-etcd

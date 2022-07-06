@@ -11,8 +11,11 @@ metadata:
   name: {{ $fullName }}-etcd
 
 spec:
+  replicas: {{ .Values.kubernetes.etcd.replicaCount }}
+
   podManagementPolicy: Parallel
-  replicas: 2
+
+
   revisionHistoryLimit: 10
   selector:
     matchLabels:
@@ -39,8 +42,14 @@ spec:
               weight: 1
 
       automountServiceAccountToken: false
+
       containers:
-        - command:
+        - name: etcd
+        
+          image: 'k8s.gcr.io/etcd:3.5.3-0'
+          imagePullPolicy: IfNotPresent
+
+          command:
             - etcd
             - >-
               --advertise-client-urls=https://$(POD_NAME).infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
@@ -51,18 +60,30 @@ spec:
               --initial-advertise-peer-urls=https://$(POD_NAME).infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380
             - >-
               --initial-cluster=infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380,infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2380
+            
             - '--initial-cluster-state=new'
             - '--initial-cluster-token=infra1-dc1-infra-k0s-k8s-kubernetes-etcd'
+            
             - '--key-file=/pki/etcd/server/tls.key'
+            
             - '--listen-client-urls=https://0.0.0.0:2379'
+            
+            
             - '--listen-peer-urls=https://0.0.0.0:2380'
+            
+            
             - '--listen-metrics-urls=http://0.0.0.0:2381'
+            
+            
             - '--name=$(POD_NAME)'
+            
             - '--peer-cert-file=/pki/etcd/peer/tls.crt'
             - '--peer-client-cert-auth=true'
             - '--peer-key-file=/pki/etcd/peer/tls.key'
             - '--peer-trusted-ca-file=/pki/etcd/ca/tls.crt'
+            
             - '--snapshot-count=10000'
+            
             - '--trusted-ca-file=/pki/etcd/ca/tls.crt'
           env:
             - name: POD_NAME
@@ -87,8 +108,6 @@ spec:
               value: >-
                 https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
 
-          image: 'k8s.gcr.io/etcd:3.5.3-0'
-          imagePullPolicy: IfNotPresent
 
           livenessProbe:
             failureThreshold: 8
@@ -101,7 +120,6 @@ spec:
             successThreshold: 1
             timeoutSeconds: 15
 
-          name: etcd
 
           ports:
             - containerPort: 2379
@@ -116,13 +134,16 @@ spec:
               name: metrics
               protocol: TCP
 
+
           resources:
             requests:
               cpu: 512m
               memory: 1024Mi
 
+
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
 
           volumeMounts:
             - mountPath: /pki/etcd/ca
@@ -140,6 +161,7 @@ spec:
             - mountPath: /backup/snapshot.db
               name: etcd-snapshot
 
+
       dnsPolicy: ClusterFirst
 
       restartPolicy: Always
@@ -156,17 +178,20 @@ spec:
         - name: pki-etcd-certs-ca
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-ca
+            secretName: {{ $fullName }}-pki-etcd-ca
+
 
         - name: pki-etcd-certs-peer
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-peer
+            secretName: {{ $fullName }}-pki-etcd-peer
+
 
         - name: pki-etcd-certs-server
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
+            secretName: {{ $fullName }}-pki-etcd-server
+
 
         - hostPath:
             path: /mnt/Site1.NAS1.Pool1/Backups/etcd-snapshot.db
@@ -185,9 +210,11 @@ spec:
         finalizers:
           - kubernetes.io/pvc-protection
 
-        labels:
-          app: infra1-dc1-infra-k0s-k8s-kubernetes-etcd
         name: etcd-data
+
+        labels:
+          app: {{ $fullName }}-etcd
+        
 
       spec:
         accessModes:
