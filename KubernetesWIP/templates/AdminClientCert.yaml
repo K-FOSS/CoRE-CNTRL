@@ -7,13 +7,13 @@ metadata:
   name: '{{ $fullName }}-pki-admin-client'
 
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-admin-client
+  commonName: '{{ $certName }}-admin-client'
 
   duration: 8760h0m0s
 
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: '{{ $fullName }}-issuer'
 
   renewBefore: 4380h0m0s
 
