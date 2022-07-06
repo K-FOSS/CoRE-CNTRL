@@ -1,3 +1,7 @@
+
+{{- if .Values.kubernetes.controllerManager.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -174,3 +178,4 @@ spec:
           secret:
             defaultMode: 420
             secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+{{- end }}
