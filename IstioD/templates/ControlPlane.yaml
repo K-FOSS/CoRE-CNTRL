@@ -46,11 +46,13 @@ spec:
         - name: VALIDATION_WEBHOOK_CONFIG_NAME
           value: ''
         - name: EXTERNAL_ISTIOD
-          value: "true"
+          value: 'true'
         - name: CLUSTER_ID
           value: core
         - name: SHARED_MESH_CONFIG
           value: istio
+        - name: PILOT_ENABLE_QUIC_LISTENERS
+          value: 'true'
   values:
     global:
       caAddress: istio.mylogin.space:15012
