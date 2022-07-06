@@ -1,8 +1,10 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer
-  namespace: core-prod
+  name: {{ $fullName }}-selfsigning-issuer
+
 spec:
   selfSigned: {}
 

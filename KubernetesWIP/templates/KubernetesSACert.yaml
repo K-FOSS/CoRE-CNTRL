@@ -1,101 +1,31 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"cert-manager.io/v1","kind":"Certificate","metadata":{"annotations":{},"labels":{"argocd.argoproj.io/instance":"infra1-dc1-infra-k0s-k8s"},"name":"infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa","namespace":"core-prod"},"spec":{"commonName":"infra1-dc1-infra-k0s-k8s-kubernetes-sa","duration":"87600h","isCA":true,"issuerRef":{"kind":"Issuer","name":"infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer"},"renewBefore":"8760h","secretName":"infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa","subject":{"organizations":["infra1-dc1-infra-k0s-k8s-kubernetes"]},"usages":["signing","key
-      encipherment","cert sign"]}}
-  creationTimestamp: '2022-05-05T00:21:44Z'
-  generation: 1
-  labels:
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
-  managedFields:
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:metadata':
-          'f:annotations':
-            .: {}
-            'f:kubectl.kubernetes.io/last-applied-configuration': {}
-          'f:labels':
-            .: {}
-            'f:argocd.argoproj.io/instance': {}
-        'f:spec':
-          .: {}
-          'f:commonName': {}
-          'f:duration': {}
-          'f:isCA': {}
-          'f:issuerRef':
-            .: {}
-            'f:kind': {}
-            'f:name': {}
-          'f:renewBefore': {}
-          'f:secretName': {}
-          'f:subject':
-            .: {}
-            'f:organizations': {}
-          'f:usages': {}
-      manager: argocd-application-controller
-      operation: Update
-      time: '2022-05-05T00:21:44Z'
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:status':
-          'f:revision': {}
-      manager: cert-manager-certificates-issuing
-      operation: Update
-      time: '2022-05-05T00:21:55Z'
-    - apiVersion: cert-manager.io/v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:status':
-          .: {}
-          'f:conditions':
-            .: {}
-            'k:{"type":"Ready"}':
-              .: {}
-              'f:lastTransitionTime': {}
-              'f:message': {}
-              'f:observedGeneration': {}
-              'f:reason': {}
-              'f:status': {}
-              'f:type': {}
-          'f:notAfter': {}
-          'f:notBefore': {}
-          'f:renewalTime': {}
-      manager: cert-manager-certificates-readiness
-      operation: Update
-      time: '2022-05-05T00:21:56Z'
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
-  namespace: core-prod
-  resourceVersion: '1388424'
-  uid: b539a6cf-d879-43ad-bd28-738f7bf2937a
+  name: {{ $fullName }}-pki-sa
+
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-sa
+  commonName: {{ $certName }}-sa
+
   duration: 87600h0m0s
+
   isCA: true
+
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer
+    name: {{ $fullName }}-selfsigning-issuer
+
   renewBefore: 8760h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+
+  secretName: {{ $fullName }}-pki-sa
+
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
+
   usages:
     - signing
     - key encipherment
     - cert sign
-status:
-  conditions:
-    - lastTransitionTime: '2022-05-05T00:21:55Z'
-      message: Certificate is up to date and has not expired
-      observedGeneration: 1
-      reason: Ready
-      status: 'True'
-      type: Ready
-  notAfter: '2032-05-02T00:21:52Z'
-  notBefore: '2022-05-05T00:21:52Z'
-  renewalTime: '2031-05-03T00:21:52Z'
-  revision: 1

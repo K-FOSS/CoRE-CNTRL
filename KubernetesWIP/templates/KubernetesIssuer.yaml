@@ -1,9 +1,11 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
-  namespace: core-prod
+  name: {{ $fullName }}-issuer
+
 spec:
   ca:
-    secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-ca
-
+    secretName: {{ $fullName }}-pki-ca
