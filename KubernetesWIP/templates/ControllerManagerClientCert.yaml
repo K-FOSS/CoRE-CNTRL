@@ -4,19 +4,19 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-client
-  namespace: core-prod
+  name: {{ $fullName }}-pki-controller-manager-client
+
 spec:
   commonName: 'system:kube-controller-manager'
   
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: '{{ $fullName }}-issuer'
   
   duration: 8760h0m0s
   renewBefore: 4380h0m0s
   
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-controller-manager-client
+  secretName: {{ $fullName }}-pki-controller-manager-client
   
   subject:
     organizations:

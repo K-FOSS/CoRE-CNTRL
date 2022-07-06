@@ -4,11 +4,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: '{{ $fullName }}-admin'
-
   name: '{{ $fullName }}-admin'
 
+  labels:
+    app: '{{ $fullName }}-admin'
 spec:
   replicas: {{ .Values.admin.replicaCount }}
 

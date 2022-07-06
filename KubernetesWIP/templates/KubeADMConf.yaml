@@ -2,6 +2,10 @@
 {{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}-admin-conf
+
 data:
   admin.conf: |
     apiVersion: v1
@@ -24,7 +28,3 @@ data:
       user:
         client-certificate: /pki/admin-client/tls.crt
         client-key: /pki/admin-client/tls.key
-kind: ConfigMap
-metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
-  namespace: core-prod
