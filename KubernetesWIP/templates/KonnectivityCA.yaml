@@ -1,21 +1,30 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-ca"
+  name: {{ $fullName }}-pki-konnectivity-ca
+
 spec:
-  commonName: "infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-ca"
-  secretName: "infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-ca"
+  commonName: {{ $certName }}-konnectivity-ca
+
+  secretName: {{ $fullName }}-pki-konnectivity-ca
+
   duration: 87600h0m0s
   renewBefore: 87600h0m0s
 
   subject:
     organizations:
-    - "infra1-dc1-infra-k0s-k8s-kubernetes"
+    - {{ $fullName }}
+
   usages:
-  - "signing"
-  - "key encipherment"
-  - "cert sign"
+    - signing
+    - key encipherment
+    - cert sign
+
   isCA: true
+
   issuerRef:
-    name: "infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer"
     kind: Issuer
+    name: {{ $fullName }}-selfsigning-issuer

@@ -4,19 +4,25 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
-  namespace: core-prod
+  name: {{ $fullName }}-pki-konnectivity-server-client
+
 spec:
   commonName: 'system:konnectivity-server'
+
   duration: 8760h0m0s
+
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-issuer
+    name: {{ $fullName }}-issuer
+
   renewBefore: 4380h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
+
+  secretName: {{ $fullName }}-pki-konnectivity-server-client
+
   subject:
     organizations:
       - 'system:konnectivity-server'
+
   usages:
     - signing
     - key encipherment

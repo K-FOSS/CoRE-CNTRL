@@ -1,7 +1,10 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer
+  name: {{ $fullName }}-konnectivity-issuer
 spec:
   ca:
-    secretName: "infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-ca"
+    secretName: {{ $fullName }}-pki-konnectivity-ca

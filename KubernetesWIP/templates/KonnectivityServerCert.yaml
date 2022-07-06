@@ -4,22 +4,25 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
-spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server
+  name: {{ $fullName }}-pki-konnectivity-server
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
+spec:
+  commonName: {{ $certName }}-konnectivity-server
+
+  secretName: {{ $fullName }}-pki-konnectivity-server
 
   duration: 8760h0m0s
   renewBefore: 4380h0m0s
 
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
+
   usages:
   - 'signing'
   - 'key encipherment'
   - 'server auth'
+
   dnsNames:
     # Consul DNS Names
     - k0s-konnectivity
@@ -36,6 +39,7 @@ spec:
     # AnyCast
     - 10.1.1.41
     - 10.1.1.40
+
   issuerRef:
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-issuer
+    name: {{ $fullName }}-konnectivity-issuer
     kind: Issuer
