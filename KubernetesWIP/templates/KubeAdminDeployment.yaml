@@ -9,7 +9,7 @@ metadata:
   labels:
     app: '{{ $fullName }}-admin'
 spec:
-  replicas: {{ .Values.admin.replicaCount }}
+  replicas: {{ .Values.kubernetes.admin.replicaCount }}
 
   progressDeadlineSeconds: 600
 
