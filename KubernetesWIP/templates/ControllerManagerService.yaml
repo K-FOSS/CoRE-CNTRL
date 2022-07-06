@@ -1,11 +1,15 @@
+
+{{- if and .Values.kubernetes.controllerManager.enabled .Values.kubernetes.controllerManager.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+    app: {{ $fullName }}-controller-manager
 
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
-  namespace: core-prod
+  name: {{ $fullName }}-controller-manager
+
 spec:
   ipFamilies:
     - IPv4
@@ -20,8 +24,8 @@ spec:
       protocol: TCP
 
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+    app: {{ $fullName }}-controller-manager
 
   sessionAffinity: None
   type: ClusterIP
-
+{{- end }}

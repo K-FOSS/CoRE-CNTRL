@@ -6,10 +6,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+    app: '{{ $fullName }}-controller-manager'
 
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
-  namespace: core-prod
+  name: '{{ $fullName }}-controller-manager'
 
 spec:
   progressDeadlineSeconds: 600
@@ -20,7 +19,7 @@ spec:
 
   selector:
     matchLabels:
-      app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+      app: '{{ $fullName }}-controller-manager'
 
   strategy:
     rollingUpdate:
@@ -31,7 +30,7 @@ spec:
   template:
     metadata:
       labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+        app: '{{ $fullName }}-controller-manager'
     
     spec:
       affinity:
@@ -40,7 +39,7 @@ spec:
             - podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
+                    app: '{{ $fullName }}-controller-manager'
                 topologyKey: kubernetes.io/hostname
               weight: 1
 
