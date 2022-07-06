@@ -1,4 +1,11 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
+---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
+
 data:
   konnectivity-server.conf: |
     apiVersion: v1
@@ -21,8 +28,4 @@ data:
       user:
         client-certificate: /pki/konnectivity-server-client/tls.crt
         client-key: /pki/konnectivity-server-client/tls.key
-kind: ConfigMap
-metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
-  namespace: core-prod
-  uid: f0bee2f4-ed1a-41af-820a-178c2a919661
+
