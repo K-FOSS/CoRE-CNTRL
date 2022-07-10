@@ -9,10 +9,10 @@
 
 {{- $domains := dict "domains" (list) -}}
 
-
+{{- $bits := "" -}}
 
 {{- range $rootDomain := $searchDomains -}}
-{{- $bits := "" -}}
+
 
 {{- $domainList := splitList "." $rootDomain -}}
 
