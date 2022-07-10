@@ -15,12 +15,12 @@ Expand the name of the chart.
 {{- end -}}
 
 {{- define "kubernetes.rootSearchDomain" -}}
-{{- $domain := template "kubernetes.rootDomain" . -}}
+{{- $domain := include "kubernetes.rootDomain" . -}}
 {{- printf "%s.svc.%s" .Release.Namespace $domain }}
 {{- end -}}
 
 {{- define "kubernetes.clusterSearchDomain" -}}
-{{- $domain := template "kubernetes.clusterDomain" . -}}
+{{- $domain := include "kubernetes.clusterDomain" . -}}
 {{- printf "%s.svc.%s" "default" $domain }}
 {{- end -}}
 
