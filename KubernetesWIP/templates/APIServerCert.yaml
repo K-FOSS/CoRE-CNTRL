@@ -10,14 +10,15 @@
 {{- $domains := dict "domains" (list) -}}
 
 
-{{- $bits := "" -}}
-{{- range $rootDomain := $searchDomains -}}
 
+{{- range $rootDomain := $searchDomains -}}
+{{- $bits := "" -}}
 
 {{- $domainList := splitList "." $rootDomain -}}
 
 {{- range $domain := $domainList -}}
-{{- $bits := printf ".%s%sblah" $domain $bits -}}
+{{- $addBits := printf "%s" $bits -}}
+{{- $bits := printf ".%s%sblah" $domain $addBits -}}
 {{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
 {{- end }}
 {{- end }}
