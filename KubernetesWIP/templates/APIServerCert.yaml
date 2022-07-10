@@ -40,9 +40,6 @@ spec:
   commonName: '{{ $certName }}-apiserver-server'
 
   dnsNames:
-    - '{{ $svcName1 }}'
-    - '{{ $svcName2 }}'
-    - '{{ $svcName3 }}'
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc
