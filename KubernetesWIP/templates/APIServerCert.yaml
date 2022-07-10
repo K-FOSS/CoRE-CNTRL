@@ -11,11 +11,16 @@
 
 {{- $bits := "test5" -}}
 
-{{- range $rootDomain := $searchDomains -}}
+{{- range $index, $rootDomain := $searchDomains -}}
+{{- $bits := print ".test"  $index "."  -}}
+
 {{- $domainList := splitList "." $rootDomain -}}
 
+
 {{- range $domain := $domainList -}}
-{{- $bits := print $bits $domain ","  -}}
+
+
+{{- $bits := print $bits $domain -}}
 {{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
 {{- end }}
 {{- end }}
