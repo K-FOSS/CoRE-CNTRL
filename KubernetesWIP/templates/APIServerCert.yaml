@@ -10,12 +10,14 @@
 {{- $domains := dict "domains" (list) -}}
 
 
-{{- range $rootDomain := $searchDomains -}}
 {{- $bits := "" -}}
+{{- range $rootDomain := $searchDomains -}}
+
+
 {{- $domainList := splitList "." $rootDomain -}}
 
 {{- range $domain := $domainList -}}
-{{- $bits := printf ".%s%s" $domain $bits -}}
+{{- $bits := printf ".%s%sblah" $domain $bits -}}
 {{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
 {{- end }}
 {{- end }}
@@ -28,7 +30,7 @@ metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
   labels:
-    test: '{{- range $domains.domains}}{{ . }}{{- end }}'
+    test: '{{- range $domains.domains}}{{ . }},{{- end }}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
