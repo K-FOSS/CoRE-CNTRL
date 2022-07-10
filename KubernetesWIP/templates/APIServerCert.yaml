@@ -9,14 +9,13 @@
 
 {{- $domains := dict "domains" (list) -}}
 
-{{- $bits := "" -}}
+{{- $bits := "test5" -}}
 
 {{- range $rootDomain := $searchDomains -}}
 {{- $domainList := splitList "." $rootDomain -}}
 
 {{- range $domain := $domainList -}}
-{{- $addBits := printf "%s" $bits -}}
-{{- $bits := printf ".%s%sblah" $domain $addBits -}}
+{{- $bits := print $bits $domain ","  -}}
 {{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
 {{- end }}
 {{- end }}
@@ -30,7 +29,6 @@ metadata:
 
   labels:
     test: '{{- range $domains.domains}}{{ . }},{{- end }}'
-    test-main: '{{- $bits | toJson | toString  -}}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
