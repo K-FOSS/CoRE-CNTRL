@@ -6,6 +6,24 @@ Expand the name of the chart.
 {{- default "kubernetes" .Values.kubernetes.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "kubernetes.rootDomain" -}}
+{{- default "cluster.local" .Values.kubernetes.hostClusterDomain -}}
+{{- end -}}
+
+{{- define "kubernetes.clusterDomain" -}}
+{{- default "cluster.local" .Values.kubernetes.clusterName -}}
+{{- end -}}
+
+{{- define "kubernetes.rootSearchDomain" -}}
+{{- $domain := template "kubernetes.rootDomain" . -}}
+{{- printf "%s.svc.%s" .Release.Namespace $domain }}
+{{- end -}}
+
+{{- define "kubernetes.clusterSearchDomain" -}}
+{{- $domain := template "kubernetes.clusterDomain" . -}}
+{{- printf "%s.svc.%s" "default" $domain }}
+{{- end -}}
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).

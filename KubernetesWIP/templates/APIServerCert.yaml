@@ -1,21 +1,57 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
+
+{{- $serviceName := printf "%s-apiserver" $fullName -}}
+
+{{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
+{{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}
+
+{{- $searchDomains := list $rootSearchDomain $clusterRootDomain -}}
+
+{{- $domains := dict "domains" (list) -}}
+
+
+{{- range $rootDomain := $searchDomains -}}
+{{- $bits := "" -}}
+{{- $domainList := splitList "." $rootDomain -}}
+
+{{- range $domain := $domains -}}
+{{- $bits := printf ".%s%s" $domain $bits -}}
+{{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
+{{- end }}
+{{- end }}
+
+
+
+
+
 {{- $certName := include "kubernetes.certname" . -}}
+
+
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
+  labels:
+    test: '{{- range $domains.domains}}{{ . }}{{- end }}'
+
 spec:
   commonName: '{{ $certName }}-apiserver-server'
 
   dnsNames:
+    - '{{ $svcName1 }}'
+    - '{{ $svcName2 }}'
+    - '{{ $svcName3 }}'
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster.local
     - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster
     - localhost
+    {{- with .Values.kubernetes.apiServer.certSANs.dnsNames }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
     - k0s-kubeapi.service.dc1.kjdev
     - k0s-kubeapi.service.kjdev
     - api.k0s.dc1.resolvemy.host
