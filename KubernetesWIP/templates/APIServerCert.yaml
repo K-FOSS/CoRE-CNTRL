@@ -14,7 +14,7 @@
 {{- $bits := "" -}}
 {{- $domainList := splitList "." $rootDomain -}}
 
-{{- range $domain := $domains -}}
+{{- range $domain := $domainList -}}
 {{- $bits := printf ".%s%s" $domain $bits -}}
 {{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
 {{- end }}
