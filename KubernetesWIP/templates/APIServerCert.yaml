@@ -12,8 +12,6 @@
 {{- $bits := "" -}}
 
 {{- range $rootDomain := $searchDomains -}}
-
-
 {{- $domainList := splitList "." $rootDomain -}}
 
 {{- range $domain := $domainList -}}
@@ -32,6 +30,7 @@ metadata:
 
   labels:
     test: '{{- range $domains.domains}}{{ . }},{{- end }}'
+    test-main: '{{- $bits | toJson | toString  -}}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
