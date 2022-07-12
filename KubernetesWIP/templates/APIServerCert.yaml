@@ -1,29 +1,4 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
-
-{{- $serviceName := printf "%s-apiserver" $fullName -}}
-
-{{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
-{{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}
-
-{{- $searchDomains := list $rootSearchDomain $clusterRootDomain -}}
-
-{{- $domains := dict "domains" (list) -}}
-
-{{- $bits := "test5" -}}
-
-{{- range $index, $rootDomain := $searchDomains -}}
-{{- $bits := print ".test"  $index  -}}
-
-{{- $domainList := splitList "." $rootDomain -}}
-
-{{- range $index, $domain := $domainList -}}
-
-
-{{- $bits := print $bits "-" $index "." $domain -}}
-{{- $var := printf "%s%s" $serviceName $bits | append $domains.domains | set $domains "domains" -}}
-{{- end }}
-{{- end }}
-
 {{- $certName := include "kubernetes.certname" . -}}
 ---
 apiVersion: cert-manager.io/v1
@@ -32,7 +7,7 @@ metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
   labels:
-    test: '{{- range $domains.domains}}{{ . }},{{- end }}'
+    hellotest: '{{ include "kubernetes.domains" . }}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
