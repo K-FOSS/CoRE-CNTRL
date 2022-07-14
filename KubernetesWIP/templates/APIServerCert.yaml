@@ -1,6 +1,8 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
-{{- $domains := include "kubernetes.domains" . | fromJson -}}
+{{- $domains := include "kubernetes.domains" . -}}
+
+
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
