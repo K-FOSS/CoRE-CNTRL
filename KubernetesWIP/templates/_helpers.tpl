@@ -86,6 +86,6 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
 {{- $bits := printf ".%s%s" $domain $bits -}}
 {{- $var := printf "%s" $bits | append $domains.domains | set $domains "domains" -}}
 {{- end -}}
-{{- $domains.domains | toRawJson -}}
 {{- end -}}
+{{- $domains.domains | toRawJson -}}
 {{- end -}}
