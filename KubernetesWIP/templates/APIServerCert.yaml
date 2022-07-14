@@ -1,33 +1,22 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
-{{- $domains := fromJson (include "kubernetes.domains" .) -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
-  labels:
-    hellotest: '{{ $domains }}'
-
 spec:
   commonName: '{{ $certName }}-apiserver-server'
 
   dnsNames:
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster.local
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster
+    {{- range $domain := splitList ".," (include "kubernetes.domains" .) -}}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-apiserver{{ $test.domains | join "" }}
+    - kubernetes{{ $test.domains | join "" }}
+    {{- end -}}
     - localhost
-    - k0s-kubeapi.service.dc1.kjdev
-    - k0s-kubeapi.service.kjdev
-    - api.k0s.dc1.resolvemy.host
-    - kubernetes.default
-    - kubernetes.default.svc
-    - kubernetes.default.svc.cluster.local
-    - kubernetes.default.svc.cluster
-    - kubernetes.default.svc.k0s.resolvemy.host
   
   duration: 8760h0m0s
   

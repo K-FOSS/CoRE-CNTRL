@@ -16,12 +16,12 @@ Expand the name of the chart.
 
 {{- define "kubernetes.rootSearchDomain" -}}
 {{- $domain := include "kubernetes.rootDomain" . -}}
-{{- printf "%s.svc.%s" .Release.Namespace $domain }}
+{{- printf "%s.svc.%s" .Release.Namespace $domain -}}
 {{- end -}}
 
 {{- define "kubernetes.clusterSearchDomain" -}}
 {{- $domain := include "kubernetes.clusterDomain" . -}}
-{{- printf "%s.svc.%s" "default" $domain }}
+{{- printf "%s.svc.%s" "default" $domain -}}
 {{- end -}}
 
 {{/*
@@ -72,20 +72,26 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
   {{- printf "%s:%d" (.Values.kubernetes.apiServer.service.loadBalancerIP | toString) (.Values.kubernetes.apiServer.port | int)  -}}
 {{- end -}}
 
-{{- $bits := "" -}}
-
 {{- define "kubernetes.domains" -}}
 {{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
 {{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}
 {{- $searchDomains := list $rootSearchDomain $clusterRootDomain -}}
-{{- $domains := dict "domains" (list) -}}
-{{- range $index, $rootDomain := $searchDomains -}}
+{{- $domains1 := dict "domains" (list) -}}
+{{- $domains2 := dict "domains" (list) -}}
+{{- range $indexCore, $rootDomain := $searchDomains -}}
 {{- $domainList := splitList "." $rootDomain -}}
-{{- $bits := print "" -}}
+{{- $bits := printf "" -}}
+{{- $bits2 := printf "" -}}
 {{- range $index, $domain := $domainList -}}
+{{- if gt $indexCore 0 -}}
 {{- $bits := printf ".%s%s" $domain $bits -}}
-{{- $var := printf "%s" $bits | append $domains.domains | set $domains "domains" -}}
-{{- $domains | toRawJson -}}
+{{- $var := printf "%s" $bits | append $domains1.domains | set $domains1 "domains" -}}
+{{- $domains1 | toRawJson -}}.,
+{{- else -}}
+{{- $bits2 := printf ".%s%s" $domain $bits2 -}}
+{{- $var := printf "%s" $bits2 | append $domains2.domains | set $domains2 "domains" -}}
+{{- $domains2 | toRawJson -}}.,
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
