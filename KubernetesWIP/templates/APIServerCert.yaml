@@ -1,5 +1,8 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := include "kubernetes.domains" . -}}
+
+
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -7,7 +10,7 @@ metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
   labels:
-    hellotest: '{{ include "kubernetes.domains" . }}'
+    hellotest: '{{- range $index, $rootDomain := $searchDomains -}}{{ printf "{{ $fullName }}-pki-apiserver-server%s" $rootDomain }}{{- end -}}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
