@@ -75,17 +75,17 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
 {{- $bits := "" -}}
 
 {{- define "kubernetes.domains" -}}
-{{- $bits := print "" -}}
 {{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
 {{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}
 {{- $searchDomains := list $rootSearchDomain $clusterRootDomain -}}
 {{- $domains := dict "domains" (list) -}}
 {{- range $index, $rootDomain := $searchDomains -}}
 {{- $domainList := splitList "." $rootDomain -}}
+{{- $bits := print "" -}}
 {{- range $index, $domain := $domainList -}}
 {{- $bits := printf ".%s%s" $domain $bits -}}
 {{- $var := printf "%s" $bits | append $domains.domains | set $domains "domains" -}}
-{{- $domains.domains | toRawJson -}}
 {{- end -}}
+{{- $domains.domains | toRawJson -}}
 {{- end -}}
 {{- end -}}
