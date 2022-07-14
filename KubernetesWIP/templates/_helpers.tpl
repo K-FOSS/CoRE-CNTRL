@@ -19,6 +19,11 @@ Expand the name of the chart.
 {{- printf "%s.svc.%s" .Release.Namespace $domain -}}
 {{- end -}}
 
+{{- define "kubernetes.defaultClusterSearchDomain" -}}
+{{- $domain := include "kubernetes.rootDomain" . -}}
+{{- printf "%s.svc.%s" "default" $domain -}}
+{{- end -}}
+
 {{- define "kubernetes.clusterSearchDomain" -}}
 {{- $domain := include "kubernetes.clusterDomain" . -}}
 {{- printf "%s.svc.%s" "default" $domain -}}
@@ -75,22 +80,27 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
 {{- define "kubernetes.domains" -}}
 {{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
 {{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}
-{{- $searchDomains := list $rootSearchDomain $clusterRootDomain -}}
+{{- $defaultClusterSearchDomain := include "kubernetes.defaultClusterSearchDomain" . -}}
+{{- $searchDomains := list $rootSearchDomain $clusterRootDomain $defaultClusterSearchDomain  -}}
 {{- $domains1 := dict "domains" (list) -}}
 {{- $domains2 := dict "domains" (list) -}}
+{{- $domains3 := dict "domains" (list) -}}
 {{- range $indexCore, $rootDomain := $searchDomains -}}
 {{- $domainList := splitList "." $rootDomain -}}
 {{- $bits := printf "" -}}
-{{- $bits2 := printf "" -}}
 {{- range $index, $domain := $domainList -}}
-{{- if gt $indexCore 0 -}}
+{{- if eq $indexCore 0 -}}
 {{- $bits := printf ".%s%s" $domain $bits -}}
 {{- $var := printf "%s" $bits | append $domains1.domains | set $domains1 "domains" -}}
 {{- $domains1 | toRawJson -}}.,
-{{- else -}}
-{{- $bits2 := printf ".%s%s" $domain $bits2 -}}
-{{- $var := printf "%s" $bits2 | append $domains2.domains | set $domains2 "domains" -}}
+{{- else if eq $indexCore 1 -}}
+{{- $bits := printf ".%s%s" $domain $bits -}}
+{{- $var := printf "%s" $bits | append $domains2.domains | set $domains2 "domains" -}}
 {{- $domains2 | toRawJson -}}.,
+{{- else if eq $indexCore 2 -}}
+{{- $bits := printf ".%s%s" $domain $bits -}}
+{{- $var := printf "%s" $bits | append $domains3.domains | set $domains3 "domains" -}}
+{{- $domains3 | toRawJson -}}.,
 {{- end -}}
 {{- end -}}
 {{- end -}}

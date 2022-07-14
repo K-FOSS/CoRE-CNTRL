@@ -11,11 +11,11 @@ spec:
   commonName: '{{ $certName }}-apiserver-server'
 
   dnsNames:
-    {{- range $domain := splitList ".," (include "kubernetes.domains" .) -}}
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
     {{ $test := $domain | fromJson }}
     - {{ $fullName }}-apiserver{{ $test.domains | join "" }}
     - kubernetes{{ $test.domains | join "" }}
-    {{- end -}}
+    {{ end }}
     - localhost
   
   duration: 8760h0m0s
