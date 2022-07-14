@@ -1,6 +1,6 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
-{{- $domains := include "kubernetes.domains" . | fromJson -}}
+{{- $domains := include "kubernetes.domains" .-}}
 
 
 ---
@@ -10,7 +10,7 @@ metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
   labels:
-    hellotest: '{{- range $index, $rootDomain := $domains -}}{{ printf "%s-pki-apiserver-server%s" $fullName $rootDomain }}{{- end -}}'
+    hellotest: '{{ $domains }}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
