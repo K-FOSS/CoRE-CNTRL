@@ -1,6 +1,6 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
-{{- $domains := include "kubernetes.domains" . -}}
+{{- $domains := fromJson include "kubernetes.domains" . -}}
 
 
 ---
