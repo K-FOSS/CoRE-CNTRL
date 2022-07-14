@@ -10,7 +10,7 @@ metadata:
   name: {{ $fullName }}-pki-apiserver-server
 
   labels:
-    hellotest: '{{- range $index, $rootDomain := $searchDomains -}}{{ printf "%s-pki-apiserver-server%s" $fullName $rootDomain }}{{- end -}}'
+    hellotest: '{{- range $index, $rootDomain := $domains -}}{{ printf "%s-pki-apiserver-server%s" $fullName $rootDomain }}{{- end -}}'
 
 spec:
   commonName: '{{ $certName }}-apiserver-server'
