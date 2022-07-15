@@ -114,6 +114,8 @@ spec:
             - '--advertise-address=10.1.1.40'
 
             - '--feature-gates=MixedProtocolLBService=true'
+            - '--max-mutating-requests-inflight=400'
+            - '--max-requests-inflight=800'
           
           ports:
             - containerPort: 6443
