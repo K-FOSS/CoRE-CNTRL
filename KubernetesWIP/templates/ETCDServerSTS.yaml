@@ -83,6 +83,7 @@ spec:
             - '--peer-trusted-ca-file=/pki/etcd/ca/tls.crt'
             
             - '--snapshot-count=10000'
+            - '--log-level=error'
             
             - '--trusted-ca-file=/pki/etcd/ca/tls.crt'
           env:
