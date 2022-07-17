@@ -263,7 +263,7 @@ kubernetes:
     resources:
       requests:
         cpu: 100m
-        memory: 128Mi
+        memory: 364Mi
       # limits:
       #   cpu: 100m
       #   memory: 128Mi
