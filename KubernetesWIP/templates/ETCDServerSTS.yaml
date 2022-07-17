@@ -82,10 +82,12 @@ spec:
             - '--peer-key-file=/pki/etcd/peer/tls.key'
             - '--peer-trusted-ca-file=/pki/etcd/ca/tls.crt'
             
-            - '--snapshot-count=10000'
+            - '--snapshot-count=100000'
             - '--log-level=error'
             
             - '--trusted-ca-file=/pki/etcd/ca/tls.crt'
+            - '--heartbeat-interval=500'
+            - '--election-timeout=2500'
           env:
             - name: POD_NAME
               valueFrom:
