@@ -42,6 +42,7 @@ spec:
               weight: 1
 
       automountServiceAccountToken: false
+      enableServiceLinks: true
 
       containers:
         - name: etcd
