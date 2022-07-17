@@ -125,13 +125,7 @@ spec:
 
 
           resources:
-            requests:
-              cpu: 1024m
-              memory: 6Gi
-
-            limits:
-              cpu: 2048m
-              memory: 6Gi
+            {{- toYaml .Values.kubernetes.etcd.resources | nindent 10 }}
 
 
           terminationMessagePath: /dev/termination-log

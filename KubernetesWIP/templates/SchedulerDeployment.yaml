@@ -126,7 +126,7 @@ spec:
         - name: pki-scheduler-server
           secret:
             defaultMode: 420
-            secretName: '{{ $fullName }}-scheduler-conf'
+            secretName: '{{ $fullName }}-pki-scheduler-server'
 
         - name: pki-scheduler-client
           secret:
