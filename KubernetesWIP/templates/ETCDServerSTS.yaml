@@ -126,8 +126,12 @@ spec:
 
           resources:
             requests:
-              cpu: 512m
-              memory: 1024Mi
+              cpu: 1024m
+              memory: 6Gi
+
+            limits:
+              cpu: 2048m
+              memory: 6Gi
 
 
           terminationMessagePath: /dev/termination-log
