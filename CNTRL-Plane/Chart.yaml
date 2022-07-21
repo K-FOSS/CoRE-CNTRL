@@ -26,6 +26,4 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     version: 1.x.x
 
-  - name: vcluster-k8s
-    repository: https://charts.loft.sh
-    version: 0.11.0-alpha.0
+
