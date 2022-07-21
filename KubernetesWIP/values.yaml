@@ -826,7 +826,6 @@ vcluster-k8s:
   # Etcd settings
   etcd:
     image: k8s.gcr.io/etcd:3.5.1-0
-    disabled: true
     # The amount of replicas to run 
     replicas: 1
     # NodeSelector used
