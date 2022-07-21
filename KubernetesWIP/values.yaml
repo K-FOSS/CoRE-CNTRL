@@ -707,11 +707,11 @@ vcluster-k8s:
       enabled: true # will be ignored if persistentvolumes.enabled = true
 
     nodes:
-      enabled: false
+      enabled: true
 
       # If nodes sync is enabled, and syncAllNodes = true, the virtual cluster 
       # will sync all nodes instead of only the ones where some pods are running. 
-      syncAllNodes: false
+      syncAllNodes: true
 
       # nodeSelector is used to limit which nodes get synced to the vcluster,
       # and which nodes are used to run vcluster pods. 
@@ -721,7 +721,7 @@ vcluster-k8s:
       # if true, vcluster will run with a scheduler and node changes are possible
       # from within the virtual cluster. This is useful if you would like to
       # taint, drain and label nodes from within the virtual cluster
-      enableScheduler: false
+      enableScheduler: true
 
       # DEPRECATED: use enable scheduler instead
       # syncNodeChanges allows vcluster user edits of the nodes to be synced down to the host nodes.
