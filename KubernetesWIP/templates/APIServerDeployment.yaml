@@ -1,6 +1,7 @@
 {{- if .Values.kubernetes.apiServer.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -64,51 +65,58 @@ spec:
             - --v=0
 
 
-            - '--allow-privileged=true'
+            - --allow-privileged=true
 
 
-            - '--authorization-mode=Node,RBAC'
+            - --authorization-mode=Node,RBAC
 
-            - '--bind-address=0.0.0.0'
+            - --bind-address=0.0.0.0
 
-            - '--client-ca-file=/pki/apiserver-server/ca.crt'
-            - >-
-              --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
-            - '--enable-bootstrap-token-auth=true'
+            - --client-ca-file=/pki/apiserver-server/ca.crt
+            
+            - --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
+            - --enable-bootstrap-token-auth=true
 
             - '--enable-aggregator-routing'
 
-            - '--etcd-cafile=/pki/apiserver-etcd-client/ca.crt'
-            - '--etcd-certfile=/pki/apiserver-etcd-client/tls.crt'
-            - '--etcd-keyfile=/pki/apiserver-etcd-client/tls.key'
+            - --etcd-cafile=/pki/apiserver-etcd-client/ca.crt
+            - --etcd-certfile=/pki/apiserver-etcd-client/tls.crt
+            - --etcd-keyfile=/pki/apiserver-etcd-client/tls.key
             - >-
               --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
 
-            - '--insecure-port=0'
+            - --insecure-port=0
 
-            - '--kubelet-timeout=30s'
-            - '--kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt'
-            - '--kubelet-client-key=/pki/apiserver-kubelet-client/tls.key'
-            - '--kubelet-preferred-address-types=InternalIP'
+            - --kubelet-timeout=30s
+            - --kubelet-preferred-address-types=InternalIP
 
-            - '--proxy-client-cert-file=/pki/front-proxy-client/tls.crt'
-            - '--proxy-client-key-file=/pki/front-proxy-client/tls.key'
-            - >-
-              --requestheader-allowed-names=infra1-dc1-infra-k0s-k8s-kubernetes-front-proxy-client
-            - '--requestheader-client-ca-file=/pki/front-proxy-client/ca.crt'
-            - '--requestheader-extra-headers-prefix=X-Remote-Extra-'
-            - '--requestheader-group-headers=X-Remote-Group'
-            - '--requestheader-username-headers=X-Remote-User'
-            - '--secure-port=6443'
-            - '--service-account-key-file=/pki/sa/tls.crt'
+            - --kubelet-client-certificate=/pki/apiserver-kubelet-client/tls.crt
+            - --kubelet-client-key=/pki/apiserver-kubelet-client/tls.key
+
+
+            - --proxy-client-cert-file=/pki/front-proxy-client/tls.crt
+            - --proxy-client-key-file=/pki/front-proxy-client/tls.key
+            
+            
+            - --requestheader-allowed-names={{ $certName }}-front-proxy-client
+            - --requestheader-client-ca-file=/pki/front-proxy-client/ca.crt
+            - --requestheader-extra-headers-prefix=X-Remote-Extra-
+            - --requestheader-group-headers=X-Remote-Group
+            - --requestheader-username-headers=X-Remote-User
+            
+            
+            - --secure-port=6443
+
+            - --service-account-key-file=/pki/sa/tls.crt
 
             - --service-cluster-ip-range={{ .Values.kubernetes.networking.serviceSubnet }}
-            - '--tls-cert-file=/pki/apiserver-server/tls.crt'
-            - '--tls-private-key-file=/pki/apiserver-server/tls.key'
-            - >-
-              --egress-selector-config-file=/etc/kubernetes/egress-selector-configuration.yaml
-            - >-
-              --service-account-issuer=https://kubernetes.default.svc.k0s.resolvemy.host
+            
+            - --tls-cert-file=/pki/apiserver-server/tls.crt
+            - --tls-private-key-file=/pki/apiserver-server/tls.key
+            
+            - --egress-selector-config-file=/etc/kubernetes/egress-selector-configuration.yaml
+            
+            - --service-account-issuer=https://kubernetes.default.svc.k0s.resolvemy.host
             - '--service-account-signing-key-file=/pki/sa/tls.key'
 
             {{- if not (hasKey .Values.kubernetes.apiServer.extraArgs "advertise-address") }}
@@ -117,10 +125,9 @@ spec:
             {{- end }}
             {{- end }}
 
-            - '--feature-gates=MixedProtocolLBService=true'
-            - '--max-mutating-requests-inflight=400'
-            - '--max-requests-inflight=800'
-          
+            - --feature-gates=MixedProtocolLBService=true
+            - --max-mutating-requests-inflight=400
+            - --max-requests-inflight=800
           ports:
             - containerPort: 6443
               name: client
