@@ -21,11 +21,14 @@ spec:
   duration: 8760h0m0s
   
   ipAddresses:
-    - 127.0.0.1
-    - 10.0.8.1
-    - 172.18.213.183
-    - 10.1.1.40
-    - 10.1.1.41
+    {{- with .Values.kubernetes.apiServer.service.loadBalancerIP }}
+    {{- if not (has . $.Values.kubernetes.apiServer.certSANs.ipAddresses) }}
+    - {{ . | quote }}
+    {{- end }}
+    {{- end }}
+    {{- with .Values.kubernetes.apiServer.certSANs.ipAddresses }}
+    {{- . | toYaml | nindent 2 }}
+    {{- end }}
   
   issuerRef:
     kind: Issuer
