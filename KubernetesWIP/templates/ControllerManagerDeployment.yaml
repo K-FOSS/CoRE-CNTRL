@@ -72,6 +72,17 @@ spec:
           image: k8s.gcr.io/kube-controller-manager:v1.23.6
           imagePullPolicy: IfNotPresent
 
+          livenessProbe:
+            failureThreshold: 8
+
+            httpGet:
+              path: /healthz
+              port: {{ .Values.kubernetes.controllerManager.port }}
+              scheme: HTTPS
+
+            initialDelaySeconds: 15
+            timeoutSeconds: 15
+
           command:
             - kube-controller-manager
 
@@ -110,7 +121,7 @@ spec:
             - --root-ca-file=/pki/ca/tls.crt
 
 
-            - --secure-port=10257
+            - --secure-port={{ .Values.kubernetes.controllerManager.port }}
 
 
             - --service-account-private-key-file=/pki/sa/tls.key
@@ -134,7 +145,7 @@ spec:
             - '--feature-gates=MixedProtocolLBService=true'
 
           ports:
-            - containerPort: 10257
+            - containerPort: {{ .Values.kubernetes.controllerManager.port }
               name: https
               protocol: TCP
 
