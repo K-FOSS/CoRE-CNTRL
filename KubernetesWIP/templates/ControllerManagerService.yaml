@@ -16,9 +16,9 @@ spec:
   ipFamilyPolicy: SingleStack
 
   ports:
-    - name: client
+    - name: https
 
-      targetPort: client
+      targetPort: https
       port: 10257
 
       protocol: TCP

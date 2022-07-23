@@ -135,7 +135,7 @@ spec:
 
           ports:
             - containerPort: 10257
-              name: client
+              name: https
               protocol: TCP
 
           resources:
@@ -145,6 +145,7 @@ spec:
 
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
+
           volumeMounts:
             - mountPath: /etc/kubernetes/
               name: kubeconfig
