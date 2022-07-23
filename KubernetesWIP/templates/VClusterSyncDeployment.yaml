@@ -34,12 +34,12 @@ spec:
           args:
             - --name=infra1-dc1-infra-k0s-k8s
 
-            - --request-header-ca-cert=/pki/ca.crt
+            - --request-header-ca-cert=/pki/front-proxy-client/ca.crt
 
             - --client-ca-cert=/pki/vcluster-syncer/ca.crt
 
-            - --server-ca-cert=/pki/ca.crt
-            - --server-ca-key=/pki/ca.key
+            - --server-ca-cert=/pki/vcluster-syncer-server/tls.crt
+            - --server-ca-key=/pki/vcluster-syncer-server/tls.key
 
             - --kube-config=/etc/kubernetes/admin.conf
             - --service-account=vc-workload-infra1-dc1-infra-k0s-k8s
@@ -100,6 +100,12 @@ spec:
             - mountPath: /pki/vcluster-syncer
               name: pki-vcluster-syncer-client
 
+            - mountPath: /pki/front-proxy-client
+              name: pki-front-proxy-client
+
+            - mountPath: /pki/vcluster-syncer-server
+              name: pki-vcluster-syncer-server
+
       nodeSelector: {}
       serviceAccountName: vc-infra1-dc1-infra-k0s-k8s
       terminationGracePeriodSeconds: 10
@@ -110,8 +116,18 @@ spec:
             defaultMode: 420
             name: '{{ $fullName }}-admin-conf'
 
+        - name: pki-front-proxy-client
+          secret:
+            defaultMode: 420
+            secretName: '{{ $fullName }}-pki-front-proxy-client'
+
         - name: pki-vcluster-syncer-client
           secret:
             defaultMode: 420
             secretName: '{{ $fullName }}-pki-vcluster-syncer-client'
+
+        - name: pki-vcluster-syncer-server
+          secret:
+            defaultMode: 420
+            secretName: '{{ $fullName }}-pki-vcluster-syncer-server'
 {{- end }}

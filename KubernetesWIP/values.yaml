@@ -297,7 +297,7 @@ kubernetes:
       loadBalancerIP:
 
   admin:
-    enabled: true
+    enabled: false
 
     image:
       repository: ghcr.io/kvaps/kubernetes-tools
