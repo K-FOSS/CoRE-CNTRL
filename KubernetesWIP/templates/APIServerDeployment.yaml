@@ -148,6 +148,7 @@ spec:
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
             - --event-ttl=5m
+            - --watch-cache=false
 
           ports:
             - containerPort: 6443
