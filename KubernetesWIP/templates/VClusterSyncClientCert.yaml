@@ -1,0 +1,29 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: '{{ $fullName }}-pki-vcluster-syncer-client'
+
+spec:
+  commonName: '{{ $certName }}-vcluster-syncer-client'
+
+  duration: 8760h0m0s
+
+  issuerRef:
+    kind: Issuer
+    name: '{{ $fullName }}-issuer'
+
+  renewBefore: 4380h0m0s
+
+  secretName: '{{ $fullName }}-pki-vcluster-syncer-client'
+
+  subject:
+    organizations:
+      - 'system:masters'
+
+  usages:
+    - signing
+    - key encipherment
+    - client auth

@@ -1,0 +1,45 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-pki-vcluster-syncer-server
+
+spec:
+  commonName: '{{ $certName }}-vcluster-syncer-server'
+
+  dnsNames:
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-vcluster-syncer{{ $test.domains | join "" }}
+    - kubernetes{{ $test.domains | join "" }}
+    {{ end }}
+    - localhost
+  
+  duration: 8760h0m0s
+  
+  ipAddresses:
+    - 127.0.0.1
+    - 10.0.8.1
+    - 172.18.213.183
+    - 10.1.1.40
+    - 10.1.1.41
+  
+  issuerRef:
+    kind: Issuer
+    name: '{{ $fullName }}-issuer'
+  
+  renewBefore: 4380h0m0s
+  
+  secretName: '{{ $fullName }}-pki-vcluster-syncer-server'
+  
+  subject:
+    organizations:
+      - '{{ $fullName }}'
+  
+  usages:
+    - signing
+    - key encipherment
+    - server auth

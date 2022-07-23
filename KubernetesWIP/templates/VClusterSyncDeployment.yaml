@@ -1,0 +1,117 @@
+{{- if .Values.kubernetes.apiServer.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: '{{ $fullName }}-vcluster-syncer'
+
+  name: '{{ $fullName }}-vcluster-syncer'
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: '{{ $fullName }}-vcluster-syncer'
+
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+
+  template:
+    metadata:
+      labels:
+        app: '{{ $fullName }}-vcluster-syncer'
+
+    spec:
+      affinity: {}
+      containers:
+        - name: syncer
+          args:
+            - --name=infra1-dc1-infra-k0s-k8s
+
+            - --request-header-ca-cert=/pki/ca.crt
+
+            - --client-ca-cert=/pki/vcluster-syncer/ca.crt
+
+            - --server-ca-cert=/pki/ca.crt
+            - --server-ca-key=/pki/ca.key
+
+            - --kube-config=/etc/kubernetes/admin.conf
+            - --service-account=vc-workload-infra1-dc1-infra-k0s-k8s
+
+            - --enable-scheduler
+
+            - --kube-config-context-name=my-vcluster
+
+            - --leader-elect=false
+
+            - --sync=nodes
+            - --sync-all-nodes
+
+          env:
+            - name: KUBERNETES_SERVICE_HOST
+              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
+
+            - name: KUBERNETES_SERVICE_PORT
+              value: '6443'
+
+            - name: KUBECONFIG
+              value: /etc/kubernetes/admin.conf
+
+
+          image: loftsh/vcluster:0.11.0-alpha.0
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /healthz
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 60
+            periodSeconds: 2
+
+          readinessProbe:
+            failureThreshold: 30
+            httpGet:
+              path: /readyz
+              port: 8443
+              scheme: HTTPS
+            periodSeconds: 2
+
+          resources:
+            limits:
+              memory: 1Gi
+
+            requests:
+              cpu: 10m
+              memory: 64Mi
+
+          securityContext: null
+
+          volumeMounts:
+            - mountPath: /etc/kubernetes/
+              name: kubeconfig
+              readOnly: true
+
+            - mountPath: /pki/vcluster-syncer
+              name: pki-vcluster-syncer-client
+
+      nodeSelector: {}
+      serviceAccountName: vc-infra1-dc1-infra-k0s-k8s
+      terminationGracePeriodSeconds: 10
+      tolerations: []
+      volumes:
+        - name: kubeconfig
+          configMap:
+            defaultMode: 420
+            name: '{{ $fullName }}-admin-conf'
+
+        - name: pki-vcluster-syncer-client
+          secret:
+            defaultMode: 420
+            secretName: '{{ $fullName }}-pki-vcluster-syncer-client'
+{{- end }}
