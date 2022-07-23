@@ -13,7 +13,7 @@ metadata:
 spec:
   progressDeadlineSeconds: 600
 
-  replicas: 2
+  replicas: 1
 
   revisionHistoryLimit: 10
 
@@ -80,7 +80,7 @@ spec:
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
 
 
-            - --leader-elect=true
+            - --leader-elect=false
 
 
             - --requestheader-client-ca-file=/pki/front-proxy-client/tls.crt
