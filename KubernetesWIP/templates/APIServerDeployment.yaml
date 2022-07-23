@@ -66,14 +66,34 @@ spec:
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
 
+
           livenessProbe:
-            failureThreshold: 8
+            periodSeconds: 5
+
             httpGet:
               path: /livez
               port: https
               scheme: HTTPS
+
             initialDelaySeconds: 15
+
+            failureThreshold: 8
             timeoutSeconds: 15
+
+
+          readinessProbe:
+            periodSeconds: 30
+
+            httpGet:
+              path: /readyz
+              port: https
+              scheme: HTTPS
+            
+            failureThreshold: 8
+
+            initialDelaySeconds: 30
+            timeoutSeconds: 15
+            
 
           command:
             - kube-apiserver
