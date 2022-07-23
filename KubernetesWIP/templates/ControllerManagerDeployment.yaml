@@ -145,7 +145,7 @@ spec:
             - '--feature-gates=MixedProtocolLBService=true'
 
           ports:
-            - containerPort: {{ .Values.kubernetes.controllerManager.port }
+            - containerPort: {{ .Values.kubernetes.controllerManager.port }}
               name: https
               protocol: TCP
 
