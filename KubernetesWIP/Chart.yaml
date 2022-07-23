@@ -9,6 +9,6 @@ dependencies:
     condition: kubefarm.enabled
     repository: https://kvaps.github.io/charts
 
-  - name: vcluster-k8s
-    repository: https://charts.loft.sh
-    version: 0.11.0-alpha.0
+  # - name: vcluster-k8s
+  #   repository: https://charts.loft.sh
+  #   version: 0.11.0-alpha.0
