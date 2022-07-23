@@ -1,4 +1,3 @@
-
 {{- if .Values.kubernetes.controllerManager.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 ---
@@ -7,15 +6,21 @@ kind: Deployment
 metadata:
   labels:
     app: '{{ $fullName }}-controller-manager'
+    {{- with .Values.kubernetes.controllerManager.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
+  {{- with .Values.kubernetes.controllerManager.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 
   name: '{{ $fullName }}-controller-manager'
 
 spec:
-  progressDeadlineSeconds: 600
+  replicas: {{ .Values.kubernetes.controllerManager.replicaCount }}
 
-  replicas: 1
-
-  revisionHistoryLimit: 10
+  revisionHistoryLimit: 5
 
   selector:
     matchLabels:
@@ -31,8 +36,24 @@ spec:
     metadata:
       labels:
         app: '{{ $fullName }}-controller-manager'
-    
+        {{- with .Values.kubernetes.controllerManager.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
+      {{- with .Values.kubernetes.controllerManager.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
+      {{- with .Values.kubernetes.controllerManager.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.kubernetes.controllerManager.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -144,6 +165,9 @@ spec:
             - mountPath: /pki/sa
               name: pki-sa
 
+        {{- with .Values.kubernetes.controllerManager.sidecars }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       dnsPolicy: None
 
       dnsConfig:
