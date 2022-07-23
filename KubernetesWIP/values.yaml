@@ -173,8 +173,6 @@ kubernetes:
       ipAddresses: ['172.18.213.183', '10.1.1.40']
 
     extraArgs:
-      # advertise-address is required for kube-proxy
-      advertise-address: 10.1.1.40
       feature-gates: MixedProtocolLBService=true
 
     labels: {}
