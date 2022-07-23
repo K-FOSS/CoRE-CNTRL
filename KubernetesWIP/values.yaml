@@ -23,6 +23,9 @@ kubernetes:
     serviceSubnet: 10.0.8.0/22
     podSubnet: 10.4.0.0/16
 
+  virtual:
+    enabled: true
+
   persistence:
     enabled: false
     accessModes:
