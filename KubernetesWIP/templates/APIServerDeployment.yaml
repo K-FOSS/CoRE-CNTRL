@@ -96,6 +96,8 @@ spec:
 
             - --enable-aggregator-routing
 
+            - --etcd-compaction-interval=10m
+            - --etcd-healthcheck-timeout=5m
             - --etcd-cafile=/pki/apiserver-etcd-client/ca.crt
             - --etcd-certfile=/pki/apiserver-etcd-client/tls.crt
             - --etcd-keyfile=/pki/apiserver-etcd-client/tls.key
@@ -145,6 +147,7 @@ spec:
             - --feature-gates=MixedProtocolLBService=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
+
           ports:
             - containerPort: 6443
               name: https
