@@ -1,4 +1,4 @@
-{{- if .Values.virtual.enabled }}
+{{- if .Values.kubernetes.virtual.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $apiAddress := include "kubernetes.getAPIHostnamePort" . -}}
 ---
