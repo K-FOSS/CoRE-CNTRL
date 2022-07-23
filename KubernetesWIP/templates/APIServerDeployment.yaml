@@ -147,6 +147,7 @@ spec:
             - --feature-gates=MixedProtocolLBService=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
+            - --event-ttl=5m
 
           ports:
             - containerPort: 6443
