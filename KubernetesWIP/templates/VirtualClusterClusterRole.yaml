@@ -1,3 +1,6 @@
+{{- if .Values.kubernetes.virtual.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -8,30 +11,40 @@ metadata:
 rules:
   - apiGroups:
       - ''
+
     resources:
       - nodes
       - nodes/status
+
     verbs:
       - get
       - watch
       - list
 
+
   - apiGroups:
       - ''
+
     resources:
       - pods
       - nodes/proxy
       - nodes/metrics
       - nodes/stats
+
     verbs:
       - get
       - watch
       - list
+
+
   - apiGroups:
       - storage.k8s.io
+
     resources:
       - storageclasses
+
     verbs:
       - get
       - watch
       - list
+{{- end }}

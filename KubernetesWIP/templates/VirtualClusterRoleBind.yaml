@@ -1,0 +1,20 @@
+{{- if .Values.kubernetes.virtual.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: vcluster
+
+  name: infra1-dc1-infra-k0s-k8s
+
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: infra1-dc1-infra-k0s-k8s
+subjects:
+  - kind: ServiceAccount
+    name: vc-infra1-dc1-infra-k0s-k8s
+    namespace: core-prod
+{{- end }}

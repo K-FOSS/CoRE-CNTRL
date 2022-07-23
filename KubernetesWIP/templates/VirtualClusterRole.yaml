@@ -1,1 +1,81 @@
+{{- if .Values.kubernetes.virtual.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app: vcluster
 
+  name: infra1-dc1-infra-k0s-k8s
+
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - configmaps
+      - secrets
+      - services
+      - pods
+      - pods/attach
+      - pods/portforward
+      - pods/exec
+      - persistentvolumeclaims
+    verbs:
+      - create
+      - delete
+      - patch
+      - update
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ''
+    resources:
+      - endpoints
+    verbs:
+      - create
+      - delete
+      - patch
+      - update
+
+
+  - apiGroups:
+      - ''
+    resources:
+      - endpoints
+      - events
+      - pods/log
+    verbs:
+      - get
+      - list
+      - watch
+
+
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - delete
+      - patch
+      - update
+      - get
+      - list
+      - watch
+
+
+  - apiGroups:
+      - apps
+
+    resources:
+      - statefulsets
+      - replicasets
+      - deployments
+
+    verbs:
+      - get
+      - list
+      - watch
+{{- end }}

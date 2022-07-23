@@ -1,3 +1,4 @@
+{{- if .Values.kubernetes.virtual.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
 {{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
@@ -48,3 +49,4 @@ spec:
     - signing
     - key encipherment
     - server auth
+{{- end }}
