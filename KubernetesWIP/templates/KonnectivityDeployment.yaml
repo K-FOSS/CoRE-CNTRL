@@ -1,9 +1,13 @@
+{{- if .Values.kubernetes.konnectivityServer.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+    app: '{{ $fullName }}-konnectivity-server'
+
+  name: '{{ $fullName }}-konnectivity-server'
 
 spec:
   progressDeadlineSeconds: 600
@@ -11,19 +15,22 @@ spec:
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+      app: '{{ $fullName }}-konnectivity-server'
+
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
+
   template:
     metadata:
       annotations:
         checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
 
       labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+        app: '{{ $fullName }}-konnectivity-server'
+
     spec:
       affinity:
         podAntiAffinity:
@@ -31,9 +38,10 @@ spec:
             - podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+                    app: '{{ $fullName }}-konnectivity-server'
                 topologyKey: kubernetes.io/hostname
               weight: 1
+
       automountServiceAccountToken: false
       containers:
         - name: konnectivity-server
@@ -48,7 +56,7 @@ spec:
 
             - --server-count=1
 
-            - '--server-id=$(POD_NAME)'
+            - --server-id=$(POD_NAME)
 
             - --cluster-cert=/pki/apiserver/tls.crt
             - --cluster-key=/pki/apiserver/tls.key
@@ -81,8 +89,9 @@ spec:
             failureThreshold: 8
             httpGet:
               path: /healthz
-              port: 8134
+              port: health
               scheme: HTTP
+
             initialDelaySeconds: 30
             periodSeconds: 10
             successThreshold: 1
@@ -127,6 +136,10 @@ spec:
               name: kubeconfig
               readOnly: true
 
+        {{- with .Values.kubernetes.konnectivityServer.sidecars }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+
       dnsConfig:
         nameservers:
           - 172.18.0.10
@@ -152,57 +165,58 @@ spec:
       volumes:
         - configMap:
             defaultMode: 420
-            name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config
+            name: '{{ $fullName }}-apiserver-config'
           name: apiserver-config
 
         - name: pki-front-proxy-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-front-proxy-client
+            secretName: '{{ $fullName }}-pki-front-proxy-client'
 
         - name: pki-apiserver-server
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+            secretName: '{{ $fullName }}-pki-apiserver-server'
 
         - name: pki-apiserver-etcd-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+            secretName: '{{ $fullName }}-pki-apiserver-etcd-client'
 
         - name: pki-apiserver-kubelet-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-kubelet-client
+            secretName: '{{ $fullName }}-pki-apiserver-kubelet-client'
 
         - name: pki-sa
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-sa
+            secretName: '{{ $fullName }}-pki-sa'
 
         - name: pki-konnectivity-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-client
+            secretName: '{{ $fullName }}-pki-konnectivity-client'
 
         - name: pki-apiserver
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-server
+            secretName: '{{ $fullName }}-pki-apiserver-server'
 
         - name: pki-konnectivity-server-client
           secret:
             defaultMode: 420
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server-client
+            secretName: '{{ $fullName }}-pki-konnectivity-server-client'
 
         - emptyDir: {}
           name: konnectivity-uds
 
         - configMap:
             defaultMode: 420
-            name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server-conf
+            name: '{{ $fullName }}-konnectivity-server-conf'
           name: kubeconfig
 
         - secret:
-            secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-konnectivity-server
+            secretName: '{{ $fullName }}-pki-konnectivity-server'
           name: pki-konnectivity-server
+{{- end -}}
