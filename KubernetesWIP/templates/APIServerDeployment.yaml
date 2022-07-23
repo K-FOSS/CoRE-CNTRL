@@ -13,11 +13,9 @@ metadata:
   name: '{{ $fullName }}-apiserver'
   namespace: core-prod
 spec:
-  progressDeadlineSeconds: 600
-
   replicas: {{ .Values.kubernetes.apiServer.replicaCount }}
 
-  revisionHistoryLimit: 10
+  revisionHistoryLimit: 5
 
   selector:
     matchLabels:
@@ -27,17 +25,27 @@ spec:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
+
     type: RollingUpdate
 
   template:
     metadata:
       annotations:
-        checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
+        checksum/config: {{ include (print $.Template.BasePath "/APIServerConfig.yaml") . | sha256sum }}
 
       labels:
         app: '{{ $fullName }}-apiserver'
 
     spec:
+      {{- with .Values.kubernetes.apiServer.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.kubernetes.apiServer.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -58,6 +66,15 @@ spec:
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
 
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /livez
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            timeoutSeconds: 15
+
           command:
             - kube-apiserver
 
@@ -77,7 +94,7 @@ spec:
             - --enable-admission-plugins=NodeRestriction,MutatingAdmissionWebhook,ValidatingAdmissionWebhook
             - --enable-bootstrap-token-auth=true
 
-            - '--enable-aggregator-routing'
+            - --enable-aggregator-routing
 
             - --etcd-cafile=/pki/apiserver-etcd-client/ca.crt
             - --etcd-certfile=/pki/apiserver-etcd-client/tls.crt
@@ -130,7 +147,7 @@ spec:
             - --max-requests-inflight=800
           ports:
             - containerPort: 6443
-              name: client
+              name: https
               protocol: TCP
 
           resources:

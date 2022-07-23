@@ -34,18 +34,18 @@ spec:
   {{- end }}
 
   ports:
-    - name: client
+    - name: https
 
-      targetPort: client
+      targetPort: https
       port: 6443
 
       protocol: TCP
       appProtocol: https
 
 
-    - name: client-https
+    - name: https-https
 
-      targetPort: client
+      targetPort: https
       port: 443
 
       protocol: TCP
