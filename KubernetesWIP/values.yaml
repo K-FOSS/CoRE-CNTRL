@@ -291,13 +291,12 @@ kubernetes:
 
     service:
       enabled: true
-      type: LoadBalancer
+      type: ClusterIP
       port: 10259
       labels: {}
-      annotations:
-        metallb.universe.tf/allow-shared-ip: k0s-api
+      annotations: {}
 
-      loadBalancerIP: 10.1.1.40
+      loadBalancerIP: ''
 
   admin:
     enabled: false
@@ -406,7 +405,11 @@ kubernetes:
         agent: 8132
         admin: 8133
 
+      externalIPs:
+        - 10.1.1.41
+
       labels: {}
+
       annotations:
         metallb.universe.tf/allow-shared-ip: k0s-api
 

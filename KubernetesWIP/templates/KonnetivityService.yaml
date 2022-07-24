@@ -24,8 +24,12 @@ spec:
   loadBalancerIP: {{ . }}
   {{- end }}
 
+  {{- with .Values.kubernetes.konnectivityServer.service.externalIPs }}
   externalIPs:
-    - 10.1.1.41
+  {{- range . }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
 
   ports:
     - name: server
