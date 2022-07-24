@@ -69,8 +69,10 @@ spec:
       containers:
         - name: kube-controller-manager
 
-          image: k8s.gcr.io/kube-controller-manager:v1.23.6
-          imagePullPolicy: IfNotPresent
+          {{- with .Values.kubernetes.controllerManager.image }}
+          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
 
           livenessProbe:
             failureThreshold: 8
