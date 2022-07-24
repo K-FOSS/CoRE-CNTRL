@@ -250,10 +250,8 @@ kubernetes:
       type: ClusterIP
       port: 10257
       labels: {}
-      annotations:
-        metallb.universe.tf/allow-shared-ip: k0s-api
-      
-      loadBalancerIP: 10.1.1.40
+      annotations: {}      
+      loadBalancerIP: ''
 
   scheduler:
     enabled: true
@@ -293,7 +291,7 @@ kubernetes:
 
     service:
       enabled: true
-      type: ClusterIP
+      type: LoadBalancer
       port: 10259
       labels: {}
       annotations:
@@ -365,9 +363,10 @@ kubernetes:
     mode: HTTPConnect
     image:
       repository: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server
-      tag: v0.0.30
+      tag: v0.0.32
       pullPolicy: IfNotPresent
       pullSecrets: []
+
     replicaCount: 1
     resources:
       requests:
@@ -400,7 +399,8 @@ kubernetes:
 
     service:
       enabled: true
-      type: ClusterIP
+      type: LoadBalancer
+
       ports:
         server: 8131
         agent: 8132
