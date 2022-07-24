@@ -171,8 +171,8 @@ spec:
             - --watch-cache=false
 
           ports:
-            - containerPort: 6443
-              name: https
+            - name: https
+              containerPort: {{ .Values.kubernetes.apiServer.port }}
               protocol: TCP
 
           resources:
