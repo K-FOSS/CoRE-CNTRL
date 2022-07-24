@@ -15,7 +15,7 @@ data:
           proxyProtocol: HTTPConnect
           transport:
             tcp:
-              url: https://10.1.1.40:8131
+              url: https://10.1.1.40:{{ .Values.kubernetes.konnectivityServer.service.ports.server }}
               TLSConfig:
                 caBundle: /pki/konnectivity-client/ca.crt
                 clientKey: /pki/konnectivity-client/tls.key

@@ -1,3 +1,6 @@
+{{- if and .Values.kubernetes.konnectivityServer.enabled .Values.kubernetes.konnectivityServer.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,9 +9,9 @@ metadata:
     metallb.universe.tf/allow-shared-ip: k0s-api
 
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+    app: {{ $fullName }}-konnectivity-server
 
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+  name: {{ $fullName }}-konnectivity-server
 
 spec:
   ipFamilies:
@@ -23,7 +26,7 @@ spec:
   ports:
     - name: server
 
-      port: 8131
+      port: {{ .Values.kubernetes.konnectivityServer.service.ports.server }}
 
       protocol: TCP
       targetPort: server
@@ -31,12 +34,13 @@ spec:
 
     - name: agent
 
-      port: 8132
+      port: {{ .Values.kubernetes.konnectivityServer.service.ports.agent }}
       protocol: TCP
       targetPort: agent
 
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity
+    app: {{ $fullName }}-konnectivity-server
 
   sessionAffinity: None
   type: LoadBalancer
+{{- end }}

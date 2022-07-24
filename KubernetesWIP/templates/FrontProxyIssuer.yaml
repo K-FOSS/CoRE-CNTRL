@@ -9,4 +9,3 @@ metadata:
 spec:
   ca:
     secretName: {{ $fullName }}-pki-front-proxy-ca
-

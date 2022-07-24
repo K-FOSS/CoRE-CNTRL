@@ -9,8 +9,9 @@ metadata:
     metallb.universe.tf/allow-shared-ip: k0s-api
 
   labels:
-    app: '{{ $fullName }}-apiserver'
-  name: '{{ $fullName }}-apiserver'
+    app: {{ $fullName }}-apiserver
+
+  name: {{ $fullName }}-apiserver
 
 spec:
   type: {{ .Values.kubernetes.apiServer.service.type }}

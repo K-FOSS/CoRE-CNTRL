@@ -202,8 +202,11 @@ kubernetes:
 
       externalIPs:
         - 10.0.8.1
+
       annotations:
-        consul.hashicorp.com/service-name: 'k0s-kubeapi'
+        consul.hashicorp.com/service-name: k0s-kubeapi
+        metallb.universe.tf/allow-shared-ip: k0s-api
+
       loadBalancerIP: 10.1.1.40
 
   controllerManager:
@@ -247,8 +250,10 @@ kubernetes:
       type: ClusterIP
       port: 10257
       labels: {}
-      annotations: {}
-      loadBalancerIP:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: k0s-api
+      
+      loadBalancerIP: 10.1.1.40
 
   scheduler:
     enabled: true
@@ -291,8 +296,10 @@ kubernetes:
       type: ClusterIP
       port: 10259
       labels: {}
-      annotations: {}
-      loadBalancerIP:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: k0s-api
+
+      loadBalancerIP: 10.1.1.40
 
   admin:
     enabled: false
@@ -390,6 +397,7 @@ kubernetes:
       agent: 8132
       admin: 8133
       health: 8134
+
     service:
       enabled: true
       type: ClusterIP
@@ -397,13 +405,12 @@ kubernetes:
         server: 8131
         agent: 8132
         admin: 8133
-      nodePorts:
-        server:
-        agent:
-        admin:
+
       labels: {}
-      annotations: {}
-      loadBalancerIP:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: k0s-api
+
+      loadBalancerIP: 10.1.1.40
 
   konnectivityAgent:
     enabled: false

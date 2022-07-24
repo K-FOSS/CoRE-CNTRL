@@ -144,7 +144,7 @@ spec:
             - --requestheader-username-headers=X-Remote-User
             
             
-            - --secure-port=6443
+            - --secure-port={{ .Values.kubernetes.apiServer.port }}
 
             - --service-account-key-file=/pki/sa/tls.crt
 

@@ -10,9 +10,10 @@ metadata:
   name: '{{ $fullName }}-konnectivity-server'
 
 spec:
-  progressDeadlineSeconds: 600
-  replicas: 1
-  revisionHistoryLimit: 10
+  replicas: {{ .Values.kubernetes.konnectivityServer.replicaCount }}
+
+  revisionHistoryLimit: 5
+
   selector:
     matchLabels:
       app: '{{ $fullName }}-konnectivity-server'
@@ -25,9 +26,6 @@ spec:
 
   template:
     metadata:
-      annotations:
-        checksum/config: bd761de6a12149a98b3e1002ede7f71fd1e7db92bbb801c72bedc9c366db6122
-
       labels:
         app: '{{ $fullName }}-konnectivity-server'
 
@@ -49,6 +47,18 @@ spec:
           image: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-server:v0.0.30
           imagePullPolicy: IfNotPresent
 
+          livenessProbe:
+            failureThreshold: 8
+            httpGet:
+              path: /healthz
+              port: health
+              scheme: HTTP
+
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 60
+
           command:
             - /proxy-server
 
@@ -62,15 +72,15 @@ spec:
             - --cluster-key=/pki/apiserver/tls.key
 
             - --mode=http-connect
-            - --server-port=8131
+            - --server-port={{ .Values.kubernetes.konnectivityServer.ports.server }}
 
             - --server-ca-cert=/pki/konnectivity-server/ca.crt
             - --server-cert=/pki/konnectivity-server/tls.crt
             - --server-key=/pki/konnectivity-server/tls.key
 
-            - --agent-port=8132
-            - --admin-port=8133
-            - --health-port=8134
+            - --agent-port={{ .Values.kubernetes.konnectivityServer.ports.agent }}
+            - --admin-port={{ .Values.kubernetes.konnectivityServer.ports.admin }}
+            - --health-port={{ .Values.kubernetes.konnectivityServer.ports.health }}
 
             - --agent-namespace=kube-system
             - --agent-service-account=konnectivity-agent
@@ -83,35 +93,27 @@ spec:
                 fieldRef:
                   apiVersion: v1
                   fieldPath: metadata.name
-
-          
-          livenessProbe:
-            failureThreshold: 8
-            httpGet:
-              path: /healthz
-              port: health
-              scheme: HTTP
-
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 60
           
           ports:
-            - containerPort: 8131
-              name: server
+            - name: server
+            
+              containerPort: {{ .Values.kubernetes.konnectivityServer.ports.server }}
+              
               protocol: TCP
 
-            - containerPort: 8132
-              name: agent
+            - name: agent
+              containerPort: {{ .Values.kubernetes.konnectivityServer.ports.agent }}
+              
               protocol: TCP
 
-            - containerPort: 8133
-              name: admin
+            - name: admin
+              containerPort: {{ .Values.kubernetes.konnectivityServer.ports.admin }}
+              
               protocol: TCP
 
-            - containerPort: 8134
-              name: health
+            - name: health
+              containerPort: {{ .Values.kubernetes.konnectivityServer.ports.health }}
+              
               protocol: TCP
 
           resources:
