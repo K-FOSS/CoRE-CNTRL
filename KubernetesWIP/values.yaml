@@ -412,6 +412,7 @@ kubernetes:
 
       annotations:
         metallb.universe.tf/allow-shared-ip: k0s-api
+        consul.hashicorp.com/service-name: k0s-konnectivity
 
       loadBalancerIP: 10.1.1.40
 
