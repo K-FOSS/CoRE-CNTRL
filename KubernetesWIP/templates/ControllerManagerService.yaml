@@ -5,15 +5,24 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: {{ $fullName }}-controller-manager
+
   labels:
     app: {{ $fullName }}-controller-manager
 
-  name: {{ $fullName }}-controller-manager
+    {{- with .Values.kubernetes.controllerManager.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 
+  {{- with .Values.kubernetes.controllerManager.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  ipFamilies:
-    - IPv4
-  ipFamilyPolicy: SingleStack
+  type: {{ .Values.kubernetes.controllerManager.service.type }}
+  {{- with .Values.kubernetes.controllerManager.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
 
   ports:
     - name: https
@@ -25,7 +34,4 @@ spec:
 
   selector:
     app: {{ $fullName }}-controller-manager
-
-  sessionAffinity: None
-  type: ClusterIP
 {{- end }}
