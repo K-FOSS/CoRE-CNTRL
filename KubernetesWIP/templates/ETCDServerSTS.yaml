@@ -42,7 +42,7 @@ spec:
               weight: 1
 
       automountServiceAccountToken: false
-      enableServiceLinks: true
+      enableServiceLinks: false
 
       containers:
         - name: etcd
@@ -87,8 +87,6 @@ spec:
             - '--log-level=error'
             
             - '--trusted-ca-file=/pki/etcd/ca/tls.crt'
-            - '--heartbeat-interval=3000'
-            - '--election-timeout=30000'
           env:
             - name: POD_NAME
               valueFrom:
