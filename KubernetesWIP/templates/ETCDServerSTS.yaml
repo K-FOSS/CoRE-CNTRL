@@ -87,8 +87,8 @@ spec:
             - '--log-level=error'
             
             - '--trusted-ca-file=/pki/etcd/ca/tls.crt'
-            - '--heartbeat-interval=500'
-            - '--election-timeout=2500'
+            - '--heartbeat-interval=3000'
+            - '--election-timeout=30000'
           env:
             - name: POD_NAME
               valueFrom:
