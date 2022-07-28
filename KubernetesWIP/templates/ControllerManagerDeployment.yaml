@@ -114,7 +114,7 @@ spec:
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
 
 
-            - --leader-elect=false
+            - --leader-elect=true
 
 
             - --requestheader-client-ca-file=/pki/front-proxy-client/tls.crt
