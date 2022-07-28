@@ -75,7 +75,7 @@ spec:
 
             - --kubeconfig=/etc/kubernetes/scheduler.conf
 
-            - --leader-elect=false
+            - --leader-elect=true
 
             - --secure-port=10259
 
