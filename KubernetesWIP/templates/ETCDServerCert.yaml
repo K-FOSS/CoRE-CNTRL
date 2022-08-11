@@ -1,42 +1,40 @@
+{{- if .Values.kubernetes.etcd.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
+  name: {{ $fullName }}-pki-etcd-server
 
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-server
+  commonName: {{ $certName }}-etcd-server
+
   dnsNames:
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local'
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd-client
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd-client.core-prod
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd-client.core-prod.svc
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd-client.core-prod.svc.cluster
-    - >-
-      infra1-dc1-infra-k0s-k8s-kubernetes-etcd-client.core-prod.svc.cluster.local
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-etcd{{ $test.domains | join "" }}
+    - '*.{{ $fullName }}-etcd{{ $test.domains | join "" }}'
+    {{ end }}
     - localhost
   duration: 8760h0m0s
   ipAddresses:
     - 127.0.0.1
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-issuer
+    name: {{ $fullName }}-etcd-issuer
+
   renewBefore: 4380h0m0s
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-server
+  secretName: {{ $fullName }}-pki-etcd-server
+
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
+
   usages:
     - signing
     - key encipherment
     - server auth
     - client auth
-
+{{- end -}}
