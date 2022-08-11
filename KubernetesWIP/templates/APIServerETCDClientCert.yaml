@@ -1,19 +1,23 @@
+{{- if .Values.etcd.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+  name: {{ $fullName }}-pki-apiserver-etcd-client
 
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-etcd-client
+  commonName: {{ $certName }}-apiserver-etcd-client
   duration: 8760h0m0s
 
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-issuer
+    name: {{ $fullName }}-etcd-issuer
 
   renewBefore: 4380h0m0s
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-apiserver-etcd-client
+  secretName: {{ $fullName }}-pki-apiserver-etcd-client
 
   subject:
     organizations:
@@ -23,3 +27,4 @@ spec:
     - signing
     - key encipherment
     - client auth
+{{- end -}}

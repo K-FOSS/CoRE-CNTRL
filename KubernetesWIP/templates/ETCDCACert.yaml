@@ -1,10 +1,14 @@
+{{- if .Values.etcd.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-ca
+  name: {{ $fullName }}-pki-etcd-ca
 
 spec:
-  commonName: infra1-dc1-infra-k0s-k8s-kubernetes-etcd-ca
+  commonName: {{ $certName }}-etcd-ca
 
   duration: 87600h0m0s
 
@@ -12,17 +16,18 @@ spec:
 
   issuerRef:
     kind: Issuer
-    name: infra1-dc1-infra-k0s-k8s-kubernetes-selfsigning-issuer
+    name: {{ $fullName }}-selfsigning-issuer
 
   renewBefore: 8760h0m0s
 
-  secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-etcd-ca
+  secretName: {{ $fullName }}-pki-etcd-ca
 
   subject:
     organizations:
-      - infra1-dc1-infra-k0s-k8s-kubernetes
+      - {{ $fullName }}
 
   usages:
     - signing
     - key encipherment
     - cert sign
+{{- end -}}
