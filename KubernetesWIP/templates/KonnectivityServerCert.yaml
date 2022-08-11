@@ -35,10 +35,14 @@ spec:
 
   ipAddresses:
     - 127.0.0.1
-
-    # AnyCast
-    - 10.1.1.41
-    - 10.1.1.40
+    {{- with .Values.kubernetes.konnectivityServer.service.loadBalancerIP }}
+    {{- if not (has . $.Values.kubernetes.konnectivityServer.certSANs.ipAddresses) }}
+    - {{ . | quote }}
+    {{- end }}
+    {{- end }}
+    {{- with .Values.kubernetes.konnectivityServer.certSANs.ipAddresses }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
 
   issuerRef:
     name: {{ $fullName }}-konnectivity-issuer
