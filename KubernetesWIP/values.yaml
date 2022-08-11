@@ -24,7 +24,7 @@ kubernetes:
     podSubnet: 10.4.0.0/16
 
   virtual:
-    enabled: true
+    enabled: false
 
   persistence:
     enabled: false
