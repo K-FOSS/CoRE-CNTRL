@@ -28,7 +28,7 @@ spec:
     {{- end }}
     {{- end }}
     {{- with .Values.kubernetes.apiServer.certSANs.ipAddresses }}
-    {{- - . | toYaml | nindent 4 }}
+    {{- . | toYaml | nindent 4 }}
     {{- end }}
 
   issuerRef:
