@@ -15,6 +15,7 @@ spec:
     {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
     {{ $test := $domain | fromJson }}
     - {{ $fullName }}-etcd{{ $test.domains | join "" }}
+    - {{ $fullName }}-etcd-client{{ $test.domains | join "" }}
     - '*.{{ $fullName }}-etcd{{ $test.domains | join "" }}'
     {{ end }}
     - localhost
