@@ -1,4 +1,4 @@
-{{- if .Values.etcd.enabled }}
+{{- if .Values.kubernetes.etcd.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
 ---
