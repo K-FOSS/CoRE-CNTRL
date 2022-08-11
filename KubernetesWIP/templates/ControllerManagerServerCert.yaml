@@ -21,10 +21,6 @@ spec:
     - k0s-kubeapi.service.dc1.kjdev
     - k0s-kubeapi.service.kjdev
     - api.k0s.dc1.resolvemy.host
-    - kubernetes.default
-    - kubernetes.default.svc
-    - kubernetes.default.svc.cluster.local
-    - kubernetes.default.svc.cluster
 
   duration: 8760h0m0s
 
