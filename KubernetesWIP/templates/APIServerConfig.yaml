@@ -1,7 +1,10 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $ipAddress := include "kubernetes.getKonnectivityAddress" . -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver-config
+  name: {{ $fullName }}-apiserver-config
 
 data:
   egress-selector-configuration.yaml: |
@@ -15,7 +18,7 @@ data:
           proxyProtocol: HTTPConnect
           transport:
             tcp:
-              url: https://10.1.1.40:{{ .Values.kubernetes.konnectivityServer.service.ports.server }}
+              url: https://{{ $ipAddress }}:{{ .Values.kubernetes.konnectivityServer.service.ports.server }}
               TLSConfig:
                 caBundle: /pki/konnectivity-client/ca.crt
                 clientKey: /pki/konnectivity-client/tls.key

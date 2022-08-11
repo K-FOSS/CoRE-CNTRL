@@ -77,6 +77,14 @@ Take the first IP address from the serviceSubnet for the kube-dns service.
   {{- printf "%s:%d" (.Values.kubernetes.apiServer.service.loadBalancerIP | toString) (.Values.kubernetes.apiServer.port | int)  -}}
 {{- end -}}
 
+{{- define "kubernetes.getKonnectivityAddress" -}}
+{{- if eq .Values.kubernetes.konnectivityServer.service.type "LoadBalancer" -}}
+{{- printf "%s" (.Values.kubernetes.konnectivityServer.service.loadBalancerIP | toString)  -}}
+{{- else -}}
+{{- template "kubernetes.fullname" . -}}-konnectivity-server.{{- template "kubernetes.rootDomain" -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "kubernetes.domains" -}}
 {{- $rootSearchDomain := include "kubernetes.rootSearchDomain" . -}}
 {{- $clusterRootDomain := include "kubernetes.clusterSearchDomain" . -}}

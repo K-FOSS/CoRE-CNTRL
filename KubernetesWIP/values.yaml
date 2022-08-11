@@ -26,6 +26,9 @@ kubernetes:
   virtual:
     enabled: false
 
+  kine:
+    enabled: true
+
   persistence:
     enabled: false
     accessModes:
