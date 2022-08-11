@@ -22,15 +22,13 @@ spec:
   
   ipAddresses:
     - 127.0.0.1
-    - 10.0.8.1
-    - 172.18.213.183
     {{- with .Values.kubernetes.apiServer.service.loadBalancerIP }}
     {{- if not (has . $.Values.kubernetes.apiServer.certSANs.ipAddresses) }}
     - {{ . | quote }}
     {{- end }}
     {{- end }}
     {{- with .Values.kubernetes.apiServer.certSANs.ipAddresses }}
-    {{- . | toYaml | nindent 4 }}
+    {{- - . | toYaml | nindent 4 }}
     {{- end }}
 
   issuerRef:
