@@ -1,6 +1,7 @@
 {{- if .Values.kubernetes.etcd.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -10,16 +11,11 @@ metadata:
 spec:
   commonName: {{ $certName }}-etcd-peer
   dnsNames:
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster
-    - infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster'
-    - '*.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local'
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-etcd{{ $test.domains | join "" }}
+    - '*.{{ $fullName }}-etcd{{ $test.domains | join "" }}'
+    {{ end }}
     - localhost
 
   duration: 8760h0m0s
