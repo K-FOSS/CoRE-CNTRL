@@ -1,5 +1,6 @@
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -11,11 +12,11 @@ spec:
   commonName: {{ $certName }}-controller-manager-server
 
   dnsNames:
-    - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager
-    - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager.core-prod
-    - infra1-dc1-infra-k0s-k8s-kubernetes-controller-manager.core-prod.svc
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster.local
-    - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver.core-prod.svc.cluster
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-controller-manager{{ $test.domains | join "" }}
+    - kubernetes{{ $test.domains | join "" }}
+    {{ end }}
     - localhost
     - k0s-kubeapi.service.dc1.kjdev
     - k0s-kubeapi.service.kjdev
