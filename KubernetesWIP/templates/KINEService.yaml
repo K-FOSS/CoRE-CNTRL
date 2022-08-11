@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     app: infra1-dc1-infra-k0s-k8s-kubernetes-kine
-    argocd.argoproj.io/instance: infra1-dc1-infra-k0s-k8s
+
   name: infra1-dc1-infra-k0s-k8s-kubernetes-kine
   namespace: core-prod
 spec:
