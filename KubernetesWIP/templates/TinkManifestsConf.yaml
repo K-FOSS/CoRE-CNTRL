@@ -1,6 +1,9 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-tink-manifests
+  name: {{ $fullName }}-tink-manifests
   namespace: core-prod
 
 apiVersion: v1
@@ -51,4 +54,5 @@ data:
       templateRef: kubernetes
       hardwareMap:
         machine1: {{ $machine.MAC }}
+{{- end }}
 {{- end }}

@@ -1,8 +1,12 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-tink-sync-scripts
-  namespace: core-prod
+  name: {{ $fullName }}-tink-sync-scripts
+
 data:
   tinkSync.sh: |+
     {{- tpl (.Files.Get "Scripts/tinkSync.sh") . | nindent 4 }}
+{{- end }}

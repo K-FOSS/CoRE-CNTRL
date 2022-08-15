@@ -1,8 +1,12 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Secret
 metadata:
   annotations: {}
   labels:
-    app: infra1-dc1-infra-k0s-join-config
-  name: infra1-dc1-infra-k0s-join-config
-  namespace: core-prod
+    app: {{ $fullName }}-tink-join-config
+
+  name: {{ $fullName }}-tink-join-config
+{{- end }}

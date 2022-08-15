@@ -1,23 +1,28 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  name: {{ $fullName }}-tink-sync-tasks
+
   labels:
-    app: infra1-dc1-infra-k0s-k8s-tink-sync-tasks
-  name: infra1-dc1-infra-k0s-k8s-tink-sync-tasks
-  namespace: core-prod
+    app: {{ $fullName }}-tink-sync-tasks
+
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 3
   jobTemplate:
     metadata:
       labels:
-        app: infra1-dc1-infra-k0s-k8s-tink-sync-tasks
+        app: {{ $fullName }}-tink-sync-tasks
+
     spec:
       template:
         metadata:
-          creationTimestamp: null
           labels:
-            app: infra1-dc1-infra-k0s-k8s-tink-sync-tasks
+            app: {{ $fullName }}-tink-sync-tasks
+
         spec:
           automountServiceAccountToken: false
           containers:
@@ -65,37 +70,40 @@ spec:
           terminationGracePeriodSeconds: 30
 
           volumes:
-            - configMap:
+            - name: kubeconfig
+              configMap:
                 defaultMode: 420
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
-              name: kubeconfig
+                name: {{ $fullName }}-admin-conf
+              
 
             - name: pki-admin-client
               secret:
                 defaultMode: 420
-                secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+                secretName: {{ $fullName }}-pki-admin-client
 
             - name: ignition-config
               secret:
                 defaultMode: 420
                 secretName: core0-ignition-config
 
-            - configMap:
+            - name: scripts
+              configMap:
                 defaultMode: 511
-                name: infra1-dc1-infra-k0s-k8s-tink-sync-scripts
-              name: scripts
+                name: {{ $fullName }}-tink-sync-scripts
 
             - name: manifests
               projected:
                 defaultMode: 420
                 sources:
                   - configMap:
-                      name: infra1-dc1-infra-k0s-k8s-tink-manifests
+                      name: {{ $fullName }}-tink-manifests
 
-            - configMap:
+            - name: config
+              configMap:
                 defaultMode: 420
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-config
-              name: config
+                name: {{ $fullName }}-kubeadm-config
+              
 
   schedule: 0 0 1 */6 *
   successfulJobsHistoryLimit: 3
+{{- end }}

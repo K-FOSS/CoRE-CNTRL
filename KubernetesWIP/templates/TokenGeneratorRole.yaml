@@ -1,18 +1,20 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations: {}
   labels:
-    app: infra1-dc1-infra-k0s-token-generator
+    app: {{ $fullName }}-tink-token-generator
 
-  name: infra1-dc1-infra-k0s-token-generator
-  namespace: core-prod
+  name: {{ $fullName }}-tink-token-generator
 rules:
   - apiGroups:
       - ''
 
     resourceNames:
-      - infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+      - {{ $fullName }}-apiserver
 
     resources:
       - services
@@ -36,3 +38,4 @@ rules:
       - create
       - update
       - delete
+{{- end }}

@@ -1,8 +1,12 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-token-generator-scripts
-  namespace: core-prod
+  name: {{ $fullName }}-tink-token-generator-scripts
+
 data:
   genToken.sh: |+
     {{- .Files.Get "Scripts/genToken.sh" | nindent 4 }}
+{{- end }}

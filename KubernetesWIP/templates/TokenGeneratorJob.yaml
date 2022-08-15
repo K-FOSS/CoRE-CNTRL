@@ -1,19 +1,21 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-token-generator
+    app: {{ $fullName }}-tink-token-generator
 
-  name: infra1-dc1-infra-k0s-token-update
-  namespace: core-prod
-
+  name: {{ $fullName }}-tink-token-generator
 spec:
   jobTemplate:
     spec:
       template:
         metadata:
           labels:
-            app: infra1-dc1-infra-k0s-token-generator
+            app: {{ $fullName }}-tink-token-generator
+
         spec:
           containers:
             - name: kubeadm
@@ -26,10 +28,11 @@ spec:
               env:
 
                 - name: SVC
-                  value: infra1-dc1-infra-k0s-k8s-kubernetes-apiserver
+                  value: {{ $fullName }}-apiserver
 
                 - name: SECRET
                   value: core0-ignition-config
+
               resources:
                 requests:
                   cpu: 100m
@@ -51,24 +54,26 @@ spec:
                   subPath: ignition.yaml
 
           restartPolicy: OnFailure
-          serviceAccountName: infra1-dc1-infra-k0s-token-generator
+          serviceAccountName: {{ $fullName }}-tink-token-generator
+
 
           volumes:
             - configMap:
                 defaultMode: 420
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
+                name: {{ $fullName }}-admin-conf
               name: kubeconfig
 
             - configMap:
                 defaultMode: 511
-                name: infra1-dc1-infra-k0s-token-generator-scripts
+                name: {{ $fullName }}-tink-token-generator-scripts
               name: scripts
 
             - configMap:
-                name: infra1-dc1-infra-k0s-k8s-tink-ignition-manifests
+                name: {{ $fullName }}-tink-ignition-manifests
               name: ignition
 
             - name: pki-admin-client
               secret:
-                secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+                secretName: {{ $fullName }}-pki-admin-client
   schedule: 0 */12 * * *
+{{- end }}
