@@ -9,7 +9,7 @@ metadata:
 
 spec:
 
-  commonName: {{ $certName }}-controller-manager-server
+  commonName: {{ $certName }}-cntrl-server
 
   dnsNames:
     {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
