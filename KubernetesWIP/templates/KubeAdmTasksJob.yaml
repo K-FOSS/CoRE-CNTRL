@@ -1,10 +1,19 @@
+{{- if .Values.kubernetes.admin.job.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $ipAddress := include "kubernetes.getKonnectivityAddress" . -}}
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  name: {{ $fullName }}-kubeadm-tasks
+
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
-  namespace: core-prod
+    app: {{ $fullName }}-kubeadm-tasks
+
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+
 spec:
   concurrencyPolicy: Allow
   failedJobsHistoryLimit: 3
@@ -13,15 +22,15 @@ spec:
       annotations:
         checksum/config: ed81ca76edf6b6d372effdb9b0bf972f64d3fee0a4323beeae15a343b1340dd3
         checksum/scripts: 777431c8d69813d07e8ea5240ee8090152013441735e9c3147fefce0bcb4e008
-      creationTimestamp: null
+
       labels:
-        app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+        app: {{ $fullName }}-kubeadm-tasks
     spec:
       template:
         metadata:
-          creationTimestamp: null
           labels:
-            app: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-tasks
+            app: {{ $fullName }}-kubeadm-tasks
+
         spec:
           automountServiceAccountToken: false
           containers:
@@ -65,20 +74,20 @@ spec:
           terminationGracePeriodSeconds: 30
 
           volumes:
-            - configMap:
+            - name: kubeconfig
+              configMap:
                 defaultMode: 420
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-admin-conf
-              name: kubeconfig
+                name: {{ $fullName }}-admin-conf
 
             - name: pki-admin-client
               secret:
                 defaultMode: 420
-                secretName: infra1-dc1-infra-k0s-k8s-kubernetes-pki-admin-client
+                secretName: {{ $fullName }}-pki-admin-client
 
-            - configMap:
+            - name: scripts
+              configMap:
                 defaultMode: 511
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
-              name: scripts
+                name: {{ $fullName }}-kubeadm-scripts
 
             - name: manifests
               projected:
@@ -86,13 +95,14 @@ spec:
                 sources:
                   - configMap:
                       name: >-
-                        infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-manifests
+                        {{ $fullName }}-konnectivity-manifests
 
-            - configMap:
+            - name: config
+              configMap:
                 defaultMode: 420
-                name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-config
-              name: config
+                name: {{ $fullName }}-kubeadm-config
 
   schedule: 0 0 1 */6 *
   successfulJobsHistoryLimit: 3
   suspend: false
+{{- end }}

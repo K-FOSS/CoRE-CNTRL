@@ -1,6 +1,9 @@
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $ipAddress := include "kubernetes.getKonnectivityAddress" . -}}
+---
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-manifests
+  name: {{ $fullName }}-konnectivity-manifests
   namespace: core-prod
 
 apiVersion: v1
