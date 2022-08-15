@@ -1,8 +1,12 @@
+{{- if .Values.kubernetes.admin.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-kubeadm-scripts
-  namespace: core-prod
+  name: {{ $fullName }}-kubeadm-scripts
+
 data:
   configure-cluster.sh: |+
     {{- tpl (.Files.Get "Scripts/configureCluster.sh") . | nindent 4 }}
+{{- end }}
