@@ -48,7 +48,7 @@ spec:
 
             - --leader-elect=false
 
-            - --sync=-services,nodes
+            - --sync=-services,nodes,-coredns
             - --sync-all-nodes=false
 
 
