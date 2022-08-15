@@ -53,9 +53,6 @@ spec:
             - --sync=nodes
             - --sync-all-nodes
 
-          env:
-            - name: KUBECONFIG
-              value: /etc/kubernetes/admin.conf
 
           ports:
             - name: https
