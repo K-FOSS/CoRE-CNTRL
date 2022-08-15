@@ -15,7 +15,7 @@ spec:
 
   selector:
     matchLabels:
-      app: '{{ $fullName }}-kine'
+      app: {{ $fullName }}-kine
 
   strategy:
     rollingUpdate:
@@ -45,7 +45,8 @@ spec:
             - podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    app: '{{ $fullName }}-kine'
+                    app: {{ $fullName }}-kine
+
                 topologyKey: kubernetes.io/hostname
               weight: 1
 
@@ -58,8 +59,37 @@ spec:
           image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
-            
+
           ports:
             - containerPort: 2379
               name: https
+          
+          command:
+            - --ca-file=/pki/ca/tls.crt
+            
+            - --server-cert-file=/pki/server/tls.crt
+            - --server-key-file=/pki/server/tls.key
+            {{- range $key, $value := .Values.kubernetes.kine.extraArgs }}
+            - --{{ $key }}={{ $value }}
+            {{- end }}
+
+          volumeMounts:
+            - mountPath: /pki/ca
+              name: ca-certs
+
+            - mountPath: /pki/server
+              name: server-certs
+
+
+      volumes:
+        - name: ca-certs
+          secret:
+            defaultMode: 420
+            secretName: {{ $fullName }}-pki-etcd-ca
+
+        - name: server-certs
+          secret:
+            defaultMode: 420
+            secretName: {{ $fullName }}-pki-kine-server
+
 {{- end }}

@@ -1,4 +1,3 @@
-{{- if .Values.kubernetes.etcd.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $certName := include "kubernetes.certname" . -}}
 ---
@@ -10,4 +9,3 @@ metadata:
 spec:
   ca:
     secretName: '{{ $fullName }}-pki-etcd-ca'
-{{- end }}

@@ -1,0 +1,41 @@
+{{- if .Values.kubernetes.kine.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+{{- $certName := include "kubernetes.certname" . -}}
+{{- $domains := splitList ".," (include "kubernetes.domains" .) -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-pki-kine-server
+
+spec:
+  commonName: {{ $certName }}-kine-server
+
+  dnsNames:
+    {{ range $domain := splitList ".," (include "kubernetes.domains" .) }}
+    {{ $test := $domain | fromJson }}
+    - {{ $fullName }}-kine{{ $test.domains | join "" }}
+    - {{ $fullName }}-kine-client{{ $test.domains | join "" }}
+    - '*.{{ $fullName }}-kine{{ $test.domains | join "" }}'
+    {{ end }}
+    - localhost
+  duration: 8760h0m0s
+  ipAddresses:
+    - 127.0.0.1
+  issuerRef:
+    kind: Issuer
+    name: {{ $fullName }}-etcd-issuer
+
+  renewBefore: 4380h0m0s
+  secretName: {{ $fullName }}-pki-kine-server
+
+  subject:
+    organizations:
+      - {{ $fullName }}
+
+  usages:
+    - signing
+    - key encipherment
+    - server auth
+    - client auth
+{{- end -}}
