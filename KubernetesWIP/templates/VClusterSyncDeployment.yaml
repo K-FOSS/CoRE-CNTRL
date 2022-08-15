@@ -50,7 +50,8 @@ spec:
 
             - --leader-elect=false
 
-            - --sync=-services
+            - --sync=-services,nodes
+            - --sync-all-nodes
 
 
           ports:
