@@ -7,7 +7,7 @@ metadata:
   labels:
     app: vcluster
 
-  name: vc-infra1-dc1-infra-k0s-k8s-v-core-prod
+  name: vc-{{ $fullName }}-vcluster
 rules:
   - apiGroups:
       - ''

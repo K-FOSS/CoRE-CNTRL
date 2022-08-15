@@ -7,14 +7,14 @@ metadata:
   labels:
     app: vcluster
 
-  name: infra1-dc1-infra-k0s-k8s
+  name: {{ $fullName }}
 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: infra1-dc1-infra-k0s-k8s
+  name: {{ $fullName }}
 subjects:
   - kind: ServiceAccount
-    name: vc-infra1-dc1-infra-k0s-k8s
-    namespace: core-prod
+    name: vc-{{ $fullName }}
+    namespace: {{ .Release.Namespace }}
 {{- end }}

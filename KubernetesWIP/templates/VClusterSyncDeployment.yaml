@@ -14,7 +14,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: '{{ $fullName }}-vcluster-syncer'
+      app: {{ $fullName }}-vcluster-syncer
 
   strategy:
     rollingUpdate:
@@ -25,14 +25,14 @@ spec:
   template:
     metadata:
       labels:
-        app: '{{ $fullName }}-vcluster-syncer'
+        app: {{ $fullName }}-vcluster-syncer
 
     spec:
       affinity: {}
       containers:
         - name: syncer
           args:
-            - --name=infra1-dc1-infra-k0s-k8s
+            - --name={{ $fullName }}
 
             - --request-header-ca-cert=/pki/front-proxy-client/ca.crt
 
@@ -42,7 +42,7 @@ spec:
             - --server-ca-key=/pki/vcluster-syncer-server/tls.key
 
             - --kube-config=/etc/kubernetes/admin.conf
-            - --service-account=vc-workload-infra1-dc1-infra-k0s-k8s
+            - --service-account=vc-workload-{{ $fullName }}
 
             - --enable-scheduler
 
@@ -54,12 +54,6 @@ spec:
             - --sync-all-nodes
 
           env:
-            - name: KUBERNETES_SERVICE_HOST
-              value: infra1-dc1-cntrlplane-apiserver.core-prod.svc.cluster.local
-
-            - name: KUBERNETES_SERVICE_PORT
-              value: '6443'
-
             - name: KUBECONFIG
               value: /etc/kubernetes/admin.conf
 
@@ -107,7 +101,7 @@ spec:
               name: pki-vcluster-syncer-server
 
       nodeSelector: {}
-      serviceAccountName: vc-infra1-dc1-infra-k0s-k8s
+      serviceAccountName: vc-{{ $fullName }}
       terminationGracePeriodSeconds: 10
       tolerations: []
       volumes:
