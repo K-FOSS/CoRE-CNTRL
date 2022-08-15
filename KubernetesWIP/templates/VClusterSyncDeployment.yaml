@@ -108,7 +108,7 @@ spec:
         - name: kubeconfig
           configMap:
             defaultMode: 420
-            name: '{{ $fullName }}-admin-conf'
+            name: '{{ $fullName }}-vcluster-syncer-conf'
 
         - name: pki-front-proxy-client
           secret:
