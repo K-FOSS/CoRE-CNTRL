@@ -1,7 +1,9 @@
+{{- if .Values.tink.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 kind: ConfigMap
 metadata:
-  name: infra1-dc1-infra-k0s-k8s-tink-ignition-manifests
-  namespace: core-prod
+  name: {{ $fullName }}-tink-ignition-manifests
 
 apiVersion: v1
 
@@ -241,3 +243,4 @@ data:
               [Time]
               NTP=time.cloudflare.com 66.165.220.4 206.108.0.132 206.108.0.131
           mode: 0777
+{{- end }}
