@@ -123,10 +123,9 @@ spec:
             - --etcd-keyfile=/pki/apiserver-etcd-client/tls.key
 
             {{- if .Values.kubernetes.etcd.enabled }}
-            - >-
-              --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
+            - --etcd-servers=https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-0.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379,https://infra1-dc1-infra-k0s-k8s-kubernetes-etcd-1.infra1-dc1-infra-k0s-k8s-kubernetes-etcd.core-prod.svc.cluster.local:2379
             {{- else }}
-              - --etcd-servers=https://{{ $fullName }}-kine.core-prod.svc.cluster.local:2379
+            - --etcd-servers=https://{{ $fullName }}-kine.core-prod.svc.cluster.local:2379
             {{- end }}
 
             - --insecure-port=0
