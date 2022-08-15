@@ -38,6 +38,4 @@ spec:
 
   selector:
     app: {{ $fullName }}-kine
-
-  type: ClusterIP
 {{- end }}
