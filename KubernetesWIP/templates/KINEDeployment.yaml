@@ -65,6 +65,7 @@ spec:
               name: https
           
           command:
+            - kine
             - --ca-file=/pki/ca/tls.crt
             
             - --server-cert-file=/pki/server/tls.crt
