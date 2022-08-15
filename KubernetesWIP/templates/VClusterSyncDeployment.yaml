@@ -48,7 +48,7 @@ spec:
 
             - --leader-elect=false
 
-            - --sync=-services,-ingresses,-events,-nodes,fakenodes
+            - --sync=-services,-ingresses,-events,-nodes,fakenodes,-endpoints
             - --sync-all-nodes=false
 
 
