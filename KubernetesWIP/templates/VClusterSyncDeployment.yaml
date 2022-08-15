@@ -54,7 +54,7 @@ spec:
               containerPort: 8443
               protocol: TCP
 
-          image: loftsh/vcluster:0.11.0-alpha.0
+          image: loftsh/vcluster:latest
           livenessProbe:
             failureThreshold: 10
             httpGet:
