@@ -46,8 +46,6 @@ spec:
 
             - --enable-scheduler
 
-            - --kube-config-context-name=my-vcluster
-
             - --leader-elect=false
 
             - --sync=-services,nodes
