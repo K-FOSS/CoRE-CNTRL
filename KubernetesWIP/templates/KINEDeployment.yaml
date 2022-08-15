@@ -73,6 +73,11 @@ spec:
             - --{{ $key }}={{ $value }}
             {{- end }}
 
+          {{- with .Values.kubernetes.kine.extraEnv }}
+          env:
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+
           volumeMounts:
             - mountPath: /pki/ca
               name: ca-certs
