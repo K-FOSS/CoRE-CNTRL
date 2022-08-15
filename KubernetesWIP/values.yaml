@@ -29,6 +29,58 @@ kubernetes:
   kine:
     enabled: true
 
+    image:
+      repository: docker.io/rancher/kine
+      tag: v0.9.3-amd64
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+
+    replicaCount: 1
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      # limits:
+      #   cpu: 100m
+      #   memory: 128Mi
+
+    certSANs:
+      dnsNames: []
+      ipAddresses: []
+
+    extraArgs: {}
+
+    labels: {}
+    annotations: {}
+    podLabels: {}
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    podAntiAffinity: soft
+    podAntiAffinityTopologyKey: kubernetes.io/hostname
+    affinity: {}
+    extraEnv: []
+    sidecars: []
+    extraVolumes: []
+    extraVolumeMounts: []
+
+
+    port: 6443
+
+    service:
+      enabled: true
+      type: LoadBalancer # NodePort / LoadBalancer
+      port: 
+      # Specify nodePort for apiserver service (30000-32767)
+      nodePort:
+      labels: {}
+
+      externalIPs: []
+
+      annotations: {}
+
+      loadBalancerIP: 10.1.1.39
+
   persistence:
     enabled: false
     accessModes:

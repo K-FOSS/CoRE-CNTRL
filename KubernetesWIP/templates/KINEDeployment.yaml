@@ -1,0 +1,65 @@
+{{- if and .Values.kubernetes.kine.enabled .Values.kubernetes.kine.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ $fullName }}-kine
+
+  name: {{ $fullName }}-kine
+spec:
+  replicas: {{ .Values.kubernetes.kine.replicaCount }}
+
+  revisionHistoryLimit: 5
+
+  selector:
+    matchLabels:
+      app: '{{ $fullName }}-kine'
+
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+
+    type: RollingUpdate
+
+  template:
+    metadata:
+      labels:
+        app: '{{ $fullName }}-kine'
+
+    spec:
+      {{- with .Values.kubernetes.kine.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.kubernetes.kine.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: '{{ $fullName }}-kine'
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+
+      automountServiceAccountToken: false
+
+      containers:
+        - name: kube-kine
+
+          {{- with .Values.kubernetes.kine.image }}
+          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
+          imagePullPolicy: {{ .pullPolicy }}
+          {{- end }}
+            
+          ports:
+            - containerPort: 2379
+              name: https
+{{- end }}

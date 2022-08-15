@@ -1,15 +1,43 @@
+{{- if and .Values.kubernetes.kine.enabled .Values.kubernetes.kine.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-kine
+    app: {{ $fullName }}-kine
 
-  name: infra1-dc1-infra-k0s-k8s-kubernetes-kine
-  namespace: core-prod
+  name: {{ $fullName }}-kine
 spec:
+  type: {{ .Values.kubernetes.kine.service.type }}
+
+  {{- with .Values.kubernetes.kine.service.loadBalancerIP }}
+  loadBalancerIP: {{ . }}
+  {{- end }}
+
+  allocateLoadBalancerNodePorts: true
+
+  {{- with .Values.kubernetes.kine.service.externalIPs }}
+  externalIPs:
+  {{- range . }}
+    - {{ . }}
+  {{- end }}
+  {{- end }}
+
   ports:
-    - name: client
-      port: 6443
+    - name: https
+
+      targetPort: https
+      port: 2379
+
+      protocol: TCP
+      appProtocol: https
+
+  publishNotReadyAddresses: true
+  sessionAffinity: ClientIP
+
   selector:
-    app: infra1-dc1-infra-k0s-k8s-kubernetes-kine
+    app: {{ $fullName }}-kine
+
   type: ClusterIP
+{{- end }}
