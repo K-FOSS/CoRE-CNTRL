@@ -32,7 +32,7 @@ spec:
       containers:
         - name: syncer
           args:
-            - --name={{ $fullName }}
+            - --name={{ $fullName }}-vcluster-syncer
 
             - --request-header-ca-cert=/pki/front-proxy-client/ca.crt
 
@@ -57,6 +57,10 @@ spec:
             - name: KUBECONFIG
               value: /etc/kubernetes/admin.conf
 
+          ports:
+            - name: https
+              containerPort: 8443
+              protocol: TCP
 
           image: loftsh/vcluster:0.11.0-alpha.0
           livenessProbe:

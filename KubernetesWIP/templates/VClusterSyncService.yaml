@@ -1,0 +1,24 @@
+{{- if .Values.kubernetes.virtual.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: '{{ $fullName }}-vcluster-syncer'
+
+  name: '{{ $fullName }}-vcluster-syncer'
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+
+      targetPort: https
+      port: 443
+
+      protocol: TCP
+
+
+  selector:
+    app: '{{ $fullName }}-vcluster-syncer'
+{{- end }}
