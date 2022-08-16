@@ -96,6 +96,10 @@ spec:
             - mountPath: /pki/vcluster-syncer-server
               name: pki-vcluster-syncer-server
 
+            - name: coredns
+              mountPath: /manifests/coredns
+              readOnly: true
+
       nodeSelector: {}
       serviceAccountName: vc-{{ $fullName }}
       terminationGracePeriodSeconds: 10
@@ -120,4 +124,8 @@ spec:
           secret:
             defaultMode: 420
             secretName: '{{ $fullName }}-pki-vcluster-syncer-server'
+
+        - name: coredns
+          configMap:
+            name: {{ $fullName }}-vcluster-syncer-coredns
 {{- end }}
