@@ -140,7 +140,6 @@ spec:
             
 
             {{ with .Values.kubernetes.networking.podSubnet }}
-            - --allocate-node-cidrs=true
             - --cluster-cidr={{ . }}
             {{- end }}
             
