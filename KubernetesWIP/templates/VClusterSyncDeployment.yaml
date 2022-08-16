@@ -48,7 +48,7 @@ spec:
 
             - --leader-elect=false
 
-            - --sync=-services,-ingresses,-events,-endpoints,nodes,-persistentvolumeclaims,-persistentvolumes
+            - --sync=services,-ingresses,-events,endpoints,nodes,-persistentvolumeclaims,-persistentvolumes
           ports:
             - name: https
               containerPort: 8443
