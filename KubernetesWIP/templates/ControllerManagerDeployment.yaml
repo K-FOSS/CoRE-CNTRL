@@ -108,7 +108,7 @@ spec:
             - --cluster-signing-key-file=/pki/ca/tls.key
 
 
-            - --controllers=*,bootstrapsigner,tokencleaner
+            - --controllers=*,bootstrapsigner,tokencleaner,-nodeipam
 
 
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
