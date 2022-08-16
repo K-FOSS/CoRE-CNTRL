@@ -78,6 +78,7 @@ data:
             }
             prometheus :9153
             forward . /etc/resolv.conf
+            forward kjdev 10.1.1.60
             cache 30
             loop
             reload
