@@ -68,6 +68,9 @@ spec:
 
         - name: PILOT_USE_ENDPOINT_SLICE
           value: 'true'
+        
+        - name: ISTIO_GATEWAY_STRIP_HOST_PORT
+          value: 'true'
 
         - name: BOOTSTRAP_XDS_AGENT
           value: 'true'
