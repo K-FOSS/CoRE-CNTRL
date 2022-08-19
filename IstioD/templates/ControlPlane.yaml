@@ -66,6 +66,9 @@ spec:
         - name: PILOT_ENABLE_QUIC_LISTENERS
           value: 'true'
 
+        - name: PILOT_USE_ENDPOINT_SLICE
+          value: 'true'
+
         - name: BOOTSTRAP_XDS_AGENT
           value: 'true'
 
