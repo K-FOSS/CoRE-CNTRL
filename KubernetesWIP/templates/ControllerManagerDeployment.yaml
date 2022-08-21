@@ -107,8 +107,13 @@ spec:
             - --cluster-signing-cert-file=/pki/ca/tls.crt
             - --cluster-signing-key-file=/pki/ca/tls.key
 
-
+            {{- if .Values.kubernetes.virtual.enabled }}
             - --controllers=*,-nodeipam,-nodelifecycle,-persistentvolume-binder,-attachdetach,-persistentvolume-expander,-cloud-node-lifecycle
+            {{- else }}
+            --allocate-node-cidrs=true
+            - --controllers=*,bootstrapsigner,tokencleaner
+            {{- end }}
+            
 
 
             - --kubeconfig=/etc/kubernetes/controller-manager.conf
