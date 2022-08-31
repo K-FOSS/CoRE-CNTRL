@@ -6,6 +6,10 @@ kind: Service
 metadata:
   labels:
     app: {{ $fullName }}-kine
+    {{- with .Values.kubernetes.kine.service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+
 
   name: {{ $fullName }}-kine
 spec:
