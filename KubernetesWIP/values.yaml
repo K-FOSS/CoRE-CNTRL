@@ -218,7 +218,7 @@ kubernetes:
       pullPolicy: IfNotPresent
       pullSecrets: []
 
-    replicaCount: 3
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
@@ -228,8 +228,8 @@ kubernetes:
       #   memory: 128Mi
 
     certSANs:
-      dnsNames: ['k0s-kubeapi.service.dc1.kjdev', 'k0s-kubeapi.service.kjdev', 'api.k0s.dc1.resolvemy.host', 'kubernetes.default', 'kubernetes.default.svc', 'kubernetes.default.svc.cluster.local', 'kubernetes.default.svc.cluster']
-      ipAddresses: ['172.18.213.183', '10.1.1.40', '10.0.8.1', '10.1.1.41']
+      dnsNames: ['api.k0s.dc1.resolvemy.host', 'kubernetes.default', 'kubernetes.default.svc', 'kubernetes.default.svc.cluster.local', 'kubernetes.default.svc.cluster']
+      ipAddresses: ['172.18.213.183', '10.1.1.40', '10.0.8.1']
 
     extraArgs:
       feature-gates: MixedProtocolLBService=true
