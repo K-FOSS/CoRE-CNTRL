@@ -10,6 +10,11 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 
+  {{- with .Values.kubernetes.kine.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
 
   name: {{ $fullName }}-kine
 spec:
