@@ -48,7 +48,7 @@ kubernetes:
 
     certSANs:
       dnsNames: []
-      ipAddresses: []
+      ipAddresses: ['10.1.1.40']
 
     extraArgs: {}
 
@@ -79,9 +79,11 @@ kubernetes:
 
       externalIPs: []
 
-      annotations: {}
+      annotations:
+        consul.hashicorp.com/service-name: k0s-kubeapi
+        metallb.universe.tf/allow-shared-ip: k0s-api
 
-      loadBalancerIP: 10.1.1.39
+      loadBalancerIP: 10.1.1.40
 
   persistence:
     enabled: false
