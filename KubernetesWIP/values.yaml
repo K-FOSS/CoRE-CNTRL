@@ -107,7 +107,7 @@ kubernetes:
         - kubernetes.io/pvc-protection
 
   etcd:
-    enabled: true
+    enabled: false
 
     image:
       repository: k8s.gcr.io/etcd
