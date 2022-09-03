@@ -50,7 +50,8 @@ kubernetes:
       dnsNames: []
       ipAddresses: ['10.1.1.40']
 
-    extraArgs: {}
+    extraArgs:
+      endpoint: postgres://k0sk8s:<secret:CORE0_SITE1/data/k0sk8s~Password>@psql.service.dc1.kjdev:5432/k0sk8s?sslmode=disable
 
     labels: {}
     annotations: {}
