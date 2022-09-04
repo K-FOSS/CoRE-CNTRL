@@ -7,10 +7,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: '{{ $fullName }}-apiservernew'
-    test-name: '{{ $fullName }}-apiservernew'
+    app: '{{ $fullName }}-apiserver'
+    test-name: '{{ $fullName }}-apiserver'
 
-  name: '{{ $fullName }}-apiservernew'
+  name: '{{ $fullName }}-apiserver'
   namespace: core-prod
 spec:
   replicas: {{ .Values.kubernetes.apiServer.replicaCount }}
@@ -19,7 +19,7 @@ spec:
 
   selector:
     matchLabels:
-      app: '{{ $fullName }}-apiservernew'
+      app: '{{ $fullName }}-apiserver'
 
   strategy:
     rollingUpdate:
@@ -34,7 +34,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/APIServerConfig.yaml") . | sha256sum }}
 
       labels:
-        app: '{{ $fullName }}-apiservernew'
+        app: '{{ $fullName }}-apiserver'
 
     spec:
       {{- with .Values.kubernetes.apiServer.nodeSelector }}
