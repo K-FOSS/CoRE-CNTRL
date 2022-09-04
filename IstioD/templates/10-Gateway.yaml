@@ -9,7 +9,12 @@ spec:
     ingressGateways:
       - name: istio-ingressgateway
         enabled: true
+        label:
+          lan-mode: private
         k8s:
+          serviceAnnotations:
+            external-dns.alpha.kubernetes.io/hostname: 'istio.mylogin.space'
+
           service:
             ports:
               - port: 15021
