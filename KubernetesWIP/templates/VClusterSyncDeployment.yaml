@@ -123,7 +123,7 @@ spec:
         - name: pki-vcluster-syncer-server
           secret:
             defaultMode: 420
-            secretName: '{{ $fullName }}-pki-vcluster-syncer-server'
+            secretName: '{{ $fullName }}-pki-ca'
 
         - name: coredns
           configMap:
