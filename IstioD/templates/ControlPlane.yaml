@@ -7,7 +7,9 @@ spec:
   profile: empty
   meshConfig:
     rootNamespace: external-istiod
+
     trustDomain: k0s.resolvemy.host
+
     defaultConfig:
       discoveryAddress: istio.mylogin.space:15012
     
@@ -33,15 +35,18 @@ spec:
               name: config-volume
               configMap:
                 name: istio
+
           - path: spec.template.spec.volumes[100]
             value: |-
               name: inject-volume
               configMap:
                 name: istio-sidecar-injector
+
           - path: spec.template.spec.containers[0].volumeMounts[100]
             value: |-
               name: config-volume
               mountPath: /etc/istio/config
+
           - path: spec.template.spec.containers[0].volumeMounts[100]
             value: |-
               name: inject-volume
@@ -78,10 +83,15 @@ spec:
   values:
     global:
       caAddress: istio.mylogin.space:15012
+
       istioNamespace: external-istiod
+
       operatorManageWebhooks: true
+
       configValidation: false
+
       meshID: mesh1
+
       proxy:
         clusterDomain: k0s.resolvemy.host
 
