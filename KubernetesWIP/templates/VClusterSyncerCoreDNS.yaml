@@ -89,7 +89,7 @@ data:
         }
 
         {{ .Values.kubernetes.clusterName }}:1053 {
-            kubernetes cluster.local in-addr.arpa ip6.arpa {
+            kubernetes {{ .Values.kubernetes.clusterName }} in-addr.arpa ip6.arpa {
               pods insecure
               fallthrough in-addr.arpa ip6.arpa
             }
