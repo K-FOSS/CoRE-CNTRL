@@ -34,9 +34,9 @@ spec:
           args:
             - --name={{ $fullName }}-vcluster-syncer
 
-            - --request-header-ca-cert=/pki/front-proxy-client/ca.crt
+            - --request-header-ca-cert=/pki/vcluster-syncer-server/ca.crt
 
-            - --client-ca-cert=/pki/vcluster-syncer/ca.crt
+            - --client-ca-cert=/pki/vcluster-syncer-server/ca.crt
 
             - --server-ca-cert=/pki/vcluster-syncer-server/tls.crt
             - --server-ca-key=/pki/vcluster-syncer-server/tls.key
@@ -123,7 +123,7 @@ spec:
         - name: pki-vcluster-syncer-server
           secret:
             defaultMode: 420
-            secretName: '{{ $fullName }}-pki-front-proxy-ca'
+            secretName: '{{ $fullName }}-pki-ca'
 
         - name: coredns
           configMap:
