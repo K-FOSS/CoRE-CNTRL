@@ -9,11 +9,12 @@ spec:
     ingressGateways:
       - name: istio-ingressgateway
         enabled: true
-        label:
-          lan-mode: private
+        # label:
+        #   lan-mode: private
         k8s:
           serviceAnnotations:
             external-dns.alpha.kubernetes.io/hostname: '{{ .Values.url }}'
+          type: ClusterIP
 
           service:
             ports:
