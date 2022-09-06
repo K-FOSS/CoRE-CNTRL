@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: istiod-certs
-  namespace: external-istiod
+  namespace: istio-system
 
 spec:
   secretName: external-istiod-gw-certs
