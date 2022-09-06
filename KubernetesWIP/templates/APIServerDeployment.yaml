@@ -159,7 +159,7 @@ spec:
             
             - --egress-selector-config-file=/etc/kubernetes/egress-selector-configuration.yaml
             
-            - --service-account-issuer=https://kubernetes.default.svc.cluster.local
+            - --service-account-issuer=https://kubernetes.default.svc.{{ .Values.kubernetes.clusterName }}
             - '--service-account-signing-key-file=/pki/sa/tls.key'
 
             {{- if not (hasKey .Values.kubernetes.apiServer.extraArgs "advertise-address") }}

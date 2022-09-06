@@ -44,6 +44,8 @@ spec:
             - --kube-config=/etc/kubernetes/admin.conf
             - --service-account=vc-workload-{{ $fullName }}
 
+            - --cluster-domain={{ .Values.kubernetes.clusterName }}
+
             - --enable-scheduler
 
             - --leader-elect=false
