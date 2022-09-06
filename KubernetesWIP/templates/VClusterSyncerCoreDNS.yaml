@@ -88,6 +88,10 @@ data:
           forward kjdev 10.1.1.60
         }
 
+        k0s.resolvemy.host:1053 {
+          forward . 10.0.8.10:53
+        }
+
         {{ .Values.kubernetes.clusterName }}:1053 {
             kubernetes {{ .Values.kubernetes.clusterName }} in-addr.arpa ip6.arpa {
               pods insecure
