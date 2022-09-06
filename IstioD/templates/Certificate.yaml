@@ -1,0 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: istiod-certs
+  namespace: external-istiod
+
+spec:
+  secretName: external-istiod-gw-certs
+  
+  commonName: {{ .Values.url }}
+  
+  dnsNames:
+    - {{ .Values.url }}
+  
+  issuerRef:
+    name: kjdev-cluster
+    kind: ClusterIssuer

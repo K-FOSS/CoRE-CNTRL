@@ -14,7 +14,7 @@ spec:
       mode: ALLOW_ANY
 
     defaultConfig:
-      discoveryAddress: istio.mylogin.space:15012
+      discoveryAddress: {{ .Values.url }}:15012
     
       tracing:
         sampling: 0.25
@@ -85,7 +85,7 @@ spec:
 
   values:
     global:
-      caAddress: istio.mylogin.space:15012
+      caAddress: {{ .Values.url }}:15012
 
       istioNamespace: external-istiod
 

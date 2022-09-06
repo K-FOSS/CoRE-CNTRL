@@ -13,7 +13,7 @@ spec:
           lan-mode: private
         k8s:
           serviceAnnotations:
-            external-dns.alpha.kubernetes.io/hostname: 'istio.mylogin.space'
+            external-dns.alpha.kubernetes.io/hostname: '{{ .Values.url }}'
 
           service:
             ports:

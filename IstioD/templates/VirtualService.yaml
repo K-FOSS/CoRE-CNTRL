@@ -6,7 +6,7 @@ metadata:
 
 spec:
   hosts:
-    - istio.mylogin.space
+    - {{ .Values.url }}
 
   gateways:
     - external-istiod-gw

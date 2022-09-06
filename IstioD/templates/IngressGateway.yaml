@@ -15,9 +15,9 @@ spec:
         name: https-XDS
       tls:
         mode: SIMPLE
-        credentialName: myloginspace-default-certificates
+        credentialName: external-istiod-gw-certs
       hosts:
-        - istio.mylogin.space
+        - {{ .Values.url }}
 
     - port:
         number: 15017
@@ -25,9 +25,9 @@ spec:
         name: https-WEBHOOK
       tls:
         mode: SIMPLE
-        credentialName: myloginspace-default-certificates
+        credentialName: external-istiod-gw-certs
       hosts:
-        - istio.mylogin.space
+        - {{ .Values.url }}
 
     - port:
         number: 15014
@@ -35,6 +35,6 @@ spec:
         name: https-MONITOR
       tls:
         mode: SIMPLE
-        credentialName: myloginspace-default-certificates
+        credentialName: external-istiod-gw-certs
       hosts:
-        - istio.mylogin.space
+        - {{ .Values.url }}
