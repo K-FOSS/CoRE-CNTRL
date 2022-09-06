@@ -10,6 +10,9 @@ spec:
 
     trustDomain: k0s.resolvemy.host
 
+    outboundTrafficPolicy:
+      mode: ALLOW_ANY
+
     defaultConfig:
       discoveryAddress: istio.mylogin.space:15012
     
