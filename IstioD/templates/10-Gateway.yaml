@@ -15,6 +15,13 @@ spec:
           serviceAnnotations:
             external-dns.alpha.kubernetes.io/hostname: '{{ .Values.url }}'
 
+          overlays:
+            - kind: Service
+              name: istio-ingressgateway
+              patches:
+                - path: metadata.labels.lan-mode
+                  value: private
+
           service:
             type: ClusterIP
             ports:
