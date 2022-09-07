@@ -197,8 +197,8 @@ spec:
             value: '5'
 
         searches:
-          - k0s.resolvemy.host
-          - svc.k0s.resolvemy.host
+          - {{ .Values.kubernetes.clusterName }}
+          - svc.{{ .Values.kubernetes.clusterName }}
 
       restartPolicy: Always
 
