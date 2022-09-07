@@ -15,14 +15,7 @@ data:
     egressSelections:
       - name: cluster
         connection:
-          proxyProtocol: HTTPConnect
-          transport:
-            tcp:
-              url: https://{{ $ipAddress }}:{{ .Values.kubernetes.konnectivityServer.service.ports.server }}
-              TLSConfig:
-                caBundle: /pki/konnectivity-client/ca.crt
-                clientKey: /pki/konnectivity-client/tls.key
-                clientCert: /pki/konnectivity-client/tls.crt
+          proxyProtocol: Direct
 
       - name: controlplane
         connection:
