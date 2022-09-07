@@ -95,6 +95,9 @@ spec:
 
       meshID: mesh1
 
+      multiCluster:
+        clusterName: cntrlplane
+
       proxy:
         clusterDomain: k0s.resolvemy.host
 
