@@ -30,10 +30,6 @@ spec:
       enabled: true
       k8s:
         overlays:
-        - kind: Service
-          name: istio-ingressgateway
-          patches:
-
         - kind: Deployment
           name: istiod
           patches:
