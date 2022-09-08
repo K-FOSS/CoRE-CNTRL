@@ -94,8 +94,6 @@ spec:
 
       meshID: mesh1
 
-      jwtPolicy: first-party-jwt
-
       multiCluster:
         clusterName: cntrlplane
 
