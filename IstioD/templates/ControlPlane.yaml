@@ -186,6 +186,6 @@ spec:
           limits: null
 
     base:
-      validationURL: https://istio.mylogin.space:15017/validate
+      validationURL: https://istiod.external-istiod.svc.k0s-lab.resolvemy.host:15017/validate
 
 {{- end }}
