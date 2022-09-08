@@ -133,21 +133,6 @@ spec:
 
       network: network1
 
-    # meshNetworks:
-    #   network1:
-    #     endpoints:
-    #     - fromCidr: "192.168.0.1/24"
-    #     gateways:
-    #     - address: 1.1.1.1
-    #       port: 80
-
-    #   network2:
-    #     endpoints:
-    #     - fromRegistry: reg1
-    #     gateways:
-    #     - registryServiceName: istio-ingressgateway.istio-system.svc.cluster.local
-    #       port: 443
-
       remotePilotAddress: {{ .Values.url }}
 
        
@@ -174,6 +159,8 @@ spec:
       #   Logging   #
       ###############
       logAsJson: true
+      logging:
+        level: 'default:info'
 
       #
       # TLS
@@ -187,6 +174,8 @@ spec:
 
       proxy:
         clusterDomain: k0s.resolvemy.host
+
+        logLevel: info
 
         resources:
           requests:
