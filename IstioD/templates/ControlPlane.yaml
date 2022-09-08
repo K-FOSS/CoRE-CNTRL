@@ -100,6 +100,9 @@ spec:
         - name: BOOTSTRAP_XDS_AGENT
           value: 'true'
 
+        - name: PROXY_CONFIG_XDS_AGENT
+          value: 'true'
+
   values:
     global:
       #################
