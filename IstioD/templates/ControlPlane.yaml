@@ -13,6 +13,26 @@ spec:
     outboundTrafficPolicy:
       mode: ALLOW_ANY
 
+    extensionProviders:
+      - name: otel
+        envoyOtelAls:
+          service: otel-core.core-prod.svc.k0s.resolvemy.host
+          port: 4317
+
+      - name: 'authentik'
+        envoyExtAuthzHttp:
+          service: k0s-cntrl-aaa-authentik.core-prod.svc.k0s.resolvemy.host
+          port: '80'
+          pathPrefix: '/outpost.goauthentik.io/auth/envoy'
+          headersToDownstreamOnAllow:
+            - cookie
+          headersToUpstreamOnAllow:
+            - set-cookie
+            - x-authentik-*
+            - x-remote-*
+          includeRequestHeadersInCheck:
+            - cookie
+
     defaultConfig:
       discoveryAddress: {{ .Values.url }}:15012
     
