@@ -155,7 +155,7 @@ spec:
       #   Webhooks   #
       ################
 
-      operatorManageWebhooks: false
+      operatorManageWebhooks: true
 
       ###############
       #   Logging   #
