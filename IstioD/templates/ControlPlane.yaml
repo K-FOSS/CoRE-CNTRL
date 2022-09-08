@@ -43,7 +43,7 @@ spec:
             - cookie
 
     defaultConfig:
-      discoveryAddress: {{ .Values.url }}:15012
+      discoveryAddress: {{ $gwURL }}:15012
     
       tracing:
         sampling: 0.25
@@ -133,7 +133,7 @@ spec:
 
       network: network1
 
-      remotePilotAddress: {{ .Values.url }}
+      remotePilotAddress: {{ $gwURL }}
 
        
       ##########################
@@ -165,7 +165,7 @@ spec:
       #
       # TLS
       #
-      caAddress: {{ .Values.url }}:15012
+      caAddress: {{ $gwURL }}:15012
 
       #pilotCertProvider: kubernetes
 
