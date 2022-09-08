@@ -1,5 +1,6 @@
 {{- if .Values.istiod.ingress.tls.enabled }}
 {{- $fullName := include "cntrlmesh.fullname" . -}}
+{{- $gwURL := include "cntrlmesh.istio.gwURL" . -}}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -8,10 +9,10 @@ metadata:
   namespace: istio-system
 
 spec:
-  commonName: {{ .Values.url }}
+  commonName: {{ $gwURL }}
 
   dnsNames:
-    - {{ .Values.url }}
+    - {{ $gwURL }}
 
   secretName: {{ $fullName }}-gw-certs
 
