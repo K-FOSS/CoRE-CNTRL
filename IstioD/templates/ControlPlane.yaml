@@ -185,4 +185,7 @@ spec:
             memory: 32Mi
           limits: null
 
+    base:
+      validationURL: https://istio.mylogin.space:15017/validate
+
 {{- end }}
