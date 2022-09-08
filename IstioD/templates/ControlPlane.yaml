@@ -147,7 +147,7 @@ spec:
       #
       # Controls whether the server-side validation is enabled
       #
-      configValidation: true
+      configValidation: false
 
       ################
       #   Webhooks   #
