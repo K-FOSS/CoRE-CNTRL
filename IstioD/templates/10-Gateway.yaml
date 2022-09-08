@@ -1,19 +1,23 @@
+{{- if .Values.istiod.ingress.enabled }}
+{{- $fullName := include "cntrlmesh.fullname" . -}}
+{{- $gwURL := include "cntrlmesh.istio.gwURL" . -}}
+---
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
-  namespace: istio-system
   name: istio-config
+
+  namespace: istio-system
 spec:
   defaultRevision: false
   components:
     ingressGateways:
       - name: istio-ingressgateway
         enabled: true
-        # label:
-        #   lan-mode: private
+
         k8s:
           serviceAnnotations:
-            external-dns.alpha.kubernetes.io/hostname: '{{ .Values.url }}'
+            external-dns.alpha.kubernetes.io/hostname: {{ $gwURL }}
 
           overlays:
             - kind: Service
@@ -25,6 +29,10 @@ spec:
           service:
             type: ClusterIP
             ports:
+              - port: 15010
+                targetPort: 15010
+                name: grpc-xds
+
               - port: 15021
                 targetPort: 15021
                 name: status-port
@@ -40,3 +48,5 @@ spec:
               - port: 15017
                 targetPort: 15017
                 name: tls-webhook
+
+{{- end }}

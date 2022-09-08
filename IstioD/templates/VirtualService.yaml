@@ -1,17 +1,37 @@
+{{- if .Values.istiod.ingress.enabled }}
+{{- $fullName := include "cntrlmesh.fullname" . -}}
+{{- $gwURL := include "cntrlmesh.istio.gwURL" . -}}
+---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-   name: external-istiod-vs
+   name: {{ $fullName }}-ext-gw
    namespace: external-istiod
 
 spec:
   hosts:
-    - {{ .Values.url }}
+    - {{ $gwURL }}
 
   gateways:
     - external-istiod-gw
-  
+
   http:
+    #
+    # XDS and CA services (Plaintext, only for secure networks)	
+    #
+    - match:
+        - port: 15010
+      route:
+        - destination:
+            host: istiod.external-istiod.svc.cluster.local
+            port:
+              number: 15010
+
+
+    #
+    # XDS and CA services (TLS and mTLS, recommended for production use)	
+    #
+
     - match:
         - port: 15012
       route:
@@ -20,13 +40,10 @@ spec:
             port:
               number: 15012
 
-    - match:
-        - port: 15017
-      route:
-        - destination:
-            host: istiod.external-istiod.svc.cluster.local
-            port:
-              number: 443
+
+    #
+    # Control plane monitoring
+    #
 
     - match:
         - port: 15014
@@ -35,3 +52,17 @@ spec:
             host: istiod.external-istiod.svc.cluster.local
             port:
               number: 15014
+
+
+    #
+    # Webhook container port, forwarded from 443	
+    #
+
+    - match:
+        - port: 15017
+      route:
+        - destination:
+            host: istiod.external-istiod.svc.cluster.local
+            port:
+              number: 443
+{{- end }}

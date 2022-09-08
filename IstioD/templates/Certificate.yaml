@@ -1,17 +1,21 @@
+{{- if .Values.istiod.ingress.tls.enabled }}
+{{- $fullName := include "cntrlmesh.fullname" . -}}
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: istiod-certs
+  name: {{ $fullName }}
   namespace: istio-system
 
 spec:
-  secretName: external-istiod-gw-certs
-  
   commonName: {{ .Values.url }}
-  
+
   dnsNames:
     - {{ .Values.url }}
-  
+
+  secretName: {{ $fullName }}-gw-certs
+
   issuerRef:
     name: kjdev-cluster
     kind: ClusterIssuer
+{{- end }}

@@ -1,7 +1,11 @@
+{{- if .Values.istiod.ingress.enabled }}
+{{- $fullName := include "cntrlmesh.fullname" . -}}
+{{- $gwURL := include "cntrlmesh.istio.gwURL" . -}}
+---
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: external-istiod-gw
+  name: {{ $fullName }}-ext-gw
   namespace: external-istiod
 
 spec:
@@ -10,31 +14,50 @@ spec:
 
   servers:
     - port:
+        number: 15010
+        protocol: grpc
+        name: grpc-XDS
+
+      hosts:
+        - {{ $gwURL }}
+
+
+    - port:
         number: 15012
         protocol: https
         name: https-XDS
+
       tls:
         mode: SIMPLE
-        credentialName: external-istiod-gw-certs
+        credentialName: {{ $fullName }}-gw-certs
+
       hosts:
-        - {{ .Values.url }}
+        - {{ $gwURL }}
+
 
     - port:
         number: 15017
         protocol: https
         name: https-WEBHOOK
+
       tls:
         mode: SIMPLE
-        credentialName: external-istiod-gw-certs
+        credentialName: {{ $fullName }}-gw-certs
+
       hosts:
-        - {{ .Values.url }}
+        - {{ $gwURL }}
+
 
     - port:
         number: 15014
         protocol: https
         name: https-MONITOR
+
       tls:
         mode: SIMPLE
-        credentialName: external-istiod-gw-certs
+        credentialName: {{ $fullName }}-gw-certs
+
       hosts:
-        - {{ .Values.url }}
+        - {{ $gwURL }}
+
+{{- end }}

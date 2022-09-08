@@ -1,1 +1,30 @@
-url: istio.mylogin.space
+istiod:
+  namespace: external-istiod
+
+  systemNamespace: istio-system
+
+  tracing:
+    otlp:
+      address: '' 
+      port: ''
+
+  clusters:
+    - name: cntrl-plane
+      network: 0.0.0.0/0
+  
+  networks:
+    - name: network1
+      cidr: 0.0.0.0/0
+
+  ingress:
+    url: istio.mylogin.space
+
+    enabled: true
+
+    tls:
+      enabled: true
+
+  istiod:
+    enabled: true
+
+    

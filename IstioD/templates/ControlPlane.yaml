@@ -1,10 +1,19 @@
+{{- if .Values.istiod.istiod.enabled }}
+{{- $fullName := include "cntrlmesh.fullname" . -}}
+{{- $gwURL := include "cntrlmesh.istio.gwURL" . -}}
+---
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
-  namespace: external-istiod
   name: istiod
+
+  namespace: external-istiod
 spec:
   profile: empty
+  
+  #
+  # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
+  #
   meshConfig:
     rootNamespace: external-istiod
 
@@ -184,3 +193,5 @@ spec:
             cpu: 64m
             memory: 32Mi
           limits: null
+
+{{- end }}
