@@ -185,7 +185,4 @@ spec:
             memory: 32Mi
           limits: null
 
-    base:
-      validationURL: https://istiod.external-istiod.svc.k0s-lab.resolvemy.host:15017/validate
-
 {{- end }}
