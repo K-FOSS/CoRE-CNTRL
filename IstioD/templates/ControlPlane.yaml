@@ -102,20 +102,76 @@ spec:
 
   values:
     global:
-      caAddress: {{ .Values.url }}:15012
+      #################
+      #               #
+      #     MAIN      #
+      #               #
+      #################
 
-      istioNamespace: external-istiod
-
-      operatorManageWebhooks: true
-
-      configValidation: false
-
-      pilotCertProvider: kubernetes
-
+      #
+      # Multi Cluster
+      #
       meshID: mesh1
 
       multiCluster:
+        enabled: true
         clusterName: cntrlplane
+        includeEnvoyFilter: true
+
+
+      network: network1
+
+    # meshNetworks:
+    #   network1:
+    #     endpoints:
+    #     - fromCidr: "192.168.0.1/24"
+    #     gateways:
+    #     - address: 1.1.1.1
+    #       port: 80
+
+    #   network2:
+    #     endpoints:
+    #     - fromRegistry: reg1
+    #     gateways:
+    #     - registryServiceName: istio-ingressgateway.istio-system.svc.cluster.local
+    #       port: 443
+
+      remotePilotAddress: {{ .Values.url }}
+
+       
+      ##########################
+      #
+      #          Misc
+      #
+      ###########################
+
+      istioNamespace: external-istiod
+
+      #
+      # Controls whether the server-side validation is enabled
+      #
+      configValidation: true
+
+      ################
+      #   Webhooks   #
+      ################
+
+      operatorManageWebhooks: true
+
+      ###############
+      #   Logging   #
+      ###############
+      logAsJson: true
+
+      #
+      # TLS
+      #
+      caAddress: {{ .Values.url }}:15012
+
+      #pilotCertProvider: kubernetes
+
+      
+
 
       proxy:
         clusterDomain: k0s.resolvemy.host
