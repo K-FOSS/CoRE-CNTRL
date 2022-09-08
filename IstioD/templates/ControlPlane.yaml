@@ -65,9 +65,6 @@ spec:
         - name: EXTERNAL_ISTIOD
           value: 'true'
 
-        - name: CLUSTER_ID
-          value: core
-
         - name: SHARED_MESH_CONFIG
           value: istio
 
@@ -93,7 +90,11 @@ spec:
 
       configValidation: false
 
+      pilotCertProvider: kubernetes
+
       meshID: mesh1
+
+      jwtPolicy: first-party-jwt
 
       multiCluster:
         clusterName: cntrlplane
