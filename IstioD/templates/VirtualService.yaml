@@ -13,7 +13,7 @@ spec:
     - {{ $gwURL }}
 
   gateways:
-    - external-istiod-gw
+    - {{ $fullName }}-ext-gw
 
   http:
     #
