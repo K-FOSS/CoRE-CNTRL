@@ -15,6 +15,14 @@ spec:
   # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
   #
   meshConfig:
+    accessLogFile: /dev/stdout
+    defaultProviders:
+      accessLogging:
+        - envoy
+        - otel
+
+
+
     rootNamespace: external-istiod
 
     trustDomain: k0s.resolvemy.host
