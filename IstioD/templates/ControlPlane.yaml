@@ -62,7 +62,7 @@ spec:
           - kind: Deployment
             name: istiod
             patches:
-              - path:  spec.template.metadata.labels.logs
+              - path: spec.template.metadata.labels.logs
                 value: loki-myloginspace
         env:
           - name: INJECTION_WEBHOOK_CONFIG_NAME
@@ -74,8 +74,11 @@ spec:
           - name: EXTERNAL_ISTIOD
             value: 'true'
 
-          - name: SHARED_MESH_CONFIG
-            value: istio
+          - name: ISTIOD_CUSTOM_HOST
+            value: 'istio.mylogin.space'
+
+          - name: ISTIOD_ADDR
+            value: 'istio.mylogin.space:15012'
 
           - name: PILOT_ENABLE_QUIC_LISTENERS
             value: 'true'
