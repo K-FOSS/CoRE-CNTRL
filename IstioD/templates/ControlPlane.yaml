@@ -72,6 +72,9 @@ spec:
             patches:
               - path: spec.template.metadata.labels.logs
                 value: loki-myloginspace
+
+              - path: metadata.labels.argocd.argoproj.io/instance
+                value: cntrl-plane-infra-k0s-istiod
         env:
           - name: INJECTION_WEBHOOK_CONFIG_NAME
             value: ''
