@@ -30,6 +30,9 @@ spec:
 
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/APIServerConfig.yaml") . | sha256sum }}
+
 
       labels:
         app: '{{ $fullName }}-apiserver'
