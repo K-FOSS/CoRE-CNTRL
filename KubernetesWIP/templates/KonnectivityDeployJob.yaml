@@ -10,6 +10,8 @@ metadata:
     app: {{ $fullName }}-konnectivitydeploy-tasks
 
 
+  annotations:
+     checksum/scripts: {{ include (print $.Template.BasePath "/KonnectivityDeployScript.yaml") . | sha256sum }}
 spec:
   template:
     metadata:
