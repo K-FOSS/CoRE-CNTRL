@@ -1,26 +1,37 @@
+{{- if or .Values.kubernetes.konnectivityServer.enabled .Values.kubernetes.konnectivityAgent.enabled }}
 {{- $fullName := include "kubernetes.fullname" . -}}
 {{- $ipAddress := include "kubernetes.getKonnectivityAddress" . -}}
 ---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $fullName }}-konnectivity-manifests
-  namespace: core-prod
 
-apiVersion: v1
+
 
 data:
   konnectivity-agent-deployment.yaml: |
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      name: konnectivity-agent
+      namespace: kube-system
+
       labels:
         addonmanager.kubernetes.io/mode: Reconcile
         k8s-app: konnectivity-agent
-      namespace: kube-system
-      name: konnectivity-agent
+        {{- with .Values.kubernetes.konnectivityAgent.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      
+      {{- with .Values.kubernetes.konnectivityAgent.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
 
     spec:
-      replicas: 1
+      replicas: {{ .Values.kubernetes.konnectivityAgent.replicaCount }}
 
       selector:
         matchLabels:
@@ -30,9 +41,22 @@ data:
         metadata:
           labels:
             k8s-app: konnectivity-agent
+            {{- with .Values.kubernetes.konnectivityAgent.podLabels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          
+          {{- with .Values.kubernetes.konnectivityAgent.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 
         spec:
-          hostNetwork: false
+          {{- with .Values.kubernetes.konnectivityAgent.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          hostNetwork: {{ .Values.kubernetes.konnectivityAgent.hostNetwork }}
 
           securityContext:
             seccompProfile:
@@ -43,6 +67,9 @@ data:
           tolerations:
             - key: "CriticalAddonsOnly"
               operator: "Exists"
+          {{- with .Values.kubernetes.konnectivityAgent.tolerations }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 
           affinity:
             podAntiAffinity:
@@ -52,13 +79,20 @@ data:
                     topologyKey: "kubernetes.io/hostname"
                     labelSelector:
                       matchLabels:
-                        app: infra1-dc1-infra-k0s-k8s-kubernetes-konnectivity-server
+                        k8s-app: konnectivity-agent
+
+          {{- with .Values.kubernetes.konnectivityServer.image.pullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
 
           containers:
             - name: konnectivity-agent
               
-              image: us.gcr.io/k8s-artifacts-prod/kas-network-proxy/proxy-agent:v0.0.30
-              imagePullPolicy: IfNotPresent
+              {{- with .Values.kubernetes.konnectivityAgent.image }}
+              image: "{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}"
+              imagePullPolicy: {{ .pullPolicy }}
+              {{- end }}
               
               command:
                 - /proxy-agent
@@ -66,17 +100,22 @@ data:
                 - --ca-cert=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
                 - --service-account-token-path=/var/run/secrets/tokens/konnectivity-agent-token
 
-                - --admin-server-port=8133
-                - --health-server-port=8134
-                - --proxy-server-host=10.1.1.40
-                - --proxy-server-port=8132
+                - --admin-server-port={{ .Values.kubernetes.konnectivityAgent.ports.admin }}
+                - --health-server-port={{ .Values.kubernetes.konnectivityAgent.ports.health }}
+                - --proxy-server-host={{ $ipAddress }}
+                - --proxy-server-port={{ .Values.kubernetes.konnectivityServer.ports.agent }}
+
+                {{- range $key, $value := .Values.kubernetes.konnectivityAgent.extraArgs }}
+                - --{{ $key }}={{ $value }}
+                {{- end }}
 
               ports:
-                - containerPort: 8133
-                  name: admin
+                - name: admin
+                  containerPort: {{ .Values.kubernetes.konnectivityAgent.ports.admin }}
 
-                - containerPort: 8134
-                  name: health
+                - name: health
+                  containerPort: {{ .Values.kubernetes.konnectivityAgent.ports.health }}
+                  
 
               volumeMounts:
                 - mountPath: /var/run/secrets/tokens
@@ -85,7 +124,7 @@ data:
               livenessProbe:
                 httpGet:
                   path: /healthz
-                  port: 8134
+                  port: health
                   scheme: HTTP
                 initialDelaySeconds: 15
                 timeoutSeconds: 15
@@ -126,5 +165,4 @@ data:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
         name: system:konnectivity-server
-
-
+{{- end }}
