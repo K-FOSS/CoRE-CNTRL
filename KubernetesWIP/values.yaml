@@ -28,6 +28,13 @@ kubernetes:
   virtual:
     enabled: false
 
+  kubectl:
+    image:
+      repository: docker.io/kristianfjones/kubectl
+      tag: v1.23.10
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+
   kine:
     enabled: true
 
