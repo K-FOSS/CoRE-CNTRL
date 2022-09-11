@@ -14,7 +14,7 @@ data:
     {{ with .Values.kubernetes.apiServer.tracing }}
     endpoint: {{ .host }}:{{ .port }}
     {{- end }}
-    samplingRatePerMillion: 100
+    samplingRatePerMillion: 5000
   {{- end }}
 
   egress-selector-configuration.yaml: |
