@@ -23,7 +23,7 @@ spec:
         - name: kubectl
 
           {{- with .Values.kubernetes.kubectl.image }}
-          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}''
+          image: '{{ .repository }}{{ if .digest }}@{{ .digest }}{{ else }}:{{ .tag }}{{ end }}'
           imagePullPolicy: {{ .pullPolicy }}
           {{- end }}
 
