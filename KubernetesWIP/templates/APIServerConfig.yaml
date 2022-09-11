@@ -11,8 +11,8 @@ data:
   tracing.yaml: |
     apiVersion: apiserver.config.k8s.io/v1alpha1
     kind: TracingConfiguration
-    {{ with .Values.kubernetes.apiServer.tracing.host }}
-    endpoint: {{ .Values.kubernetes.apiServer.tracing.host }}:{{ .Values.kubernetes.apiServer.tracing.port }}
+    {{ with .Values.kubernetes.apiServer.tracing }}
+    endpoint: {{ .host }}:{{ .port }}
     {{- end }}
     samplingRatePerMillion: 100
   {{- end }}
