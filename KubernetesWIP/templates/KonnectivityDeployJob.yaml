@@ -67,3 +67,4 @@ spec:
             sources:
               - configMap:
                   name: {{ $fullName }}-konnectivity-manifests
+{{- end }}
