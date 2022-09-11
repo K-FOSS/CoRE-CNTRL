@@ -7,6 +7,16 @@ metadata:
   name: {{ $fullName }}-apiserver-config
 
 data:
+  {{- if .Values.kubernetes.apiServer.tracing.enabled }}
+  tracing.yaml: |
+    apiVersion: apiserver.config.k8s.io/v1alpha1
+    kind: TracingConfiguration
+    {{ with .Values.kubernetes.apiServer.tracing.host }}
+    endpoint: {{ .Values.kubernetes.apiServer.tracing.host }}:{{ .Values.kubernetes.apiServer.tracing.port }}
+    {{- end }}
+    samplingRatePerMillion: 100
+  {{- end }}
+
   egress-selector-configuration.yaml: |
     apiVersion: apiserver.k8s.io/v1alpha1
 

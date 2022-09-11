@@ -220,6 +220,11 @@ kubernetes:
   apiServer:
     enabled: true
 
+    tracing:
+      enabled: false
+      host: 'localhost'
+      port: '4317'
+
     image:
       repository: k8s.gcr.io/kube-apiserver
       tag: v1.23.6

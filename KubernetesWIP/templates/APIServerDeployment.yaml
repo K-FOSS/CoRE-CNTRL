@@ -101,6 +101,10 @@ spec:
             - --logging-format=json
             - --v=0
 
+            {{- if .Values.kubernetes.apiServer.tracing.enabled }}
+            - --tracing-config-file=/etc/kubernetes/tracing.yaml
+            {{- end }}
+
 
             - --allow-privileged=true
 
@@ -168,7 +172,7 @@ spec:
             {{- end }}
             {{- end }}
 
-            - --feature-gates=MixedProtocolLBService=true
+            - --feature-gates=MixedProtocolLBService=true,APIServerTracing=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
             - --event-ttl=5m
