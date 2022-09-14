@@ -138,7 +138,7 @@ spec:
                   secret:
                     secretName: {{ $fullName }}-gw-certs
 
-              - path: spec.template.spec.containers.[name:istio-proxy].volumeMounts.[-1]
+              - path: spec.template.spec.containers.[name:discovery].volumeMounts.[-1]
                 value:
                   name: public-tls
                   mountPath: /etc/tls/istio
