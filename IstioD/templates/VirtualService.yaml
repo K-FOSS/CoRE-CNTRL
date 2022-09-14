@@ -5,7 +5,7 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-   name: {{ $fullName }}-ext-gw
+  name: {{ $fullName }}-ext-gw
 
   namespace: external-istiod
 spec:
