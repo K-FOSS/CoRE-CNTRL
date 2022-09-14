@@ -165,8 +165,6 @@ spec:
 
       network: network1
 
-      remotePilotAddress: {{ $gwURL }}
-
        
       ##########################
       #
