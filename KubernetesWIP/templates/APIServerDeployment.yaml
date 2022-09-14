@@ -58,7 +58,7 @@ spec:
               weight: 1
 
       automountServiceAccountToken: false
-
+      priorityClassName: system-node-critical
       containers:
         - name: kube-apiserver
 
