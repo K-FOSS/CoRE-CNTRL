@@ -67,6 +67,9 @@ spec:
       - name: istio-gw
         enabled: true
 
+        labels:
+          istio: istio-gw
+
         k8s:
           serviceAnnotations:
             external-dns.alpha.kubernetes.io/hostname: {{ $gwURL }}
