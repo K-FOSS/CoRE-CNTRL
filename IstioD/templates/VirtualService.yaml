@@ -58,6 +58,8 @@ spec:
   tls:
     - match:
         - port: 15017
+          sniHosts:
+            - {{ $gwURL }}
       route:
         - destination:
             host: istiod.external-istiod.svc.cluster.local
