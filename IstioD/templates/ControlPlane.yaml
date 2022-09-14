@@ -84,11 +84,11 @@ spec:
             - kind: Deployment
               name: istio-gw
               patches:
-                - path: spec.template.spec.hostAliases[100]
-                  value: |-
-                    ip: 172.18.143.30
-                    hostnames:
-                      - istio.mylogin.space
+                - path: spec.template.spec.hostAliases
+                  value: |- 
+                    - ip: 172.18.143.30
+                      hostnames:
+                        - istio.mylogin.space
 
           service:
             type: ClusterIP
