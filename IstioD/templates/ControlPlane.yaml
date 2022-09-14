@@ -163,7 +163,7 @@ spec:
             value: 'true'
 
           - name: ISTIOD_CUSTOM_HOST
-            value: 'istio.mylogin.space'
+            value: 'istio.mylogin.space,istiod.external-istiod.svc.k0s-lab.resolvemy.host'
 
           - name: ISTIOD_ADDR
             value: 'istio.mylogin.space:15012'
@@ -251,5 +251,10 @@ spec:
             cpu: 64m
             memory: 32Mi
           limits: null
+
+    istiodRemote:
+      injectionURL: >-
+        https://istiod.external-istiod.svc.k0s-lab.resolvemy.host:443/inject/:ENV:cluster=cntrlplane:ENV:net=network1
+
 
 {{- end }}
