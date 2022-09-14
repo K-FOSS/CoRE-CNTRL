@@ -81,6 +81,15 @@ spec:
                 - path: metadata.labels.lan-mode
                   value: private
 
+            - kind: Deployment
+              name: istio-gw
+              patches:
+                - path: spec.template.spec.hostAliases[100]
+                  value: |-
+                    ip: 172.18.143.30
+                    hostnames:
+                      - istio.mylogin.space
+
           service:
             type: ClusterIP
             ports:
@@ -195,7 +204,7 @@ spec:
       #
       # TLS
       #
-      #caAddress: {{ $gwURL }}:15012
+      caAddress: {{ $gwURL }}:15012
 
       #pilotCertProvider: kubernetes
 
