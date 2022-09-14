@@ -73,6 +73,7 @@ spec:
           istio: istio-gw
 
         k8s:
+          priorityClassName: system-cluster-critical
           serviceAnnotations:
             external-dns.alpha.kubernetes.io/hostname: {{ $gwURL }}
 
@@ -128,6 +129,7 @@ spec:
     pilot:
       enabled: true
       k8s:
+        priorityClassName: system-cluster-critical
         overlays:
           - kind: Deployment
             name: istiod
