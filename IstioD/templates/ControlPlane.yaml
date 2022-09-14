@@ -132,11 +132,29 @@ spec:
           - kind: Deployment
             name: istiod
             patches:
+              - path: spec.template.spec.volumes.[-1]
+                value:
+                  name: public-tls
+                  secret:
+                    secretName: {{ $fullName }}-gw-certs
+
+              - path: spec.template.spec.containers.[name:istio-proxy].volumeMounts.[-1]
+                value:
+                  name: public-tls
+                  mountPath: /etc/tls/istio
+
+
               - path: spec.template.metadata.labels.logs
                 value: loki-myloginspace
 
               - path: metadata.labels.argocd.argoproj.io/instance
                 value: cntrl-plane-infra-k0s-istiod
+
+              - path: spec.template.spec.containers.[name:discovery].args.[100]
+                value: '--tlsCertFile=/etc/tls/istio/tls.crt'
+
+              - path: spec.template.spec.containers.[name:discovery].args.[100]
+                value: '--tlsKeyFile=/etc/tls/istio/tls.key'
         env:
           - name: ENABLE_DEBUG_ON_HTTP
             value: 'true'
