@@ -10,6 +10,8 @@ metadata:
   namespace: external-istiod
 spec:
   defaultRevision: true
+
+  profile: none
   
   #
   # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
