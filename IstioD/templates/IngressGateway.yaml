@@ -41,7 +41,9 @@ spec:
         name: https-WEBHOOK
 
       tls:
-        mode: PASSTHROUGH
+        mode: SIMPLE
+        credentialName: {{ $fullName }}-gw-certs
+
       hosts:
         - {{ $gwURL }}
 
