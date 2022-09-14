@@ -85,10 +85,13 @@ spec:
               name: istio-gw
               patches:
                 - path: spec.template.spec.hostAliases
-                  value: |- 
+                  value:
                     - ip: 172.18.143.30
                       hostnames:
                         - istio.mylogin.space
+
+                - path: spec.template.spec.containers.[name:istio-proxy].env.[name:CA_ROOT_CA].value
+                  value: /var/run/secrets/istio/root-cert.pem
 
           service:
             type: ClusterIP
