@@ -11,7 +11,7 @@ metadata:
 spec:
   defaultRevision: true
 
-  profile: none
+  profile: empty
   
   #
   # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
