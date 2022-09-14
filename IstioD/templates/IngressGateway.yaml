@@ -10,7 +10,7 @@ metadata:
 
 spec:
   selector:
-    istio: ingressgateway
+    istio: istio-gw
 
   servers:
     - port:
