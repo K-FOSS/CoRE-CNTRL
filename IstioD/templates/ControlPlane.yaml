@@ -90,8 +90,10 @@ spec:
                       hostnames:
                         - istio.mylogin.space
 
-                - path: spec.template.spec.containers.[name:istio-proxy].env.[name:CA_ROOT_CA].value
-                  value: /var/run/secrets/istio/root-cert.pem
+                - path: spec.template.spec.containers.[name:istio-proxy].env.[100]
+                  value: |
+                    name: CA_ROOT_CA
+                    value: /var/run/secrets/istio/root-cert.pem
 
           service:
             type: ClusterIP
