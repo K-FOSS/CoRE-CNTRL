@@ -5,7 +5,7 @@ metadata:
   namespace: external-istiod
 
 spec:
-  host: istiod.external-istiod.svc.cluster.local
+  host: istiod.external-istiod.svc.k0s-lab.resolvemy.host
 
   trafficPolicy:
     portLevelSettings:
