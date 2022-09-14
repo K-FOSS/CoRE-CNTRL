@@ -51,18 +51,13 @@ spec:
             port:
               number: 15014
 
-
-    #
-    # Webhook container port, forwarded from 443	
-    #
-  tls:
     - match:
         - port: 15017
-          sniHosts:
-            - {{ $gwURL }}
       route:
         - destination:
             host: istiod.external-istiod.svc.cluster.local
             port:
               number: 443
+
+
 {{- end }}
