@@ -21,7 +21,7 @@ spec:
         - port: 15010
       route:
         - destination:
-            host: istiod.external-istiod.svc.cluster.local
+            host: istiod.external-istiod.svc.k0s-lab.resolvemy.host
             port:
               number: 15010
 
@@ -34,7 +34,7 @@ spec:
         - port: 15012
       route:
         - destination:
-            host: istiod.external-istiod.svc.cluster.local
+            host: istiod.external-istiod.svc.k0s-lab.resolvemy.host
             port:
               number: 15012
 
@@ -47,7 +47,7 @@ spec:
         - port: 15014
       route:
         - destination:
-            host: istiod.external-istiod.svc.cluster.local
+            host: istiod.external-istiod.svc.k0s-lab.resolvemy.host
             port:
               number: 15014
 
@@ -55,7 +55,7 @@ spec:
         - port: 15017
       route:
         - destination:
-            host: istiod.external-istiod.svc.cluster.local
+            host: istiod.external-istiod.svc.k0s-lab.resolvemy.host
             port:
               number: 443
 
