@@ -195,7 +195,7 @@ spec:
       #
       # TLS
       #
-      caAddress: {{ $gwURL }}:15012
+      #caAddress: {{ $gwURL }}:15012
 
       #pilotCertProvider: kubernetes
 
