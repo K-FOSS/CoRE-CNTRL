@@ -64,7 +64,7 @@ spec:
 
   components:
     ingressGateways:
-      - name: istio-ingressgateway
+      - name: istio-gw
         enabled: true
 
         k8s:
@@ -73,7 +73,7 @@ spec:
 
           overlays:
             - kind: Service
-              name: istio-ingressgateway
+              name: istio-gw
               patches:
                 - path: metadata.labels.lan-mode
                   value: private
