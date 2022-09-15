@@ -9,8 +9,6 @@ metadata:
 
   namespace: external-istiod
 spec:
-  defaultRevision: true
-
   profile: empty
   
   #
