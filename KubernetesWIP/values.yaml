@@ -231,7 +231,7 @@ kubernetes:
       pullPolicy: IfNotPresent
       pullSecrets: []
 
-    replicaCount: 3
+    replicaCount: 2
     resources:
       requests:
         cpu: 100m
