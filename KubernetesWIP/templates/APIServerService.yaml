@@ -60,6 +60,6 @@ spec:
   selector:
     app: '{{ $fullName }}-apiserver'
 
-  publishNotReadyAddresses: true
+  # publishNotReadyAddresses: true
   sessionAffinity: ClientIP
 {{- end }}

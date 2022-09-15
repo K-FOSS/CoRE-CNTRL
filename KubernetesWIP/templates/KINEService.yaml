@@ -42,7 +42,7 @@ spec:
       protocol: TCP
       appProtocol: https
 
-  publishNotReadyAddresses: true
+  # publishNotReadyAddresses: true
   sessionAffinity: ClientIP
 
   selector:
