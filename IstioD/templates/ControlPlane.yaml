@@ -10,6 +10,8 @@ metadata:
   namespace: external-istiod
 spec:
   profile: empty
+
+  defaultRevision: true
   
   #
   # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
@@ -158,6 +160,10 @@ spec:
         env:
           - name: ENABLE_DEBUG_ON_HTTP
             value: 'true'
+
+          - name: INJECTION_WEBHOOK_CONFIG_NAME
+            value: ''
+
 
           - name: EXTERNAL_ISTIOD
             value: 'true'
