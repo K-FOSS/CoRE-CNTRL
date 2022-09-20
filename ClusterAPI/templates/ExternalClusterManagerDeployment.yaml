@@ -41,8 +41,8 @@ spec:
               name: https
 
         - name: manager
-          command:
-            - /manager
+          #command:
+          #  - /manager
 
           args:
             - run
