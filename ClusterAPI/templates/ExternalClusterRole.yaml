@@ -1,0 +1,75 @@
+{{- $fullName := include "capi.fullname" . -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $fullName }}-ext
+
+rules:
+  - apiGroups:
+      - cluster.x-k8s.io
+    resources:
+      - clusters
+      - clusters/status
+    verbs:
+      - get
+      - list
+      - watch
+
+  - apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    resources:
+      - externalclusters
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  - apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    resources:
+      - externalclusters
+      - externalmachines
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  - apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    resources:
+      - externalclusters/status
+    verbs:
+      - get
+      - patch
+      - update
+
+  - apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    resources:
+      - externalmachines
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  - apiGroups:
+      - infrastructure.cluster.x-k8s.io
+    resources:
+      - externalmachines/status
+    verbs:
+      - get
+      - patch
+      - update
