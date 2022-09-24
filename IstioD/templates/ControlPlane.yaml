@@ -89,16 +89,16 @@ spec:
               patches:
                 - path: spec.template.spec.hostAliases
                   value:
-                    - ip: 172.18.143.30
+                    - ip: 172.18.250.114
                       hostnames:
                         - istio.mylogin.space
 
-                - path: spec.template.spec.containers.[name:istio-proxy].env.[100]
+                - path: spec.template.spec.containers.[name:istio-proxy].env.[name:CA_ROOT_CA]
                   value: |
                     name: CA_ROOT_CA
                     value: /var/run/secrets/istio/root-cert.pem
 
-                - path: spec.template.spec.containers.[name:istio-proxy].env.[100]
+                - path: spec.template.spec.containers.[name:istio-proxy].env.[name:XDS_ROOT_CA]
                   value: |
                     name: XDS_ROOT_CA
                     value: /var/run/secrets/istio/root-cert.pem
