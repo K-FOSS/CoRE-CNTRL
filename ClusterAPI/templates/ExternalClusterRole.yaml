@@ -7,20 +7,9 @@ metadata:
 
 rules:
   - apiGroups:
-      - cluster.x-k8s.io
+      - ""
     resources:
-      - clusters
-      - clusters/status
-      - machines
-    verbs:
-      - get
-      - list
-      - watch
-
-  - apiGroups:
-      - infrastructure.cluster.x-k8s.io
-    resources:
-      - externalclusters
+      - secrets
     verbs:
       - create
       - delete
@@ -29,6 +18,52 @@ rules:
       - patch
       - update
       - watch
+
+  - apiGroups:
+      - cluster.x-k8s.io
+    resources:
+      - clusters
+      - clusters/status
+    verbs:
+      - get
+      - list
+      - watch
+
+  - apiGroups:
+      - cluster.x-k8s.io
+    resources:
+      - machines
+      - machines/status
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+
+  - apiGroups:
+      - controlplane.cluster.x-k8s.io
+    resources:
+      - externalcontrolplanes
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  
+  - apiGroups:
+      - controlplane.cluster.x-k8s.io
+    resources:
+      - externalcontrolplanes/status
+    verbs:
+      - get
+      - patch
+      - update
 
   - apiGroups:
       - infrastructure.cluster.x-k8s.io
