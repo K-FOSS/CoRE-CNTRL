@@ -40,7 +40,7 @@ kubernetes:
 
     image:
       repository: docker.io/rancher/kine
-      tag: v0.9.3-amd64
+      tag: v0.10.0-amd64
       pullPolicy: IfNotPresent
       pullSecrets: []
 
