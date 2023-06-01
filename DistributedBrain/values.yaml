@@ -198,7 +198,8 @@ liqo:
         limits: {}
         requests: {}
     # -- Image repository for the discovery pod.
-    imageName: "ghcr.io/liqotech/discovery"
+    imageName: ghcr.io/liqotech/discovery
+
     config:
       # -- Specify an unique ID (must be a valid uuidv4) for your cluster, instead of letting helm generate it automatically at install time.
       # You can generate it using the command: `uuidgen`
@@ -239,10 +240,11 @@ liqo:
         limits: {}
         requests: {}
     # -- Image repository for the auth pod.
-    imageName: "ghcr.io/liqotech/auth-service"
+    imageName: ghcr.io/liqotech/auth-service
     initContainer:
       # -- Image repository for the init container of the auth pod.
-      imageName: "ghcr.io/liqotech/cert-creator"
+      imageName: ghcr.io/liqotech/cert-creator
+
     service:
       # -- Kubernetes service used to expose the Authentication Service.
       # If you are exposing this service with an Ingress, you can change it to ClusterIP;
@@ -412,6 +414,7 @@ liqo:
     enable: true
     # -- Name to assign to the liqo virtual storage class.
     virtualStorageClassName: liqo
+
     # -- Name of the real storage class to use in the local cluster.
     realStorageClassName: ""
     # -- Namespace where liqo will deploy specific PVCs. Internal parameter, do not change.
