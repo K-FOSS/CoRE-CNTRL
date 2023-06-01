@@ -206,7 +206,7 @@ liqo:
       # This field is needed when using tools such as ArgoCD, since the helm lookup function is not supported and a new value would be generated at each deployment.
       clusterIDOverride: ""
       # -- Set a mnemonic name for your cluster.
-      clusterName: ""
+      clusterName: infra1-dc1
       # -- A set of labels that characterizes the local cluster when exposed remotely as a virtual node.
       # It is suggested to specify the distinguishing characteristics that may be used to decide whether to offload pods on this cluster.
       clusterLabels: {}
