@@ -4,9 +4,11 @@ liqo:
   # Declare variables to be passed into your templates.
 
   # -- Images' tag to select a development version of liqo instead of a release
-  tag: ""
+  tag: ''
+
   # -- The pullPolicy for liqo pods.
-  pullPolicy: "IfNotPresent"
+  pullPolicy: IfNotPresent
+
   apiServer:
     # -- The address that must be used to contact your API server, it needs to be reachable from the clusters that you will peer with (defaults to your master IP).
     address: ""
@@ -15,7 +17,8 @@ liqo:
 
   networking:
     # -- Use the default Liqo network manager.
-    internal: true
+    internal: false
+
     # -- Reflect pod IPs and EnpointSlices to the remote clusters.
     reflectIPs: true
 
@@ -34,7 +37,8 @@ liqo:
         limits: {}
         requests: {}
     # -- Image repository for the controller-manager pod.
-    imageName: "ghcr.io/liqotech/liqo-controller-manager"
+    imageName: ghcr.io/liqotech/liqo-controller-manager
+    
     config:
       # -- Percentage of available cluster resources that you are willing to share with foreign clusters.
       resourceSharingPercentage: 30
