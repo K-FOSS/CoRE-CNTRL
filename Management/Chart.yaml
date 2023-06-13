@@ -1,0 +1,12 @@
+apiVersion: v2
+version: 1.0.0
+appVersion: 1.0.0
+
+name: cntrl-management
+
+dependencies:
+  # Liqo
+  - name: rancher
+    version: '2.7.4'
+    repository: https://releases.rancher.com/server-charts/stable
+
