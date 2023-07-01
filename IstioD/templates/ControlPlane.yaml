@@ -17,14 +17,6 @@ spec:
   # https://preliminary.istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/
   #
   meshConfig:
-    accessLogFile: /dev/stdout
-    defaultProviders:
-      accessLogging:
-        - envoy
-        - otel
-
-
-
     rootNamespace: external-istiod
 
     trustDomain: k0s.resolvemy.host
@@ -33,10 +25,10 @@ spec:
       mode: ALLOW_ANY
 
     extensionProviders:
-      - name: otel
-        envoyOtelAls:
-          service: otel-core.core-prod.svc.k0s.resolvemy.host
-          port: 4317
+      # - name: otel
+      #   envoyOtelAls:
+      #     service: otel-core.core-prod.svc.k0s.resolvemy.host
+      #     port: 4317
 
       - name: 'authentik'
         envoyExtAuthzHttp:
@@ -55,10 +47,10 @@ spec:
     defaultConfig:
       discoveryAddress: {{ $gwURL }}:15012
     
-      tracing:
-        sampling: 0.25
-        zipkin:
-          address: otel-core.core-prod.svc.k0s.resolvemy.host:9411
+      # tracing:
+      #   sampling: 0.25
+      #   zipkin:
+      #     address: otel-core.core-prod.svc.k0s.resolvemy.host:9411
 
       proxyMetadata:
         XDS_ROOT_CA: /etc/ssl/certs/ca-certificates.crt
