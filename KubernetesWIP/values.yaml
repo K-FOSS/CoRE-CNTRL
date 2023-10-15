@@ -40,7 +40,7 @@ kubernetes:
 
     image:
       repository: docker.io/rancher/kine
-      tag: v0.10.0-amd64
+      tag: v0.10.3-amd64
       pullPolicy: IfNotPresent
       pullSecrets: []
 
@@ -226,8 +226,8 @@ kubernetes:
       port: '4317'
 
     image:
-      repository: k8s.gcr.io/kube-apiserver
-      tag: v1.23.6
+      repository: registry.k8s.io/kube-apiserver
+      tag: v1.28.2
       pullPolicy: IfNotPresent
       pullSecrets: []
 
@@ -284,12 +284,12 @@ kubernetes:
     enabled: true
 
     image:
-      repository: k8s.gcr.io/kube-controller-manager
-      tag: v1.23.6
+      repository: registry.k8s.io/kube-controller-manager
+      tag: v1.28.2
       pullPolicy: IfNotPresent
       pullSecrets: []
 
-    replicaCount: 3
+    replicaCount: 1
 
     resources:
       requests:
@@ -332,8 +332,8 @@ kubernetes:
     enabled: true
 
     image:
-      repository: k8s.gcr.io/kube-scheduler
-      tag: v1.23.6
+      repository: registry.k8s.io/kube-scheduler
+      tag: v1.28.2
       pullPolicy: IfNotPresent
       pullSecrets: []
 
