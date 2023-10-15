@@ -82,8 +82,6 @@ spec:
             - --tls-cert-file=/pki/scheduler-server/tls.crt
 
             - --tls-private-key-file=/pki/scheduler-server/tls.key
-
-            - --feature-gates=MixedProtocolLBService=true
           
           ports:
             - containerPort: 10259

@@ -148,7 +148,6 @@ spec:
             - --cluster-cidr={{ . }}
             {{- end }}
             
-            - '--feature-gates=MixedProtocolLBService=true'
 
           ports:
             - containerPort: {{ .Values.kubernetes.controllerManager.port }}

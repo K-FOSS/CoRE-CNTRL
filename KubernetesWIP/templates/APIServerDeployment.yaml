@@ -133,8 +133,6 @@ spec:
             - --etcd-servers=https://{{ $fullName }}-kine.core-prod.svc.cluster.local:2379
             {{- end }}
 
-            - --insecure-port=0
-
             - --kubelet-timeout=30s
             - --kubelet-preferred-address-types=InternalIP
 
@@ -173,7 +171,7 @@ spec:
             {{- end }}
             {{- end }}
 
-            - --feature-gates=MixedProtocolLBService=true,APIServerTracing=true
+            - --feature-gates=APIServerTracing=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
             - --event-ttl=5m
