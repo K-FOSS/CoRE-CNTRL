@@ -1,0 +1,16 @@
+
+
+apiVersion: v2
+version: 0.0.1
+
+name: cntrlplane
+
+dependencies:
+  - name: kamaji
+    version: 0.13.0
+    condition: kamaji.enabled
+    repository: https://clastix.github.io/charts
+
+  # - name: vcluster-k8s
+  #   repository: https://charts.loft.sh
+  #   version: 0.11.0-alpha.0
