@@ -174,8 +174,7 @@ spec:
             - --feature-gates=APIServerTracing=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
-            - --event-ttl=5m
-            - --watch-cache=false
+            - --event-ttl=10m
 
             {{- range $key, $value := .Values.kubernetes.apiServer.extraArgs }}
             - --{{ $key }}={{ $value }}
