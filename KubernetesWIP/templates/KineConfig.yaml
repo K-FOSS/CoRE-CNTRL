@@ -1,0 +1,39 @@
+{{- if and .Values.kubernetes.kine.enabled .Values.kubernetes.kine.secrets.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: {{ $fullName }}-kine-db
+
+  labels:
+    app: {{ $fullName }}-kine-db
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: corevault-rootsecrets
+
+
+  target:
+    name: {{ $fullName }}-kine-db
+
+    template:
+      data:
+        DB_URI: '{{ .Values.kubernetes.kine.secrets.database.kind }}://{{`{{ .Username }}:{{ .Password }}`}}@{{ .Values.kubernetes.kine.secrets.database.hostname }}:{{ .Values.kubernetes.kine.secrets.database.port }}/{{`{{ .Database }}`}}'
+
+  data:
+    - secretKey: Database
+      remoteRef:
+        key: Kubernetes/CoRE/Database
+        property: Database
+
+    - secretKey: Username
+      remoteRef:
+        key: Kubernetes/CoRE/Database
+        property: Username
+
+    - secretKey: Password
+      remoteRef:
+        key: Kubernetes/CoRE/Database
+        property: Password
+{{- end }}

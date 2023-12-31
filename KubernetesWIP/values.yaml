@@ -44,6 +44,15 @@ kubernetes:
       pullPolicy: IfNotPresent
       pullSecrets: []
 
+    secrets:
+      enabled: true
+
+      database:
+        kind: postgres
+        port: 5432
+        hostname: psql.mylogin.space
+        ssl: enabled
+
     replicaCount: 2
     resources:
       requests:
@@ -57,8 +66,7 @@ kubernetes:
       dnsNames: []
       ipAddresses: ['10.1.1.40']
 
-    extraArgs:
-      endpoint: postgres://k0sk8s:<secret:CORE0_SITE1/data/k0sk8s~Password>@10.1.1.38:5432/k0sk8s?sslmode=disable
+    extraArgs: {}
 
     labels: {}
     annotations: {}

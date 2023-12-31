@@ -71,6 +71,10 @@ spec:
             
             - --server-cert-file=/pki/server/tls.crt
             - --server-key-file=/pki/server/tls.key
+
+            {{- if .Values.kubernetes.kine.secrets.enabled }}
+            - --endpoint=$(DB_URI)
+            {{- end }}
             {{- range $key, $value := .Values.kubernetes.kine.extraArgs }}
             - --{{ $key }}={{ $value }}
             {{- end }}
@@ -78,6 +82,12 @@ spec:
           {{- with .Values.kubernetes.kine.extraEnv }}
           env:
           {{- toYaml . | nindent 10 }}
+          {{- end }}
+
+          {{- if .Values.kubernetes.kine.secrets.enabled }} 
+          envFrom:
+            - secretRef:
+                name: {{ $fullName }}-kine-db
           {{- end }}
 
           volumeMounts:
