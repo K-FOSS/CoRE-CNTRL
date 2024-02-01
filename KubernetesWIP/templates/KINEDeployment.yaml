@@ -68,6 +68,7 @@ spec:
           command:
             - kine
             - --ca-file=/pki/ca/tls.crt
+            - --ca-file=/etc/ca/tls.crt
             
             - --server-cert-file=/pki/server/tls.crt
             - --server-key-file=/pki/server/tls.key
