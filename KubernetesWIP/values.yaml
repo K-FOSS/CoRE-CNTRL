@@ -235,7 +235,7 @@ kubernetes:
 
     image:
       repository: registry.k8s.io/kube-apiserver
-      tag: v1.28.2
+      tag: v1.29.1
       pullPolicy: IfNotPresent
       pullSecrets: []
 
@@ -341,7 +341,7 @@ kubernetes:
 
     image:
       repository: registry.k8s.io/kube-scheduler
-      tag: v1.28.2
+      tag: v1.29.1
       pullPolicy: IfNotPresent
       pullSecrets: []
 
