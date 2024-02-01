@@ -7,6 +7,24 @@ metadata:
   name: {{ $fullName }}-apiserver-config
 
 data:
+  auth-config.yaml: |
+    apiVersion: apiserver.config.k8s.io/v1alpha1
+    kind: AuthenticationConfiguration
+    jwt:
+      - issuer:
+          url: https://idp.mylogin.space/application/o/k8s/
+          audiences:
+            - k0s
+        claimMappings:
+          username:
+            expression: 'claims.username + ":external-user"'
+          groups:
+            expression: 'claims.groups'
+          uid:
+            expression: 'claims.sub'
+        userValidationRules:
+          - expression: "!user.username.startsWith('system:')" # the expression will evaluate to true, so validation will succeed.
+            message: 'username cannot used reserved system: prefix'
   {{- if .Values.kubernetes.apiServer.tracing.enabled }}
   tracing.yaml: |
     apiVersion: apiserver.config.k8s.io/v1alpha1

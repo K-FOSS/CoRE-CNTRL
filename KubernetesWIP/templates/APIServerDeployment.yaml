@@ -171,10 +171,11 @@ spec:
             {{- end }}
             {{- end }}
 
-            - --feature-gates=APIServerTracing=true,SidecarContainers=true
+            - --feature-gates=APIServerTracing=true,SidecarContainers=true,StructuredAuthenticationConfiguration=true
             - --max-mutating-requests-inflight=400
             - --max-requests-inflight=800
             - --event-ttl=10m
+            - --authentication-config=/etc/kubernetes/auth-config.yaml
 
             {{- range $key, $value := .Values.kubernetes.apiServer.extraArgs }}
             - --{{ $key }}={{ $value }}
