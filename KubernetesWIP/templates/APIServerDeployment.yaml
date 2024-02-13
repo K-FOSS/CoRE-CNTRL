@@ -172,8 +172,8 @@ spec:
             {{- end }}
 
             - --feature-gates=APIServerTracing=true,SidecarContainers=true,StructuredAuthenticationConfiguration=true
-            - --max-mutating-requests-inflight=400
-            - --max-requests-inflight=800
+            - --max-mutating-requests-inflight=800
+            - --max-requests-inflight=1600
             - --event-ttl=10m
             - --authentication-config=/etc/kubernetes/auth-config.yaml
 

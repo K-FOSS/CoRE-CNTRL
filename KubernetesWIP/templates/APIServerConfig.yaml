@@ -12,12 +12,12 @@ data:
     kind: AuthenticationConfiguration
     jwt:
       - issuer:
-          url: https://idp.mylogin.space/application/o/k8s/
+          url: https://idp.mylogin.space/application/o/che/
           audiences:
-            - k0s
+            - <path:CORE0_SITE1/data/IDE/Che/Authentik#ClientID>
         claimMappings:
           username:
-            expression: 'claims.username + ":external-user"'
+            expression: 'claims.email'
           groups:
             expression: 'claims.groups'
           uid:
