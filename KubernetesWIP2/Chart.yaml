@@ -1,8 +1,0 @@
-apiVersion: v2
-version: 0.13.4
-name: k8s-core-wip
-dependencies:
-  - name: kubefarm
-    version: 0.13.4
-    condition: kubefarm.enabled
-    repository: https://kvaps.github.io/charts
