@@ -1,0 +1,23 @@
+{{- if and .Values.kubernetes.kine.enabled .Values.kubernetes.kine.service.enabled }}
+{{- $fullName := include "kubernetes.fullname" . -}}
+---
+apiVersion: mylogin.space/v1alpha1
+kind: User
+metadata:
+  name: {{ $fullName }}-kine
+
+  labels:
+    app: {{ $fullName }}-kine
+
+spec:
+  name: Kine {{ .Values.kubernetes.clusterName }}
+  groups:
+    - LDAPService
+  
+  database:
+    name: k0sk8s
+
+  writeConnectionSecretToRef:
+    name: {{ $fullName }}-kine-creds
+
+{{- end }}
