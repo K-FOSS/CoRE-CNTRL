@@ -81,15 +81,15 @@ spec:
             - --{{ $key }}={{ $value }}
             {{- end }}
 
-          {{- with .Values.kubernetes.kine.extraEnv }}
-          env:
-          {{- toYaml . | nindent 10 }}
-          {{- end }}
 
-          {{- if .Values.kubernetes.kine.secrets.enabled }} 
-          envFrom:
-            - secretRef:
-                name: {{ $fullName }}-kine-db
+          env:
+            - name: DB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $fullName }}-kine-creds
+                  key: psqlURI
+          {{- with .Values.kubernetes.kine.extraEnv }}
+          {{- toYaml . | nindent 10 }}
           {{- end }}
 
           volumeMounts:
