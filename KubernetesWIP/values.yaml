@@ -53,7 +53,7 @@ kubernetes:
         hostname: psql.mylogin.space
         ssl: enabled
 
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 200m
@@ -235,11 +235,11 @@ kubernetes:
 
     image:
       repository: registry.k8s.io/kube-apiserver
-      tag: v1.29.1
+      tag: v1.29.2
       pullPolicy: IfNotPresent
       pullSecrets: []
 
-    replicaCount: 2
+    replicaCount: 1
     resources:
       requests:
         cpu: 100m
@@ -281,7 +281,7 @@ kubernetes:
 
       externalIPs:
         - 10.0.8.1
-
+e
       annotations:
         consul.hashicorp.com/service-name: k0s-kubeapi
         metallb.universe.tf/allow-shared-ip: k0s-api
