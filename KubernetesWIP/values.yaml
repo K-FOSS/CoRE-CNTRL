@@ -281,7 +281,7 @@ kubernetes:
 
       externalIPs:
         - 10.0.8.1
-e
+
       annotations:
         consul.hashicorp.com/service-name: k0s-kubeapi
         metallb.universe.tf/allow-shared-ip: k0s-api
