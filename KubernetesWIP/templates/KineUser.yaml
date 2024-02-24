@@ -17,6 +17,7 @@ spec:
   psql:
     uri: postgres://
 
+
   database:
     name: k0sk8s
 
